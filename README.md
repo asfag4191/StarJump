@@ -1,6 +1,6 @@
 # INF112 Project - *Star Jump*
 
-* Team: *DreamTeam* (Gruppe 7): Maren A. I. Gundhus, Åse Fagerbakke, Jonas Justesen, Mohamad Al-Mozen, Thora Moen, Anna Sviland
+* Team: *DreamTeam* (Gruppe 7): Maren A. I. Gundhus, Åse Fagerbakke, Jonas Justesen, Mohamad Al-Mozzen, Thora Moen, Anna Sviland
 * Trello: (https://trello.com/b/g0zg5tGH/inf112).
 
 ## About the game
