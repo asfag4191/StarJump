@@ -1,8 +1,13 @@
-# INF112 libGDX + Maven template 
+# INF112 Project - *Star Jump*
+
+* Team: *DreamTeam* (Gruppe 7): Maren A. I. Gundhus, Åse Fagerbakke, Jonas Justesen, Mohamad Al-Mozen, Thora Moen, Anna Sviland
+* Trello: (https://trello.com/b/g0zg5tGH/inf112).
+
+## About the game
+*"A star has fallen from the sky! Help it to jump back to its home. But beware of black holes! They are fatal."*
+
+# libGDX + Maven template 
 Simple skeleton with [libGDX](https://libgdx.com/). 
-
-**Important:** Replace this README with info about *your* project!
-
 
 # Maven Setup
 This project comes with a working Maven `pom.xml` file. You should be able to import it into Eclipse using *File → Import → Maven → Existing Maven Projects* (or *Check out Maven Projects from SCM* to do Git cloning as well). You can also build the project from the command line with `mvn clean compile` and test it with `mvn clean test`.
@@ -13,30 +18,11 @@ Pay attention to these folders:
 * `src/test/java` – JUnit tests
 * `target/classes` – compiled Java class files
 
-**TODO:** You should probably edit the `pom.xml` and fill in details such as the project `name` and `artifactId`:
-
-
-```xml
-
-	< !-- FIXME - set group id -->
-	<groupId>inf112.skeleton.app</groupId>
-	< !-- FIXME - set artifact name -->
-	<artifactId>gdx-app</artifactId>
-	<version>1.0-SNAPSHOT</version>
-	<packaging>jar</packaging>
-
-	< !-- FIXME - set app name -->
-	<name>mvn-app</name>
-	< !-- FIXME change it to the project's website -->
-	<url>http://www.example.com</url>
-```
-
-	
 ## Running
 You can run the project with Maven using `mvn exec:java`. Change the main class by modifying the `main.class` setting in `pom.xml`:
 
 ```
-		<main.class>inf112.skeleton.app.Main</main.class>
+        <main.class>inf112.skeleton.app.Main</main.class>
 ```
 
 Running the program should open a window with the text “Hello, world!” and an alligator in the lower left corner.  Clicking inside the window should play a *blip* sound. Exit by pressing *Escape* or closing the window.
@@ -71,4 +57,6 @@ If you look at *Settings → Repository* in GitLab, you can protect branches –
 * `src/main/resources/blipp.ogg`– Dr. Richard Boulanger et al (CC-BY-3.0)
 
 (You should probably delete these if you don't need them!)
+
+
 
