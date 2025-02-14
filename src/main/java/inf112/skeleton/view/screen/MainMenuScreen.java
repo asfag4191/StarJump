@@ -21,23 +21,9 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
-
-        game.viewport.apply();
-        game.batch.setProjectionMatrix(game.viewport.getCamera().combined);
-
-        game.batch.begin();
-        //draw text. Remember that x and y are in meters
-        // (current resoulution is 64x64, change in StarJump.java)
-        game.font.setColor(Color.WHITE);
-        game.font.getData().setScale(game.viewport.getWorldHeight() / Gdx.graphics.getHeight());
-        game.font.draw(game.batch, "Welcome to StarJump", 32 - 7, 40);
-        game.font.draw(game.batch, "Tap anywhere to begin!", 32f - 7.1f, 38);
-        game.batch.end();
-
-        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-            game.setScreen(new GameScreen(game));
-            dispose();
-        }
+        input();
+        logic();
+        draw();
     }
 
     @Override
@@ -63,6 +49,31 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
+
+    }
+
+    private void draw() {
+        game.viewport.apply();
+        game.batch.setProjectionMatrix(game.viewport.getCamera().combined);
+
+        game.batch.begin();
+        //draw text. Remember that x and y are in meters
+        // (current resoulution is 64x64, change in StarJump.java)
+        game.font.setColor(Color.WHITE);
+        game.font.getData().setScale(game.viewport.getWorldHeight() / Gdx.graphics.getHeight());
+        game.font.draw(game.batch, "Welcome to StarJump", 32 - 7, 40);
+        game.font.draw(game.batch, "Tap anywhere to begin!", 32f - 7.1f, 38);
+        game.batch.end();
+    }
+
+    private void input() {
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+            game.setScreen(new GameScreen(game));
+            dispose();
+        }
+    }
+
+    private void logic() {
 
     }
 }
