@@ -4,15 +4,24 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.graphics.Texture;
+
 import inf112.skeleton.model.StarJump;
+import inf112.skeleton.model.tiles.TileLoader;
+import inf112.skeleton.model.tiles.TileMap;
 
 public class GameScreen implements Screen {
 
     final StarJump game;
+    private TileLoader tileLoader;
+    private TileMap tileMap;
+    private int tileSize = 64; // Adjust tile size
 
     public GameScreen(StarJump game) {
         this.game = game;
+        this.tileLoader = new TileLoader();
+        this.tileMap = new TileMap("src/main/assets/map/Empty_map.txt");
+        
     }
 
     @Override
@@ -68,6 +77,18 @@ public class GameScreen implements Screen {
         game.batch.setProjectionMatrix(game.viewport.getCamera().combined);
 
         game.batch.begin();
+        
+        for (int row = 0; row < tileMap.getRows(); row++){
+            for (int col = 0; col < tileMap.getCols(); col++) {
+                int tileID = tileMap.getMapData()[row][col]; // Get tile ID from map
+                Texture texture = tileLoader.getTileTexture(tileID); // Get texture from tile loader
+
+                if (texture != null) {
+                    game.batch.draw(texture, col * tileSize, (tileMap.getRows() - row - 1) * tileSize, tileSize, tileSize);
+                }
+            }
+        
+        }
         //draw text. Remember that x and y are in meters
         // (current resoulution is 64x64, change in StarJump.java)
         game.font.setColor(Color.WHITE);
