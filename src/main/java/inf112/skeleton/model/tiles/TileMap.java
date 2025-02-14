@@ -14,16 +14,17 @@ public class TileMap {
     private void loadMap(String filePath) {
         FileHandle file = Gdx.files.internal(filePath); 
         String[] lines = file.readString().split("\n"); 
-
+    
         rows = lines.length;
-        cols = lines[0].split(" ").length;
-
+        cols = lines[0].split(" ").length; // Split by space, not char
+    
         mapData = new int[rows][cols];
-
+        
+    
         for (int row = 0; row < rows; row++) {
-            char[] values = lines[row].toCharArray(); 
+            String[] values = lines[row].split(" "); // Fix here
             for (int col = 0; col < cols; col++) {
-                mapData[row][col] = Character.getNumericValue(values[col]); 
+                mapData[row][col] = Integer.parseInt(values[col]); // Fix here
             }
         }
     }
