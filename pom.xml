@@ -18,6 +18,18 @@
 	</properties>
 	<dependencies>
 		<dependency>
+			<!-- Box2 library -->
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-box2d</artifactId>
+			<version>${libgdx.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-box2d-platform</artifactId>
+			<version>${libgdx.version}</version>
+			<classifier>natives-desktop</classifier>
+		</dependency>
+		<dependency>
 			<!--libGDX graphics library – https://libgdx.com/ -->
 			<groupId>com.badlogicgames.gdx</groupId>
 			<artifactId>gdx</artifactId>
