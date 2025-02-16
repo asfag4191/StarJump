@@ -1,7 +1,5 @@
 package inf112.skeleton.view.screen;
 
-import java.util.Arrays;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -83,13 +81,11 @@ public class GameScreen implements Screen {
         game.batch.begin();
         
         for (int row = 0; row < tileMap.getRows(); row++) {
-                System.out.println(Arrays.toString(tileMap.getMapData()[row]));
             for (int col = 0; col < tileMap.getCols(); col++) {
                 int tileID = tileMap.getMapData()[row][col];
                 Texture texture = tileLoader.getTileTexture(tileID);
         
                 if (texture != null) {
-                    System.out.println("Drawing tile " + tileID + " at: (" + col * tileSize + ", " + row * tileSize + ")");
                     game.batch.draw(texture, col * tileSize, (tileMap.getRows() - row - 1) * tileSize, tileSize, tileSize);
                 }
             }
