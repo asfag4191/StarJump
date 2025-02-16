@@ -16,9 +16,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 
 import inf112.skeleton.model.tiles.TileLoader;
+import inf112.skeleton.model.tiles.TileMap;
 
 public class TileLoaderTest {
     private static TileLoader tileLoader;
+    private static TileMap tileMap;
 
     /**
      * Initializes LibGDX in a headless mode before running tests.
@@ -47,7 +49,7 @@ public class TileLoaderTest {
      */
     @BeforeEach
     void setUp() {
-        tileLoader = new TileLoader();
+        tileLoader = new TileLoader(tileMap);
     }
 
 

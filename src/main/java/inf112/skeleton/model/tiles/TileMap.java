@@ -21,6 +21,7 @@ public class TileMap {
      */
     public TileMap(String filePath) {
         loadMap(filePath);
+        System.out.println("Loaded TileMap with " + rows + " rows and " + cols + " columns.");
     }
 
     /**

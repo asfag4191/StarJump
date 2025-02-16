@@ -15,13 +15,14 @@ public class GameScreen implements Screen {
     final StarJump game;
     private TileLoader tileLoader;
     private TileMap tileMap;
-    private int tileSize = 4; // Adjust tile size
+    private int tileSize; // Adjust tile size
 
 
     public GameScreen(StarJump game) {
         this.game = game;
-        this.tileLoader = new TileLoader();
         this.tileMap = new TileMap("src/main/assets/map/Empty_map.txt");
+        this.tileLoader = new TileLoader(this.tileMap); // Pass the TileMap instance
+        updateTileSize();
         
     }
 
@@ -38,8 +39,24 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void resize(int i, int i1) {
+    public void resize(int width, int height) {
+        if (width > 0 && height > 0) {  
+            game.viewport.update(width, height, true);
+            updateTileSize();
+        }
+    }
 
+    /**
+     * Dynamically adjusts tile size based on the screen size.
+     */
+    private void updateTileSize() {
+        if (tileMap == null) return;
+    
+        int screenWidth = Gdx.graphics.getWidth();
+        int screenHeight = Gdx.graphics.getHeight();
+    
+        // Dynamically adjust the tile size to fit the screen
+        this.tileSize = Math.max(40, Math.min(screenWidth / tileMap.getCols(), screenHeight / tileMap.getRows())); //32 to get all in the screen
     }
 
     @Override
@@ -59,6 +76,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        tileLoader.dispose();
 
     }
 
@@ -73,30 +91,42 @@ public class GameScreen implements Screen {
         }
     }
 
-    private void draw() {
+private void draw() {
+    game.viewport.apply();
+    game.batch.setProjectionMatrix(game.viewport.getCamera().combined);
+    game.batch.begin();
+    
+    //int totalMapWidth = tileMap.getCols() * tileSize;
+    //int totalMapHeight = tileMap.getRows() * tileSize;
+    
+    // Calculate the starting position to center the map
+    int startX = 0;
+    int startY = 0;
 
-        game.viewport.apply();
-        game.batch.setProjectionMatrix(game.viewport.getCamera().combined);
-
-        game.batch.begin();
-        
-        for (int row = 0; row < tileMap.getRows(); row++) {
-            for (int col = 0; col < tileMap.getCols(); col++) {
-                int tileID = tileMap.getMapData()[row][col];
-                Texture texture = tileLoader.getTileTexture(tileID);
-        
-                if (texture != null) {
-                    game.batch.draw(texture, col * tileSize, (tileMap.getRows() - row - 1) * tileSize, tileSize, tileSize);
-                }
+    for (int row = 0; row < tileMap.getRows(); row++) {
+        for (int col = 0; col < tileMap.getCols(); col++) {
+            int tileID = tileMap.getMapData()[row][col];
+            Texture texture = tileLoader.getTileTexture(tileID);
+    
+            if (texture != null) {
+                game.batch.draw(texture, startX + col * tileSize, startY + (tileMap.getRows() - row - 1) * tileSize, tileSize, tileSize);
             }
         }
-        //draw text. Remember that x and y are in meters
-        // (current resoulution is 64x64, change in StarJump.java)
-        game.font.setColor(Color.WHITE);
-        game.font.getData().setScale((game.viewport.getWorldHeight()*2) / Gdx.graphics.getHeight());
-        game.font.draw(game.batch, "GAME IS NOW ACTIVE WOOP WOOP", 6, 40);
-        game.font.draw(game.batch, "Press ESCAPE to go back to home screen", 5, 34);
-        game.batch.end();
     }
-    }
+
+    // Draw text (adjusted so it stays within viewport)
+    game.font.setColor(Color.WHITE);
+    game.font.getData().setScale((game.viewport.getWorldHeight() * 2) / Gdx.graphics.getHeight());
+    game.font.draw(game.batch, "GAME IS NOW ACTIVE WOOP WOOP", 6, Gdx.graphics.getHeight() - 40);
+    game.font.draw(game.batch, "Press ESCAPE to go back to home screen", 5, Gdx.graphics.getHeight() - 80);
+
+    game.batch.end();
+}
+
+
+ 
+     
+    
+}
+    
 

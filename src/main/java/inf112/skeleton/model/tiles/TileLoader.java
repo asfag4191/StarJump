@@ -1,5 +1,6 @@
 package inf112.skeleton.model.tiles;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 
@@ -12,19 +13,24 @@ import com.badlogic.gdx.graphics.Texture;
  * 
  */
 public class TileLoader {
-    private AssetManager manager; 
+    private AssetManager manager;
+    private int tileSize; 
+    private TileMap tileMap;
 
     /**
      * Constructs a new {@code TileLoader} object. and loads the tile textures.
      * The textures are preloaded using LibGDX's {@link AssetManager}.
      */
-    public TileLoader() {
+    public TileLoader(TileMap tileMap) {
+        if (tileMap == null) {
+            System.out.println("Error: Passed TileMap is null!");
+        } else {
+            System.out.println("TileMap is successfully passed to TileLoader.");
+        }
+        this.tileMap = tileMap;
         manager = new AssetManager();
-        
-        // Correct path (files are inside "assets/" but you only use the name)
         manager.load("src/main/assets/brick.png", Texture.class);
-        
-        manager.finishLoading(); // Ensure all assets are loaded before using them
+        manager.finishLoading();
     }
 
     /**
@@ -46,6 +52,28 @@ public class TileLoader {
         }
 
         return null; // Handle unknown tileID
+    }
+
+        /**
+     * Updates the tile size dynamically based on the screen size.
+     */
+    public void updateTileSize() {
+        if (tileMap == null) {
+            return;
+        }
+
+        int screenWidth = Gdx.graphics.getWidth();
+        int screenHeight = Gdx.graphics.getHeight();
+
+    
+        // Use the tile map size to compute tile size dynamically
+        this.tileSize = Math.min(screenWidth / tileMap.getCols(), screenHeight / tileMap.getRows());
+
+
+    }
+    
+    public int getTileSize() {  // 🔹 Add this method
+        return this.tileSize;
     }
 
     /**
