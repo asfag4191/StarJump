@@ -29,19 +29,11 @@ public class TileMapTest {
      */
     @BeforeEach
     void setUp() {
-        // Define a fake tile map (2 rows x 3 columns)
         String fakeMap = "1 0 1\n0 1 0";
-    
-        // Mock the FileHandle
         FileHandle mockFileHandle = Mockito.mock(FileHandle.class);
         
-        // 🔹 Fix: Mock `readString()` to return fakeMap
         Mockito.when(mockFileHandle.readString()).thenReturn(fakeMap);
-        
-        // Mock Gdx.files.internal() to return the fake FileHandle
         Mockito.when(Gdx.files.internal("test_map.txt")).thenReturn(mockFileHandle);
-    
-        // Initialize TileMap with our fake file
         tileMap = new TileMap("test_map.txt");
     }
     

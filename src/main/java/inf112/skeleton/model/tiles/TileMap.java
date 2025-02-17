@@ -14,6 +14,7 @@ public class TileMap {
     private int[][] mapData;
     private int rows, cols;
 
+
     /**
      * Constructs a new {@code TileMap} object.
      * 
@@ -21,6 +22,7 @@ public class TileMap {
      */
     public TileMap(String filePath) {
         loadMap(filePath);
+        System.out.println("Loaded TileMap with " + rows + " rows and " + cols + " columns.");
     }
 
     /**
@@ -33,15 +35,15 @@ public class TileMap {
         String[] lines = file.readString().split("\n"); 
     
         rows = lines.length;
-        cols = lines[0].split(" ").length; // Split by space, not char
+        cols = lines[0].split(" ").length; 
     
         mapData = new int[rows][cols];
         
     
         for (int row = 0; row < rows; row++) {
-            String[] values = lines[row].split(" "); // Fix here
+            String[] values = lines[row].split(" "); 
             for (int col = 0; col < cols; col++) {
-                mapData[row][col] = Integer.parseInt(values[col]); // Fix here
+                mapData[row][col] = Integer.parseInt(values[col]); 
             }
         }
     }
