@@ -46,19 +46,20 @@ public class GameScreen implements Screen {
         }
     }
 
-    /**
-     * Dynamically adjusts tile size based on the screen size.
-     */
+ 
     private void updateTileSize() {
         if (tileMap == null) return;
     
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
     
-        // Dynamically adjust the tile size to fit the screen
-        this.tileSize = Math.max(40, Math.min(screenWidth / tileMap.getCols(), screenHeight / tileMap.getRows())); //32 to get all in the screen
+        // Adjust the tile size so the whole map fits the screen
+        int tileSizeX = screenWidth / tileMap.getCols();
+        int tileSizeY = screenHeight / tileMap.getRows();
+    
+        // Use the smaller size to prevent distortion
+        this.tileSize = Math.max(32, Math.min(tileSizeX, tileSizeY));
     }
-
     @Override
     public void pause() {
 
@@ -91,28 +92,28 @@ public class GameScreen implements Screen {
         }
     }
 
-private void draw() {
-    game.viewport.apply();
-    game.batch.setProjectionMatrix(game.viewport.getCamera().combined);
-    game.batch.begin();
+    private void draw() {
+        game.viewport.apply();
+        game.batch.setProjectionMatrix(game.viewport.getCamera().combined);
+        game.batch.begin();
     
-    //int totalMapWidth = tileMap.getCols() * tileSize;
-    //int totalMapHeight = tileMap.getRows() * tileSize;
+        //int totalMapWidth = tileMap.getCols() * tileSize;
+        //int totalMapHeight = tileMap.getRows() * tileSize;
     
-    // Calculate the starting position to center the map
-    int startX = 0;
-    int startY = 0;
+        // Calculate the starting position to center the map
+        int startX = 0;
+        int startY = 0;
 
-    for (int row = 0; row < tileMap.getRows(); row++) {
-        for (int col = 0; col < tileMap.getCols(); col++) {
-            int tileID = tileMap.getMapData()[row][col];
-            Texture texture = tileLoader.getTileTexture(tileID);
+        for (int row = 0; row < tileMap.getRows(); row++) {
+            for (int col = 0; col < tileMap.getCols(); col++) {
+                int tileID = tileMap.getMapData()[row][col];
+                Texture texture = tileLoader.getTileTexture(tileID);
     
-            if (texture != null) {
-                game.batch.draw(texture, startX + col * tileSize, startY + (tileMap.getRows() - row - 1) * tileSize, tileSize, tileSize);
+                if (texture != null) {
+                    game.batch.draw(texture, startX + col * tileSize, startY + (tileMap.getRows() - row - 1) * tileSize, tileSize, tileSize);
+                }
             }
         }
-    }
 
     // Draw text (adjusted so it stays within viewport)
     game.font.setColor(Color.WHITE);

@@ -20,6 +20,8 @@ public class TileLoader {
     /**
      * Constructs a new {@code TileLoader} object. and loads the tile textures.
      * The textures are preloaded using LibGDX's {@link AssetManager}.
+     * 
+     * @param tileMap The {@code TileMap} instance containing the tile data.
      */
     public TileLoader(TileMap tileMap) {
         if (tileMap == null) {
@@ -34,53 +36,42 @@ public class TileLoader {
     }
 
     /**
-     * Returns the texture of a tile based on the given tile ID.
-     * 
+     * Retrieves the texture of a tile based on the given tile ID.
+     *      
      * @param tileID the ID of the tile
-     * @return the texture of the tile
+     * @return the texture of the tile, otherwise {@code null}.
      */
     public Texture getTileTexture(int tileID) {
         if (!manager.isLoaded("src/main/assets/brick.png")) {
-            System.out.println("Error: Assets not loaded!");
             return null;
         }
 
         if (tileID == 1) {
             return manager.get("src/main/assets/brick.png", Texture.class);
         } else if (tileID == 0) {
-            return null; // Transparent, no texture drawn
+            return null; 
         }
 
-        return null; // Handle unknown tileID
+        return null; 
     }
 
-        /**
-     * Updates the tile size dynamically based on the screen size.
+    
+    /**
+     * Gets the current tile size.
+     * 
+     * @return The size of a single tile in pixels.
      */
-    public void updateTileSize() {
-        if (tileMap == null) {
-            return;
-        }
-
-        int screenWidth = Gdx.graphics.getWidth();
-        int screenHeight = Gdx.graphics.getHeight();
-
-    
-        // Use the tile map size to compute tile size dynamically
-        this.tileSize = Math.min(screenWidth / tileMap.getCols(), screenHeight / tileMap.getRows());
-
-
-    }
-    
-    public int getTileSize() {  // 🔹 Add this method
+    public int getTileSize() {  
         return this.tileSize;
     }
 
     /**
-    * Disposes of the asset manager and releases all loaded assets.     
+    * Disposes of the asset manager and releases all loaded assets.
     */
     public void dispose() {
-        manager.dispose();
+        if (manager != null) {
+            manager.dispose();
+        }
     }
 }
 
