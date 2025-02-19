@@ -4,19 +4,23 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+
 import inf112.skeleton.model.StarJump;
 
 public class MainMenuScreen implements Screen {
     final StarJump game;
+    final Texture background;
 
     public MainMenuScreen(StarJump game) {
         this.game = game;
+        this.background = new Texture(Gdx.files.internal("src/main/assets/backgrounds/main_menu_background.png"));
     }
 
     @Override
     public void show() {
-        
+
     }
 
     @Override
@@ -30,7 +34,6 @@ public class MainMenuScreen implements Screen {
     public void resize(int width, int height) {
         game.viewport.update(width, height, true);
     }
-
 
     @Override
     public void pause() {
@@ -55,14 +58,31 @@ public class MainMenuScreen implements Screen {
     private void draw() {
         game.viewport.apply();
         game.batch.setProjectionMatrix(game.viewport.getCamera().combined);
+        float width = game.viewport.getWorldWidth();
+        float height = game.viewport.getWorldHeight();
 
         game.batch.begin();
-        //draw text. Remember that x and y are in meters
-        // (current resoulution is 64x64, change in StarJump.java)
+        // draw text. Remember that x and y are in meters
+        // (current resolution is 64x64, change in StarJump.java)
+
+        String text = "Welcome to StarJump";
+        GlyphLayout layout = new GlyphLayout();
+
+        float centerY = game.viewport.getWorldHeight() / 2;
+
+        game.batch.draw(background, 0, 0, width, height);
         game.font.setColor(Color.WHITE);
-        game.font.getData().setScale(game.viewport.getWorldHeight() / Gdx.graphics.getHeight());
-        game.font.draw(game.batch, "Welcome to StarJump", 32 - 7, 40);
-        game.font.draw(game.batch, "Tap anywhere to begin!", 32f - 7.1f, 38);
+        game.font.getData().setScale(game.viewport.getWorldHeight() * 3 / Gdx.graphics.getHeight());
+
+        layout.setText(game.font, text);
+
+        game.font.draw(game.batch, layout, game.viewport.getWorldWidth() / 2 - layout.width / 2,
+                game.viewport.getWorldHeight() - (game.viewport.getWorldHeight() / 8));
+
+        game.font.getData().setScale(game.viewport.getWorldHeight() * 2 / Gdx.graphics.getHeight());
+        layout.setText(game.font, "Tap anywhere to begin!");
+        game.font.draw(game.batch, layout, game.viewport.getWorldWidth() / 2 - layout.width / 2,
+                game.viewport.getWorldHeight() - (game.viewport.getWorldHeight() / 4));
         game.batch.end();
     }
 
