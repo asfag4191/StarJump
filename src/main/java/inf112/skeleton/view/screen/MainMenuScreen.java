@@ -1,5 +1,6 @@
 package inf112.skeleton.view.screen;
 
+import com.badlogic.gdx.Preferences;
 import inf112.skeleton.model.StarJump;
 
 import com.badlogic.gdx.Screen;
@@ -15,14 +16,24 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.concurrent.TimeUnit;
+
+/*
+TODO:
+ [] Change the layout to use a table instead of forced values
+        - Allows for easier implementation of new features later
+ */
+
 public class MainMenuScreen implements Screen {
     final StarJump game;
     final Texture background;
     private final Stage stage;
     private final Skin skin;
     private final Sound buttonClick;
-
-
+    /**
+     * Main menu screen
+     * @param game
+     */
     public MainMenuScreen(StarJump game) {
         this.game = game;
         this.background = new Texture(Gdx.files.internal("src/main/assets/backgrounds/main_menu_background.png"));
@@ -99,12 +110,18 @@ public class MainMenuScreen implements Screen {
 
     }
 
+    /**
+     * Draws the UI onto the screen
+     * Subject to change
+     * @param viewport
+     */
     private void createUI(Viewport viewport) {
         float buttonGap = viewport.getWorldHeight() / 90f;
         float buttonWidth = viewport.getWorldWidth() / 3;
         float buttonHeight = viewport.getWorldHeight() / 10;
         float buttonX = viewport.getWorldWidth() / 2f - buttonWidth / 2;
         float buttonY = viewport.getWorldHeight() / 2f;
+        float buttonClickVolume = 0.5f * (Float.parseFloat(this.game.settings.getSetting("volume")) / 100);
 
         // Create buttons
         TextButton startButton = new TextButton("Start Game", skin);
@@ -123,7 +140,7 @@ public class MainMenuScreen implements Screen {
         startButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                buttonClick.play(1.0f);
+                buttonClick.play(buttonClickVolume);
                 game.setScreen(new GameScreen(game)); // Switch to GameScreen
                 dispose();
             }
@@ -132,7 +149,13 @@ public class MainMenuScreen implements Screen {
         quitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                buttonClick.play(1.0f);
+                buttonClick.play(buttonClickVolume);
+                // just to allow the buttonclick-sound to play
+                try {
+                    TimeUnit.MILLISECONDS.sleep(400);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 Gdx.app.exit();
             }
         });
@@ -140,17 +163,22 @@ public class MainMenuScreen implements Screen {
         optionsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                buttonClick.play(1.0f);
-                System.out.println("OPTIONS NOT YET IMPLEMENTED");
+                buttonClick.play(buttonClickVolume);
+                game.setScreen(new SettingsScreen(game));
             }
         });
 
-        // Add button to the stage
+        // Add buttons to the stage
         stage.addActor(startButton);
         stage.addActor(optionsButton);
         stage.addActor(quitButton);
     }
 
+    /**
+     * Draws title on menu screen
+     * Separated from rest of UI in case we want to animate the screen
+     * @param viewport
+     */
     private void drawTitle(Viewport viewport) {
         Label.LabelStyle titleStyle = new Label.LabelStyle();
         titleStyle.font = this.skin.getFont("title");

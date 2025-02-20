@@ -2,6 +2,7 @@ package inf112.skeleton.model;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -18,6 +19,7 @@ public class StarJump extends Game {
     public BitmapFont font;
     public StretchViewport viewport;
     private GameState gameState;
+    public Settings settings;
 
     /* ----------------------- METHODS ----------------------- */
 
@@ -28,10 +30,14 @@ public class StarJump extends Game {
         this.font = new BitmapFont();
         this.viewport = new StretchViewport(1280, 720);  // Set a fixed logical size
         this.gameState = gameState.HOME_SCREEN;
+        this.settings = new Settings();
 
         // fits the font to use our viewport
         font.setUseIntegerPositions(false);
         font.getData().setScale(viewport.getWorldHeight() / Gdx.graphics.getHeight());
+
+        // get preferences and apply
+        this.updateSettings();
 
         this.setScreen(new MainMenuScreen(this));
     }
@@ -63,9 +69,16 @@ public class StarJump extends Game {
         font.getData().setScale(viewport.getWorldHeight() / Gdx.graphics.getHeight());
     }
 
+    /**
+     * Might be redundant, in case remove later
+     * @return current game state
+     */
     public GameState getGameState() {
         return this.gameState;
     }
 
+    public void updateSettings() {
+        this.settings.applySettings();
+    }
 
 }
