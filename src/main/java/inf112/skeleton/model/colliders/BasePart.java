@@ -1,14 +1,17 @@
 package inf112.skeleton.model.colliders;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 public class BasePart {
     private final Body body;
     private Sprite skin;
-
+    private boolean animationOn;
 
     public BasePart(World world, BodyDef bodyDef, Shape shape, boolean doDispose) {
         this.body = world.createBody(bodyDef);
@@ -35,20 +38,35 @@ public class BasePart {
         this.body.setLinearVelocity(direction);
     }
 
-    public void setPosition(Vector2 position, float angle) {
-        this.body.setTransform(position, angle);
-    }
-
-    public void setPosition(Vector2 position) {
-        this.body.setTransform(position, 0);
-    }
-
     public void setType(BodyDef.BodyType type) {
         this.body.setType(type);
+    }
+
+    public Transform getTransform() {
+        return this.body.getTransform();
+    }
+
+    // Incomplete
+    public void render(SpriteBatch batch) {
+        updateSkin();
+        this.skin.draw(batch);
+    }
+
+    // Incomplete
+    private void updateSkin() {
+        Vector2 bodyPos = getTransform().getPosition();
+        float bodyDeg = getTransform().getRotation();
+        this.skin.setPosition(bodyPos.x, bodyPos.y);
+        this.skin.setRotation(bodyDeg);
     }
 
     private static void applyShape(Body bdy, Shape shape, boolean doDispose) {
         bdy.createFixture(shape, 1);
         if (doDispose) shape.dispose();
+    }
+
+    // Incomplete
+    private static void applySkin(Texture texture) {
+
     }
 }
