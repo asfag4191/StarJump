@@ -4,27 +4,42 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import inf112.skeleton.model.StarJump;
+import inf112.skeleton.model.WorldModel;
+import inf112.skeleton.model.colliders.BoxCollider;
 
 public class GameScreen implements Screen {
+    private static boolean DEBUG_MODE = true;
 
+    private Box2DDebugRenderer debugger;
     final StarJump game;
+    WorldModel worldModel;
 
     public GameScreen(StarJump game) {
         this.game = game;
+        this.worldModel = new WorldModel(new Vector2(0, -9.81f), true);
+        this.debugger = new Box2DDebugRenderer(true,true,true,true,true,true);
     }
 
     @Override
     public void show() {
-
+        // TEST; CREATE AN OBJECT
+        float middleX = game.viewport.getCamera().viewportWidth/2f;
+        float middleY = game.viewport.getCamera().viewportHeight/2f;
+        BoxCollider tile = worldModel.createTile(new Vector2(middleX, middleY), new Vector2(5,5));
+        BoxCollider ground = worldModel.createTile(new Vector2(middleX, 0), new Vector2(20,3));
+        tile.setType(BodyDef.BodyType.DynamicBody);
     }
 
     @Override
-    public void render(float delta) {
+    public void render(float dt) {
         input();
-        logic();
         draw();
+        if (DEBUG_MODE) debugger.render(worldModel.world, game.viewport.getCamera().combined);
+        logic(dt);
     }
 
     @Override
@@ -49,11 +64,10 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-
     }
 
-    private void logic() {
-
+    private void logic(float dt) {
+        worldModel.onStep(dt);
     }
 
     private void input() {

@@ -12,7 +12,6 @@ public class WorldModel{
         world = new World(gravity, doSleep);
     }
 
-    // game logic
     public void onStep(float dt) {
         world.step(dt, 3, 3);
     }

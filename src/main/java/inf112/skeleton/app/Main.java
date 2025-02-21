@@ -13,10 +13,11 @@ public class Main {
 		if (SharedLibraryLoader.os == Os.MacOsX) {
 			Configuration.GLFW_LIBRARY_NAME.set("glfw_async");
 		}
-		Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();
-		cfg.setTitle("hello-world");
-		cfg.setWindowedMode(640, 640);
 
-		new Lwjgl3Application(new StarJump(), cfg);
+		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+		config.setTitle("hello-world");
+		config.setWindowedMode(720, 480);
+
+		new Lwjgl3Application(new StarJump(), config);
 	}
 }
