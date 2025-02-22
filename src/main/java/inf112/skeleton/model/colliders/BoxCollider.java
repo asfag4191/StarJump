@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class BoxCollider extends BasePart {
+public class BoxCollider extends RigidBody {
     private static final PolygonShape shape = new PolygonShape();
 
     public BoxCollider(World world, BodyDef bodyDef, Vector2 size) {
