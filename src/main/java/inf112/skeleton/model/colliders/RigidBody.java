@@ -8,8 +8,6 @@ import com.badlogic.gdx.physics.box2d.*;
 
 public class RigidBody {
     private final Body body;
-    private Sprite skin;
-    private boolean animationOn;
 
     public RigidBody(World world, BodyDef bodyDef, Shape shape, boolean doDispose) {
         this.body = world.createBody(bodyDef);
@@ -44,27 +42,8 @@ public class RigidBody {
         return this.body.getTransform();
     }
 
-    // Incomplete
-    public void render(SpriteBatch batch) {
-        updateSkin();
-        this.skin.draw(batch);
-    }
-
-    // Incomplete
-    private void updateSkin() {
-        Vector2 bodyPos = getTransform().getPosition();
-        float bodyDeg = getTransform().getRotation();
-        this.skin.setPosition(bodyPos.x, bodyPos.y);
-        this.skin.setRotation(bodyDeg);
-    }
-
     private static void applyShape(Body bdy, Shape shape, boolean doDispose) {
         bdy.createFixture(shape, 1);
         if (doDispose) shape.dispose();
-    }
-
-    // Incomplete
-    private static void applySkin(Texture texture) {
-
     }
 }

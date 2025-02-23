@@ -46,7 +46,7 @@ public class Animator {
     }
 
     public void play(String key) {
-        if (key == null) throw new RuntimeException("the key must be none null");
+        if (key == null) throw new IllegalArgumentException("key must be none null");
         if (key.equals(currentKey)) return;
 
         currentAnimation = animations.get(key);
