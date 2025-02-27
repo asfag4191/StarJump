@@ -2,13 +2,11 @@ package inf112.skeleton.model;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-
 import inf112.skeleton.view.screen.MainMenuScreen;
 
 public class StarJump extends Game {
@@ -56,7 +54,7 @@ public class StarJump extends Game {
 
     @Override
     public void resize(int width, int height) {
-        if (width > 0 && height > 0) {  
+        if (width > 0 && height > 0) {
             viewport.update(width, height, true);
             updateFontScale();
         }
