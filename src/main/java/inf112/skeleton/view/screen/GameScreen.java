@@ -11,7 +11,6 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import inf112.skeleton.model.StarJump;
 import inf112.skeleton.model.WorldModel;
 import inf112.skeleton.model.colliders.BoxCollider;
-import inf112.skeleton.model.colliders.RigidBody;
 
 public class GameScreen implements Screen {
     private static boolean DEBUG_MODE = true;
@@ -32,8 +31,8 @@ public class GameScreen implements Screen {
         Texture texture = new Texture(Gdx.files.internal("star.png"));
         float middleX = game.viewport.getCamera().viewportWidth/2f;
         float middleY = game.viewport.getCamera().viewportHeight/2f;
-        BoxCollider tile = worldModel.createTile(new Vector2(middleX, middleY), new Vector2(10,10), texture);
-        BoxCollider ground = worldModel.createTile(new Vector2(middleX, middleY*0.25f), new Vector2(40,6), texture);
+        BoxCollider tile = worldModel.createTile(new Vector2(middleX, middleY), new Vector2(1,1), texture);
+        BoxCollider ground = worldModel.createTile(new Vector2(middleX, middleY*0.25f), new Vector2(10,2), texture);
         tile.setType(BodyDef.BodyType.DynamicBody);
     }
 

@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 public class RigidBody {
-    private final Body body;
+    protected final Body body;
 
     public RigidBody(World world, BodyDef bodyDef, Shape shape, boolean doDispose) {
         this.body = world.createBody(bodyDef);

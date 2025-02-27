@@ -10,7 +10,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import inf112.skeleton.view.Renderable;
 
 public class ViewableBody extends RigidBody implements Renderable {
-    Sprite sprite;
+    private Sprite sprite;
 
     public ViewableBody(World world, BodyDef bodyDef, Shape shape, Texture texture, boolean doDispose) {
         super(world, bodyDef, shape, doDispose);

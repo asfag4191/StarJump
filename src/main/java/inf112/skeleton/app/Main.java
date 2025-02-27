@@ -16,7 +16,7 @@ public class Main {
 
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setTitle("hello-world");
-		config.setWindowedMode(720, 480);
+		config.setWindowedMode(16*50, 9*50);
 
 		new Lwjgl3Application(new StarJump(), config);
 	}

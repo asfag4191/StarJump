@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import inf112.skeleton.utility.Constants;
+import inf112.skeleton.utility.UnitConverter;
 import inf112.skeleton.view.screen.MainMenuScreen;
 
 public class StarJump extends Game {
@@ -26,9 +28,9 @@ public class StarJump extends Game {
     public void create() {
         this.batch = new SpriteBatch();
         this.font = new BitmapFont();
-        this.viewport = new FitViewport(64, 64);
+        this.viewport = new FitViewport(UnitConverter.pixelsToMeters(Gdx.graphics.getWidth()),
+                UnitConverter.pixelsToMeters((Gdx.graphics.getHeight())));
         this.gameState = gameState.HOME_SCREEN;
-
         // fits the font to use our viewport
         font.setUseIntegerPositions(false);
         font.getData().setScale(viewport.getWorldHeight() / Gdx.graphics.getHeight());

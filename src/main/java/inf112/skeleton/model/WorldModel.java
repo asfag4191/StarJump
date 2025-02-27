@@ -2,11 +2,15 @@ package inf112.skeleton.model;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import inf112.skeleton.model.colliders.BoxCollider;
 import inf112.skeleton.model.colliders.ViewableBody;
+import inf112.skeleton.utility.TiledManager;
 import inf112.skeleton.view.Renderable;
 
 import java.util.ArrayList;
@@ -18,6 +22,10 @@ public class WorldModel implements Renderable {
     public WorldModel(Vector2 gravity, boolean doSleep) {
         world = new World(gravity, doSleep);
         ViewableObjects = new ArrayList<>();
+
+        TiledMap tiledMap = new TmxMapLoader().load("map/tilemaps/testMap.tmx");
+        MapObjects objects = tiledMap.getLayers().get("collision").getObjects();
+        TiledManager.parseTiledObjects(world, objects);
     }
 
     public void onStep(float dt) {
