@@ -17,7 +17,7 @@ public class PlayerController implements java.awt.event.KeyListener {
     final StarJump game;
     Character player;
     GameScreen gameScreen;
-    private Sound jumpSound; // sound when player jumps, add later
+    private Sound jumpSound;
     private iControllableGameModel controller;
 
     public PlayerController(StarJump game, inf112.skeleton.model.character.Character player,
@@ -54,5 +54,4 @@ public class PlayerController implements java.awt.event.KeyListener {
     public void keyReleased(KeyEvent e) {
         // empty for now
     }
-
 }
