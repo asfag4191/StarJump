@@ -2,19 +2,13 @@ package inf112.skeleton.controller;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeAll;
-import org.mockito.Mockito;
-
-import com.badlogic.gdx.Gdx;
 
 import inf112.skeleton.model.GameState;
 import inf112.skeleton.model.StarJump;
 import inf112.skeleton.model.character.Character;
-import inf112.skeleton.view.screen.MainMenuScreen;
 
 import java.awt.event.KeyEvent;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
