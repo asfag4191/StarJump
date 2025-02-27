@@ -12,10 +12,10 @@ import inf112.skeleton.model.tiles.TileMap;
 
 public class GameScreen implements Screen {
 
-    final StarJump game;
-    private TileLoader tileLoader;
-    private TileMap tileMap;
-    private int tileSize; // Adjust tile size
+    private final StarJump game;
+    private final TileLoader tileLoader;
+    private final TileMap tileMap;
+    private float tileSize; // Adjust tile size
 
 
     public GameScreen(StarJump game) {
@@ -23,7 +23,6 @@ public class GameScreen implements Screen {
         this.tileMap = new TileMap("src/main/assets/map/Empty_map.txt");
         this.tileLoader = new TileLoader(this.tileMap); // Pass the TileMap instance
         updateTileSize();
-        
     }
 
     @Override
@@ -49,16 +48,17 @@ public class GameScreen implements Screen {
  
     private void updateTileSize() {
         if (tileMap == null) return;
-    
-        int screenWidth = Gdx.graphics.getWidth();
-        int screenHeight = Gdx.graphics.getHeight();
-    
+
+        float screenWidth = this.game.viewport.getWorldWidth();
+        float screenHeight = this.game.viewport.getWorldHeight();
+
         // Adjust the tile size so the whole map fits the screen
-        int tileSizeX = screenWidth / tileMap.getCols();
-        int tileSizeY = screenHeight / tileMap.getRows();
+        float tileSizeX = screenWidth / tileMap.getCols();
+        float tileSizeY = screenHeight / tileMap.getRows();
     
         // Use the smaller size to prevent distortion
-        this.tileSize = Math.max(32, Math.min(tileSizeX, tileSizeY));
+        // this.tileSize = Math.max(32, Math.min(tileSizeX, tileSizeY));
+        this.tileSize = Math.min(tileSizeX, tileSizeY);
     }
     @Override
     public void pause() {
@@ -97,9 +97,6 @@ public class GameScreen implements Screen {
         game.batch.setProjectionMatrix(game.viewport.getCamera().combined);
         game.batch.begin();
     
-        //int totalMapWidth = tileMap.getCols() * tileSize;
-        //int totalMapHeight = tileMap.getRows() * tileSize;
-    
         // Calculate the starting position to center the map
         int startX = 0;
         int startY = 0;
@@ -117,9 +114,9 @@ public class GameScreen implements Screen {
 
     // Draw text (adjusted so it stays within viewport)
     game.font.setColor(Color.WHITE);
-    game.font.getData().setScale((game.viewport.getWorldHeight() * 2) / Gdx.graphics.getHeight());
-    game.font.draw(game.batch, "GAME IS NOW ACTIVE WOOP WOOP", 6, Gdx.graphics.getHeight() - 40);
-    game.font.draw(game.batch, "Press ESCAPE to go back to home screen", 5, Gdx.graphics.getHeight() - 80);
+    game.font.getData().setScale((game.viewport.getWorldWidth() * 2) / game.viewport.getScreenWidth());
+    game.font.draw(game.batch, "GAME IS NOW ACTIVE WOOP WOOP", game.viewport.getWorldWidth() / 3f, game.viewport.getWorldHeight() / 1.8f);
+    game.font.draw(game.batch, "Press ESCAPE to go back to home screen", game.viewport.getWorldWidth() / 3f, game.viewport.getWorldHeight() / 2f);
 
     game.batch.end();
 }
