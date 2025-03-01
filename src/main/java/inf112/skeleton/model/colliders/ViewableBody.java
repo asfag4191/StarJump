@@ -60,7 +60,7 @@ public class ViewableBody extends RigidBody implements Renderable {
      * @param batch The {@link Batch} used to draw the sprite.
      */
     @Override
-    public void render(Batch batch) {
+    public void render(Batch batch, float dt) {
         Vector2 bodyPos = this.getTransform().getPosition();
         float bodyDeg = this.getTransform().getRotation();
         sprite.setPosition(bodyPos.x - sprite.getWidth() / 2, bodyPos.y - sprite.getHeight() / 2);

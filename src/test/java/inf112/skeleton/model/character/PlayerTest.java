@@ -2,6 +2,7 @@ package inf112.skeleton.model.character;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import inf112.skeleton.model.Player;
 import org.junit.jupiter.api.*;
 
 public class PlayerTest {

@@ -9,6 +9,8 @@ import com.badlogic.gdx.utils.Array;
 import java.util.HashMap;
 
 public class Animator {
+    private static final TextureRegion emptyTexture = new TextureRegion();
+
     private final HashMap<String, Animation<TextureRegion>> animations;
     private Animation<TextureRegion> currentAnimation;
     private String currentKey;
@@ -65,7 +67,12 @@ public class Animator {
 
     public TextureRegion update(float dt) {
         if (!isPaused) currentTime += dt;
-        return currentAnimation.getKeyFrame(currentTime, true);
+
+        if (currentAnimation == null) {
+            return emptyTexture;
+        }
+
+        return  currentAnimation.getKeyFrame(currentTime, true);
     }
 
     public boolean isPlaying() {

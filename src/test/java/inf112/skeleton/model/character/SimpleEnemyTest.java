@@ -2,6 +2,7 @@ package inf112.skeleton.model.character;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import inf112.skeleton.model.SimpleEnemy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

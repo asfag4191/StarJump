@@ -12,7 +12,7 @@ import com.badlogic.gdx.physics.box2d.World;
  * This class uses a {@link PolygonShape} to define a rectangular collision area.
  */
 public class BoxCollider extends ViewableBody {
-    private static final PolygonShape shape = new PolygonShape();
+    private static final PolygonShape SHAPE = new PolygonShape();
 
     /**
      * Constructs a new BoxCollider with the given parameters.
@@ -27,7 +27,7 @@ public class BoxCollider extends ViewableBody {
     }
 
     private static Shape getShape(Vector2 size) {
-        shape.setAsBox(size.x / 2, size.y / 2);
-        return shape;
+        SHAPE.setAsBox(size.x / 2, size.y / 2);
+        return SHAPE;
     }
 }
