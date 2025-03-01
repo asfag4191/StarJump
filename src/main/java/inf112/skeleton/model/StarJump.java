@@ -6,37 +6,46 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+
 import inf112.skeleton.view.screen.MainMenuScreen;
 
 public class StarJump extends Game {
-
-    /* ------------------- FIELD VARIABLES ------------------- */
-
     public SpriteBatch batch;
     public BitmapFont font;
-    public StretchViewport viewport;
+
+    // Separate viewports for different screens
+    public FitViewport uiViewport;    // For menus (in pixels)
+    public FitViewport gameViewport;  // For the game (in tiles)
+
+    // Feltvariabler for viewport-størrelser
+    private static final float UI_WIDTH = 1280;
+    private static final float UI_HEIGHT = 720;
+    private static final float GAME_WIDTH = 15; // Økt fra 15 til 20 for å vise mer av kartet
+    private static final float GAME_HEIGHT = 13; // Økt fra 10 til 13
+
     private GameState gameState;
     public Settings settings;
-
-    /* ----------------------- METHODS ----------------------- */
-
 
     @Override
     public void create() {
         this.batch = new SpriteBatch();
         this.font = new BitmapFont();
-        this.viewport = new StretchViewport(1280, 720);  // Set a fixed logical size
-        this.gameState = gameState.HOME_SCREEN;
+
+        // UI uses a standard pixel-based viewport
+        this.uiViewport = new FitViewport(UI_WIDTH, UI_HEIGHT);
+        this.gameViewport = new FitViewport(GAME_WIDTH, GAME_HEIGHT);
+
+
+        this.gameState = GameState.HOME_SCREEN;
         this.settings = new Settings();
 
-        // fits the font to use our viewport
         font.setUseIntegerPositions(false);
-        font.getData().setScale(viewport.getWorldHeight() / Gdx.graphics.getHeight());
+        font.getData().setScale(uiViewport.getWorldHeight() / Gdx.graphics.getHeight());
 
-        // get preferences and apply
         this.updateSettings();
 
+        // Set the first screen (Main Menu uses the UI viewport)
         this.setScreen(new MainMenuScreen(this));
     }
 
@@ -54,23 +63,17 @@ public class StarJump extends Game {
 
     @Override
     public void resize(int width, int height) {
-        if (width > 0 && height > 0) {
-            viewport.update(width, height, true);
-            updateFontScale();
-        }
+        // Update both viewports
+        uiViewport.update(width, height, true);
+        gameViewport.update(width, height, false);
+
+        updateFontScale();
     }
 
-    /**
-     * Updates the font scale based on the viewport size.
-     */
     private void updateFontScale() {
-        font.getData().setScale(viewport.getWorldHeight() / Gdx.graphics.getHeight());
+        font.getData().setScale(uiViewport.getWorldHeight() / Gdx.graphics.getHeight());
     }
 
-    /**
-     * Might be redundant, in case remove later
-     * @return current game state
-     */
     public GameState getGameState() {
         return this.gameState;
     }
@@ -78,5 +81,5 @@ public class StarJump extends Game {
     public void updateSettings() {
         this.settings.applySettings();
     }
-
 }
+
