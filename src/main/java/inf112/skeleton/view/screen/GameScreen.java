@@ -56,8 +56,31 @@ public class GameScreen implements Screen {
 
     public void update(float dt) {
         handleInput(dt);
+        
+        int mapTileHeight = map.getProperties().get("height", Integer.class);
+        float mapWorldHeight = mapTileHeight; // since 1 world unit equals 1 tile
+        
+        // Viewport height in world units
+        float viewportHeight = game.gameViewport.getWorldHeight();
+        
+        // Calculate clamping boundaries
+        float maxCameraY = mapWorldHeight - (viewportHeight / 2f);
+        float minCameraY = viewportHeight / 2f;
+        
+        // Clamp the camera's Y position
+        gamecam.position.y = Math.max(minCameraY, Math.min(gamecam.position.y, maxCameraY));
+        
+        // Debug output
+        System.out.println("Camera Y: " + gamecam.position.y);
+        System.out.println("Max Camera Y: " + maxCameraY);
+        System.out.println("Min Camera Y: " + minCameraY);
+        
         gamecam.update();
     }
+    
+    
+    
+    
 
     @Override
     public void render(float delta) {
