@@ -21,8 +21,8 @@ public class StarJump extends Game {
     // Feltvariabler for viewport-størrelser
     private static final float UI_WIDTH = 1280;
     private static final float UI_HEIGHT = 720;
-    private static final float GAME_WIDTH = 15; // Økt fra 15 til 20 for å vise mer av kartet
-    private static final float GAME_HEIGHT = 13; // Økt fra 10 til 13
+    private static final float GAME_WIDTH = 20; 
+    private static final float GAME_HEIGHT =15; 
 
     private GameState gameState;
     public Settings settings;

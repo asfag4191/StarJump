@@ -29,18 +29,15 @@ public class GameScreen implements Screen {
 
 
         // Load TMX map
-        map = new TmxMapLoader().load("src/main/assets/map/tilemaps/map_level1.tmx");
-        if (map == null) {
-            System.out.println("ERROR: TMX map failed to load!");
-        } else {
-            System.out.println("SUCCESS: TMX map loaded!");
-        }
+        map = new TmxMapLoader().load("src/main/assets/map/tilemaps/map1.tmx");
 
         // Set up renderer (assuming tiles are 16x16 pixels)
         renderer = new OrthogonalTiledMapRenderer(map, 1f / 16f);
 
         // Center the camera
-        gamecam.position.set(7.5f, 5f, 0);
+        float w = game.gameViewport.getWorldWidth();
+        float h = game.gameViewport.getWorldHeight();
+        gamecam.position.set(w / 2f, h / 2f, 0f);
         gamecam.update();
     }
 
@@ -70,11 +67,6 @@ public class GameScreen implements Screen {
         // Clamp the camera's Y position
         gamecam.position.y = Math.max(minCameraY, Math.min(gamecam.position.y, maxCameraY));
         
-        // Debug output
-        System.out.println("Camera Y: " + gamecam.position.y);
-        System.out.println("Max Camera Y: " + maxCameraY);
-        System.out.println("Min Camera Y: " + minCameraY);
-        
         gamecam.update();
     }
     
@@ -97,15 +89,11 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        float aspectRatio = (float) height / width; // Calculate aspect ratio
-        float worldWidth = 15f; // Keep 15 tiles wide
-        float worldHeight = worldWidth * aspectRatio; // Adjust height dynamically
-    
-        game.gameViewport.setWorldSize(worldWidth, worldHeight);
         game.gameViewport.update(width, height, false);
-    
-        // Recenter camera
-        gamecam.position.set(worldWidth / 2f, worldHeight / 2f, 0);
+        // Recenter camera based on fixed world size
+        float w = game.gameViewport.getWorldWidth();
+        float h = game.gameViewport.getWorldHeight();
+        gamecam.position.set(w / 2f, h / 2f, 0);
         gamecam.update();
     }
 
