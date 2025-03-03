@@ -23,7 +23,7 @@ public class HumanoidBody extends RigidBody {
     }
 
     private static Shape getShape(Vector2 size) {
-        SHAPE.setAsBox(size.x / 2, size.y / 2); // box2d takes in size from the center
+        SHAPE.setAsBox(size.x / 2, size.y / 2); // box2d operates from the center
         return SHAPE;
     }
 

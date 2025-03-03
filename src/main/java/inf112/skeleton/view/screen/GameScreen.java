@@ -3,7 +3,6 @@ package inf112.skeleton.view.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -14,8 +13,6 @@ import inf112.skeleton.model.StarJump;
 import inf112.skeleton.model.WorldModel;
 import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.colliders.BoxCollider;
-import inf112.skeleton.model.tiles.TileLoader;
-import inf112.skeleton.model.tiles.TileMap;
 
 public class GameScreen implements Screen {
     private static boolean DEBUG_MODE = true;

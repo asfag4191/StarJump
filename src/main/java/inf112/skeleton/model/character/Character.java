@@ -82,6 +82,12 @@ public class Character extends HumanoidBody implements Renderable {
         Vector2 bodyPos = this.getTransform().getPosition();
         float bodyDeg = this.getTransform().getRotation();
         TextureRegion nextFrame = animator.update(dt);
-        batch.draw(nextFrame, bodyPos.x - size.x/2, bodyPos.y - size.y/2, size.x , size.y);
+        batch.draw(nextFrame,
+                bodyPos.x - size.x / 2,
+                bodyPos.y - size.y / 2,
+                size.x / 2, size.y / 2,   // Origin
+                size.x, size.y,                         // Width and height
+                1f, 1f,                          // Scale (no scaling)
+                bodyDeg);
     }
 }
