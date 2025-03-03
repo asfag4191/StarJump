@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="left-up" width="15" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="22">
+<tileset firstgid="1" source="tilesets/Background.tsx"/>
+<tileset firstgid="97" source="tilesets/tiles.tsx"/>
+<tileset firstgid="1377" source="tilesets/ground.tsx"/>
+<tileset firstgid="1647" source="tilesets/powerup.tsx"/>
+ <group id="4" name="Group 1">
+  <layer id="1" name="Background" width="15" height="30">
+   <data encoding="base64" compression="zlib">
+   eJxTYWBgUBnFo3gUj+JRPIpHKAYAC8k/SQ==
+  </data>
+  </layer>
+  <layer id="3" name="Stars" width="15" height="30">
+   <data encoding="base64" compression="zlib">
+   eJyVlFEOwyAMQ/nbbtDdgZYLULj/sZZKjWRZNus+LBXCSwo41FLKHqqga3yE2q0zNEKT4tf3K/QOdRHjPBzfQh+qz0y76zZi6w9u3hrAI5tMp/2leP4Qe1TnM/5g5wO2GVatU/+tanaxTp0F39dKjq1QbyVmq4k1kvKYYyaJcykW/aBiyTpvIOf4IVi3f5VD1Vb11Jj7gfOwD5PH/lE9OIlHtgueWfZBsicxat/u7Nhfyt+qLw7B7mXtU5cb59398Bo3/4Tl+1Ksep+dT9y7g33EbDcs8plfvUnunUBfrno+fbjq3y/o4lxX
+  </data>
+  </layer>
+ </group>
+ <layer id="2" name="Objects" width="15" height="30">
+  <data encoding="base64" compression="zlib">
+   eJxjYCAd5DIxMOQxkaERCHqB+vpI0NvBhImpDehhBwjks5GvF5sbaeVOegBCfhms/hyM7iIlbZCTBgejn6kF6JGnqJnviVE7lMFjRvIxMxP5GADL2Cv5
+  </data>
+ </layer>
+ <objectgroup id="6" name="PowerUp">
+  <object id="4" x="0" y="368" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object id="5" x="192" y="256" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object id="6" x="16" y="96" width="16" height="16">
+   <ellipse/>
+  </object>
+ </objectgroup>
+ <objectgroup id="5" name="Tiles">
+  <object id="7" x="0" y="384" width="64" height="16"/>
+  <object id="8" x="0" y="448" width="240" height="32"/>
+  <object id="9" x="176" y="384" width="32" height="16"/>
+  <object id="10" x="80" y="336" width="80" height="16"/>
+  <object id="11" x="16" y="256" width="96" height="16"/>
+  <object id="12" x="160" y="272" width="64" height="16"/>
+  <object id="13" x="144" y="208" width="48" height="16"/>
+  <object id="14" x="192" y="208" width="16" height="16"/>
+  <object id="15" x="16" y="176" width="64" height="16"/>
+  <object id="16" x="128" y="160" width="80" height="16"/>
+  <object id="17" x="16" y="112" width="96" height="16"/>
+  <object id="18" x="80" y="64" width="80" height="16"/>
+  <object id="19" x="160" y="32" width="80" height="16"/>
+ </objectgroup>
+ <objectgroup id="7" name="Door">
+  <object id="20" x="208" y="0" width="32" height="32"/>
+  <object id="21" x="368" y="96"/>
+ </objectgroup>
+</map>

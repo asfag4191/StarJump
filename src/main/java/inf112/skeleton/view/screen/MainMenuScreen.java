@@ -1,5 +1,7 @@
 package inf112.skeleton.view.screen;
 
+import java.util.concurrent.TimeUnit;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
@@ -11,9 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import inf112.skeleton.model.StarJump;
 
-import java.util.concurrent.TimeUnit;
+import inf112.skeleton.model.StarJump;
 
 /*
 TODO:
@@ -34,7 +35,8 @@ public class MainMenuScreen implements Screen {
     public MainMenuScreen(StarJump game) {
         this.game = game;
         this.background = new Texture(Gdx.files.internal("src/main/assets/backgrounds/main_menu_background.png"));
-        this.stage = new Stage(this.game.viewport);
+        // Use the UI viewport (pixel-based)
+        this.stage = new Stage(this.game.uiViewport);
         Gdx.input.setInputProcessor(this.stage);
 
         /*  TO CHANGE FONT OF TITLE AND BUTTONSTYLE, CHANGE THIS SKIN ONLY  */
@@ -59,8 +61,9 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        game.viewport.update(width, height, true);
+        game.uiViewport.update(width, height, true);
     }
+
 
     @Override
     public void pause() {
@@ -85,10 +88,10 @@ public class MainMenuScreen implements Screen {
     }
 
     private void draw() {
-        game.viewport.apply();
-        game.batch.setProjectionMatrix(game.viewport.getCamera().combined);
-        float width = game.viewport.getWorldWidth();
-        float height = game.viewport.getWorldHeight();
+        game.uiViewport.apply();
+        game.batch.setProjectionMatrix(game.uiViewport.getCamera().combined);
+        float width = game.uiViewport.getWorldWidth();
+        float height = game.uiViewport.getWorldHeight();
 
         // draw background
         game.batch.begin();
@@ -96,8 +99,8 @@ public class MainMenuScreen implements Screen {
         game.batch.end();
 
         // Draw UI and title
-        drawTitle(this.game.viewport);
-        createUI(this.game.viewport);
+        drawTitle(this.game.uiViewport);
+        createUI(this.game.uiViewport);
     }
 
     private void input() {
@@ -118,7 +121,7 @@ public class MainMenuScreen implements Screen {
         float buttonHeight = viewport.getWorldHeight() / 10;
         float buttonX = viewport.getWorldWidth() / 2f - buttonWidth / 2;
         float buttonY = viewport.getWorldHeight() / 2f;
-        float buttonClickVolume = 0.5f * (Float.parseFloat(this.game.settings.getSetting("volume")) / 100);
+        //float buttonClickVolume = 0.5f * (Float.parseFloat(this.game.settings.getSetting("volume")) / 100);
 
         // Create buttons
         TextButton startButton = new TextButton("Start Game", skin);
@@ -137,7 +140,7 @@ public class MainMenuScreen implements Screen {
         startButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                buttonClick.play(buttonClickVolume);
+                //buttonClick.play(buttonClickVolume);
                 game.setScreen(new GameScreen(game)); // Switch to GameScreen
                 dispose();
             }
@@ -146,7 +149,7 @@ public class MainMenuScreen implements Screen {
         quitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                buttonClick.play(buttonClickVolume);
+                //buttonClick.play(buttonClickVolume);
                 // just to allow the buttonclick-sound to play
                 try {
                     TimeUnit.MILLISECONDS.sleep(400);
@@ -160,7 +163,7 @@ public class MainMenuScreen implements Screen {
         optionsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                buttonClick.play(buttonClickVolume);
+                //buttonClick.play(buttonClickVolume);
                 game.setScreen(new SettingsScreen(game));
             }
         });
