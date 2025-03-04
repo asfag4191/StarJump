@@ -75,10 +75,21 @@ public class RigidBody {
         this.body.setType(type);
     }
 
+    /**
+     * Sets the position and rotation of the body.
+     *
+     * @param position The new position of the body.
+     * @param angle The new rotation angle in radians.
+     */
     public void setTransform(Vector2 position, float angle) {
         this.body.setTransform(position, angle);
     }
 
+    /**
+     * Sets the position of the body while keeping its current rotation.
+     *
+     * @param position The new position of the body.
+     */
     public void setTransform(Vector2 position) {
         this.body.setTransform(position, this.body.getAngle());
     }
@@ -91,8 +102,6 @@ public class RigidBody {
     public Transform getTransform() {
         return this.body.getTransform();
     }
-
-
 
     private static void applyShape(Body bdy, Shape shape, boolean doDispose) {
         bdy.createFixture(shape, 1);
