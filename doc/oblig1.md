@@ -24,7 +24,7 @@
 
 - Utvikler: Anna
 
-  - Mer spesifikt ansvarsområde kommer senere
+  - Utvikler av karakter.
   - Anna har denne rollen fordi dette er oppgaven hun liker best
 
 - Testansvarlig, utvikler: Maren
@@ -98,6 +98,12 @@
   - Discord
   - Trello
 - Vi følger Kanban-metoden som prosjektmetodikk
+  - Oppretter et Kanban-baord, ulike deler av arbeidsflyten:
+    - To Do, med hva som er kritisk og ikke. 
+    - In Progress (De oppgavene man velger ut, altså notere oppgavene på seg selv).
+    - Bugs.
+    - Done, oppgaver vi er helt ferdige med. 
+    - Gjennomfører oppdateringer på møtene, hva man har gjort, hva man jobber med, har man noen hindringer?
 
 - Opdaterer denne planen underveis, når vi ser omfanget og mengden av oppgaver og hvordan planen funker i praksis
 
@@ -125,10 +131,50 @@
 
 ### Brukerhistorier
 
+Brukerhistorie:
 - Som spiller trenger jeg å skille bakgrunn fra plattformer/gjenstander slik jeg kan avgjøre om spillfiguren kan bevege seg, og hoppe til nye plattformer.
-- Som spiller må jeg unngå å bli truffet av skuddene til fienden.
+Akseptansekrav:
+- Bakgrunn skal være visuelt tydelig forskjellig fra plattformer.
+- Plattformer må ha en annen farge og tydelig kant.
+- Spilleren kan stå på plattformer og hoppe fra dem.
+- Vegger skal stoppe spilleren fra å bevege seg gjennom dem.
+Arbeidsoppgave: 
+- Designe map.
+- Implementere kollisjonssystem for plattformer og vegger.
+- Implementere bevgelseslogikk. 
+
+Brukerhistorie:
+- Som spiller må jeg unngå å bli truffet av fienden. 
+Akseptansekrav:
+- Fienden skal kunne bevege seg av seg selv.
+- Fienden skal bevege seg automatisk mot spilleren (stjernen).
+- Hvis fienden tar igjen spilleren, skal spilleren miste liv. 
+Arbeidsoppgave: 
+- Implementere fiendes bevegelse.
+- Implementere interaksjon når fiende går i spiller. 
+- Vise indikasjon på skade. 
+
+Brukerhistorie: 
 - Som spiller må jeg klare å hente mynter, slik jeg kan få mer penger.
-- Som spiller må jeg kommer meg oppover banen raskt nok, slik at jeg unngår å bli tatt igjen av skjermen
+Akseptanskrav: 
+- Mynter skal plasseres på plattformer.
+- Spiller skal kunne samle dem ved å berøre dem. 
+- Poengsum skal øke når mynter samles. 
+Arbeidsoppgaver: 
+- Lage grafikk for mynter.
+- Implementere poengsystem.
+
+Brukerhistorie: 
+- Som spiller må jeg kunne hoppe oppover i banen slik at skjermen følger meg og jeg kan navigere videre.
+Akseptansekriterier: 
+- Skjermen skal automatisk følge spilleren når den beveger seg oppover.
+- Hvis spilleren hopper opp, skal kameraet følge etter med en jevn bevegelse.
+- Hvis spilleren faller ned og går ut av skjermen, skal den dø og spillet avsluttes.
+Arbeidsoppgaver:
+- Implementere kamera som følger spilleren oppover.
+- Implementere dødsmekanikk hvis spilleren faller utenfor skjermen.
+- Finjustere kameraets hastighet slik at bevegelsen føles naturlig.
+
 
 ## A4 Kode
 
