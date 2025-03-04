@@ -1,20 +1,30 @@
 package inf112.skeleton.model.character;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
+import inf112.skeleton.view.Animator;
+import inf112.skeleton.view.Renderable;
+
 /**
  * This abstract class represenst a general character in the game.
  * Examples of children classes can be: Player and different types of Enemies
  */
-public abstract class Character {
-    private String name;
+public class Character extends HumanoidBody implements Renderable {
+    public final Animator animator;
+    private final String name;
+    private Stats stats;
     private float hp;
-    private final float maxHp;
-    private int strength;
+    public final Vector2 size;
 
-    public Character(String name, float maxHp, int strength) {
+    public Character(String name, Stats stats, Vector2 size, World world) {
+        super(world, size);
+        this.animator = new Animator();
         this.name = name;
-        this.maxHp = maxHp;
-        this.hp = maxHp;
-        this.strength = strength;
+        this.stats = stats;
+        this.hp = stats.maxHp();
+        this.size = size;
     }
 
     /**
@@ -23,7 +33,7 @@ public abstract class Character {
      * @return name of character
      */
     public String getName() {
-        return this.name;
+        return name;
     }
 
     /**
@@ -32,7 +42,7 @@ public abstract class Character {
      * @return current health points of character
      */
     public float getHp() {
-        return this.hp;
+        return hp;
     }
 
     /**
@@ -41,7 +51,7 @@ public abstract class Character {
      * @return maximum health points of character
      */
     public float getMaxHp() {
-        return this.maxHp;
+        return stats.maxHp();
     }
 
     /**
@@ -49,8 +59,8 @@ public abstract class Character {
      * 
      * @return strength of character
      */
-    public int getStrength() {
-        return this.strength;
+    public float getStrength() {
+        return stats.strength();
     }
 
     /**
@@ -60,22 +70,24 @@ public abstract class Character {
      * 
      * @param damageTaken the amount to reduce the character's hp by
      */
-    public void takeDamage(int damageTaken) {
-        if (damageTaken > 0) {
-            hp -= damageTaken;
-        }
+    public void takeDamage(float damageTaken) {
+        hp -= damageTaken;
         if (hp < 0) {
             hp = 0;
         }
     }
 
     @Override
-    public String toString() {
-        return name + "";
+    public void render(Batch batch, float dt) {
+        Vector2 bodyPos = this.getTransform().getPosition();
+        float bodyDeg = this.getTransform().getRotation();
+        TextureRegion nextFrame = animator.update(dt);
+        batch.draw(nextFrame,
+                bodyPos.x - size.x / 2,
+                bodyPos.y - size.y / 2,
+                size.x / 2, size.y / 2,   // Origin
+                size.x, size.y,                         // Width and height
+                1f, 1f,                          // Scale (no scaling)
+                bodyDeg);
     }
-
-
-
-
-
 }

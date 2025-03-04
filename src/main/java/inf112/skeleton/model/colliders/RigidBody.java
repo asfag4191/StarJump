@@ -75,6 +75,14 @@ public class RigidBody {
         this.body.setType(type);
     }
 
+    public void setTransform(Vector2 position, float angle) {
+        this.body.setTransform(position, angle);
+    }
+
+    public void setTransform(Vector2 position) {
+        this.body.setTransform(position, this.body.getAngle());
+    }
+
     /**
      * Retrieves the current transform of the body, which includes its position and rotation in the world.
      * This can be used to change the body position and rotation.
@@ -83,6 +91,8 @@ public class RigidBody {
     public Transform getTransform() {
         return this.body.getTransform();
     }
+
+
 
     private static void applyShape(Body bdy, Shape shape, boolean doDispose) {
         bdy.createFixture(shape, 1);

@@ -9,21 +9,29 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import inf112.skeleton.model.StarJump;
+import inf112.skeleton.model.WorldModel;
 
 public class GameScreen implements Screen {
+    private static boolean DEBUG_MODE = true;
+
     private final StarJump game;
     private final TiledMap map;
     private final OrthogonalTiledMapRenderer renderer;
     private final OrthographicCamera gamecam;
-    //private final Player player;
     private final Stage stage;
+    private final Box2DDebugRenderer debugger;
+    private final WorldModel worldModel;
 
     public GameScreen(StarJump game) {
         this.game = game;
+        this.worldModel = new WorldModel(new Vector2(0, -9.81f), true);
+        this.debugger = new Box2DDebugRenderer(true, true, true, true, true, true);
 
         // Use gameViewport (tile-based)
-        gamecam = (OrthographicCamera) game.gameViewport.getCamera();
+        this.gamecam = (OrthographicCamera) game.gameViewport.getCamera();
         this.stage = new Stage(this.game.gameViewport);
         Gdx.input.setInputProcessor(this.stage);
 
@@ -53,38 +61,29 @@ public class GameScreen implements Screen {
 
     public void update(float dt) {
         handleInput(dt);
-        
+
         int mapTileHeight = map.getProperties().get("height", Integer.class);
         float mapWorldHeight = mapTileHeight; // since 1 world unit equals 1 tile
-        
+
         // Viewport height in world units
         float viewportHeight = game.gameViewport.getWorldHeight();
-        
+
         // Calculate clamping boundaries
         float maxCameraY = mapWorldHeight - (viewportHeight / 2f);
         float minCameraY = viewportHeight / 2f;
-        
+
         // Clamp the camera's Y position
         gamecam.position.y = Math.max(minCameraY, Math.min(gamecam.position.y, maxCameraY));
-        
+
         gamecam.update();
     }
-    
-    
-    
-    
 
     @Override
-    public void render(float delta) {
-        update(delta);
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        game.gameViewport.apply();
-        gamecam.update();
-
-        renderer.setView(gamecam);
-        renderer.render();
+    public void render(float dt) {
+        input();
+        draw(dt);
+        debug();
+        logic(dt);
     }
 
     @Override
@@ -97,14 +96,47 @@ public class GameScreen implements Screen {
         gamecam.update();
     }
 
-    @Override public void pause() { }
-    @Override public void resume() { }
-    @Override public void hide() { }
+    @Override
+    public void pause() {}
+
+    @Override
+    public void resume() {}
+
+    @Override
+    public void hide() {}
 
     @Override
     public void dispose() {
         map.dispose();
         renderer.dispose();
     }
-}
 
+    private void debug() {
+        if (DEBUG_MODE) {
+            debugger.render(worldModel.world, gamecam.combined);
+        }
+    }
+
+    private void logic(float dt) {
+        worldModel.onStep(dt);
+    }
+
+    private void input() {
+    }
+
+    private void draw(float dt) {
+        update(dt);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        game.gameViewport.apply();
+        gamecam.update();
+
+        renderer.setView(gamecam);
+        renderer.render();
+
+        game.batch.begin();
+        worldModel.render(game.batch, dt);
+        game.batch.end();
+    }
+}
