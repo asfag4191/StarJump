@@ -95,6 +95,30 @@ public class RigidBody {
     }
 
     /**
+     * Gets the angular velocity of the body.
+     * @return The angular velocity in radians per second.
+     */
+    public float getAngularVelocity() {
+        return this.body.getAngularVelocity();
+    }
+
+    /**
+     * Gets the linear velocity of the body.
+     * @return A {@link Vector2} representing the body's velocity.
+     */
+    public Vector2 getVelocity() {
+        return this.body.getLinearVelocity();
+    }
+
+    /**
+     * Gets the type of the body.
+     * @return The {@link BodyDef.BodyType} of the body.
+     */
+    public BodyDef.BodyType getType() {
+        return this.body.getType();
+    }
+
+    /**
      * Retrieves the current transform of the body, which includes its position and rotation in the world.
      * This can be used to change the body position and rotation.
      * @return The current {@link Transform} of the body, including both its position and rotation.
