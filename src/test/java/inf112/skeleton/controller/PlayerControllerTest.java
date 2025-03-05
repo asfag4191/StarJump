@@ -1,94 +1,63 @@
-// package inf112.skeleton.controller;
+package inf112.skeleton.controller;
 
-// import org.junit.jupiter.api.BeforeEach;
-// import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-// import inf112.skeleton.model.GameState;
-// import inf112.skeleton.model.StarJump;
-// import inf112.skeleton.model.character.Character;
+import org.junit.jupiter.api.*;
 
-// import java.awt.event.KeyEvent;
+import com.badlogic.gdx.Input;
 
-// import static org.mockito.ArgumentMatchers.anyInt;
-// import static org.mockito.Mockito.*;
+import inf112.skeleton.model.GameState;
+import inf112.skeleton.model.StarJump;
+import inf112.skeleton.model.character.Character;
 
-// public class PlayerControllerTest {
-//     private StarJump game;
-//     private inf112.skeleton.model.character.Character player;
-//     private iControllableGameModel controller;
-//     private PlayerController playerController;
+public class PlayerControllerTest {
+    private StarJump game;
+    private Character player;
+    private IControllablePlayer controller;
+    private PlayerController playerController;
 
-//     @BeforeEach
-//     public void setUp() {
-//         game = mock(StarJump.class);
-//         player = mock(Character.class);
-//         controller = mock(iControllableGameModel.class);
-//         playerController = new PlayerController(game, player, controller);
-//     }
+    @BeforeEach
+    public void setUp() {
+        game = mock(StarJump.class);
+        player = mock(Character.class);
+        controller = mock(IControllablePlayer.class);
+        playerController = new PlayerController(game, player, controller);
+    }
 
-//     @Test
-//     public void testKeyPressed_Left() {
-//         when(controller.getGameState()).thenReturn(GameState.GAME_ACTIVE);
-//         KeyEvent leftKeyEvent = new KeyEvent(new java.awt.Button(), KeyEvent.KEY_PRESSED,
-//                 System.currentTimeMillis(), 0, KeyEvent.VK_LEFT, ' ');
+    @Test
+    public void testKeyDownLeft() {
+        when(controller.getGameState()).thenReturn(GameState.GAME_ACTIVE);
+        playerController.keyDown(Input.Keys.LEFT);
+        verify(controller).movePlayer(0, -1);
+    }
 
-//         playerController.keyPressed(leftKeyEvent);
+    @Test
+    public void testKeyDownRight() {
+        when(controller.getGameState()).thenReturn(GameState.GAME_ACTIVE);
+        playerController.keyDown(Input.Keys.RIGHT);
+        verify(controller).movePlayer(0, 1);
+    }
 
-//         verify(controller).movePlayer(0, -1);
-//     }
+    @Test
+    public void testKeyDownSpace() {
+        when(controller.getGameState()).thenReturn(GameState.GAME_ACTIVE);
 
-//     @Test
-//     public void testKeyPressed_Right() {
-//         when(controller.getGameState()).thenReturn(GameState.GAME_ACTIVE);
-//         KeyEvent rightKeyEvent = new KeyEvent(new java.awt.Button(), KeyEvent.KEY_PRESSED,
-//                 System.currentTimeMillis(), 0, KeyEvent.VK_RIGHT, ' ');
+        playerController.keyDown(Input.Keys.SPACE);
 
-//         playerController.keyPressed(rightKeyEvent);
+        verify(controller).movePlayer(2, 0);
+    }
 
-//         verify(controller).movePlayer(0, 1);
-//     }
+    @Test
+    public void testKeyDownInactiveGame() {
+        when(controller.getGameState()).thenReturn(GameState.GAME_OVER);
 
-//     @Test
-//     public void testKeyPressed_Space() {
-//         when(controller.getGameState()).thenReturn(GameState.GAME_ACTIVE);
-//         KeyEvent spaceKeyEvent = new KeyEvent(new java.awt.Button(), KeyEvent.KEY_PRESSED,
-//                 System.currentTimeMillis(), 0, KeyEvent.VK_SPACE, ' ');
+        playerController.keyDown(Input.Keys.LEFT);
 
-//         playerController.keyPressed(spaceKeyEvent);
+        verify(controller, never()).movePlayer(anyInt(), anyInt());
+    }
 
-//         verify(controller).movePlayer(2, 0);
-//     }
-
-//     @Test
-//     public void testKeyPressed_Enter() {
-//         when(controller.getGameState()).thenReturn(GameState.GAME_ACTIVE);
-//         KeyEvent enterKeyEvent = new KeyEvent(new java.awt.Button(), KeyEvent.KEY_PRESSED,
-//                 System.currentTimeMillis(), 0, KeyEvent.VK_ENTER, ' ');
-
-//         playerController.keyPressed(enterKeyEvent);
-//         // For when powerUp is implemented
-//         // verify(controller).usePowerUp();
-//     }
-
-//     @Test
-//     public void testKeyPressed_InactiveGame() {
-//         when(controller.getGameState()).thenReturn(GameState.GAME_OVER);
-//         KeyEvent leftKeyEvent = new KeyEvent(new java.awt.Button(), KeyEvent.KEY_PRESSED,
-//                 System.currentTimeMillis(), 0, KeyEvent.VK_LEFT, ' ');
-
-//         playerController.keyPressed(leftKeyEvent);
-
-//         verify(controller, never()).movePlayer(anyInt(), anyInt());
-//     }
-
-//     @Test
-//     public void testKeyPressed_GamePaused() {
-//         when(controller.getGameState()).thenReturn(GameState.GAME_PAUSED);
-//         KeyEvent leftKeyEvent = new KeyEvent(new java.awt.Button(), KeyEvent.KEY_PRESSED,
-//                 System.currentTimeMillis(), 0, KeyEvent.VK_LEFT, ' ');
-
-//         playerController.keyPressed(leftKeyEvent);
-
-//         verify(controller, never()).movePlayer(anyInt(), anyInt());
-//     }
-// }
+}
