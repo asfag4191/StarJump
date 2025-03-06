@@ -13,7 +13,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import inf112.skeleton.model.colliders.BoxCollider;
 import inf112.skeleton.model.colliders.ViewableBody;
-import inf112.skeleton.utility.TiledManager;
+import inf112.skeleton.utility.ColliderToBox2D;
 import inf112.skeleton.view.Renderable;
 
 public class WorldModel implements Renderable {
@@ -30,7 +30,7 @@ public class WorldModel implements Renderable {
         if (tiledMap.getLayers().get("Tiles") == null) {
             System.out.println("Error: Layer 'Tiles' not found in TMX file!");
         }
-        TiledManager.parseTiledObjects(world, objects);
+        ColliderToBox2D.parseTiledObjects(world, objects,tiledMap.getProperties().get("tilewidth", Integer.class));
     }
 
     public void onStep(float dt) {
