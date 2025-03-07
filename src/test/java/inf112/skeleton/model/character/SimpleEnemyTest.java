@@ -2,7 +2,7 @@
 //
 //import static org.junit.jupiter.api.Assertions.assertEquals;
 //
-//import inf112.skeleton.model.SimpleEnemy;
+//import inf112.skeleton.model.game_objects.SimpleEnemy;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
 //

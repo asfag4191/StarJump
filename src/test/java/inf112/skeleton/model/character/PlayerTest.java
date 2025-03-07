@@ -2,7 +2,7 @@
 //
 //import static org.junit.jupiter.api.Assertions.*;
 //
-//import inf112.skeleton.model.Player;
+//import inf112.skeleton.model.game_objects.Player;
 //import org.junit.jupiter.api.*;
 //
 //public class PlayerTest {

@@ -22,8 +22,6 @@ import java.util.HashMap;
  * </pre>
  */
 public class Animator {
-    private static final TextureRegion emptyTexture = new TextureRegion();
-
     private final HashMap<String, Animation<TextureRegion>> animations;
     private Animation<TextureRegion> currentAnimation;
     private String currentKey;
@@ -119,12 +117,13 @@ public class Animator {
      * Updates the animation frame based on the elapsed time.
      * @param dt The delta time between frames.
      * @return a {@link TextureRegion} representing the current frame of the animation.
+     * if no animation is playing {@code null} is returned.
      */
     public TextureRegion update(float dt) {
         if (!isPaused) currentTime += dt;
 
         if (currentAnimation == null) {
-            return emptyTexture;
+            return null;
         }
 
         return currentAnimation.getKeyFrame(currentTime, true);

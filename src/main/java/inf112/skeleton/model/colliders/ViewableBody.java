@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import inf112.skeleton.view.Renderable;
 
@@ -17,17 +17,17 @@ public class ViewableBody extends RigidBody implements Renderable {
     private Sprite sprite;
 
     /**
-     * Constructs a new ViewableBody with the given parameters and a texture for rendering.
-     * This constructor also applies the shape to the body, and optionally disposes of the shape after use.
-     * @param world The world in which the body will exist.
-     * @param bodyDef The definition of the body, which includes properties such as position, type, and other attributes.
-     * @param shape The shape of the body, which defines its physical properties (e.g., collision shape, density).
-     * @param texture The texture used to render the body.
-     * @param doDispose A flag indicating whether to dispose of the shape after applying it to the body.
-     *                  If true, the shape will be disposed to free up resources.
+     * Constructs a new {@code ViewableBody} with the given parameters and a texture for rendering.
+     *
+     * @param world      The world in which the body will exist.
+     * @param bodyDef    The definition of the body, which includes properties such as position, type, and other attributes.
+     * @param fixtureDef The fixture definition, which includes the shape and physical properties (e.g., density, friction, restitution).
+     * @param texture    The texture used to render the body.
+     * @param doDispose  A flag indicating whether to dispose of the shape inside the fixture after applying it to the body.
+     *                   If true, the shape will be disposed to free up resources.
      */
-    public ViewableBody(World world, BodyDef bodyDef, Shape shape, Texture texture, boolean doDispose) {
-        super(world, bodyDef, shape, doDispose);
+    public ViewableBody(World world, BodyDef bodyDef, FixtureDef fixtureDef, Texture texture, boolean doDispose) {
+        super(world, bodyDef, fixtureDef, doDispose);
         sprite = new Sprite(texture);
         sprite.setOriginCenter();
     }
@@ -35,8 +35,8 @@ public class ViewableBody extends RigidBody implements Renderable {
     /**
      * An overloaded constructor with {@code doDispose} set to true by default.
      */
-    public ViewableBody(World world, BodyDef bodyDef, Shape shape, Texture texture) {
-        this(world, bodyDef, shape, texture, true);
+    public ViewableBody(World world, BodyDef bodyDef, FixtureDef fixtureDef, Texture texture) {
+        this(world, bodyDef, fixtureDef, texture, true);
     }
 
     /**

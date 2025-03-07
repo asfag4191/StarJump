@@ -1,5 +1,7 @@
 package inf112.skeleton.model;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapObjects;
@@ -11,36 +13,52 @@ import com.badlogic.gdx.physics.box2d.World;
 import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.Stats;
 import inf112.skeleton.model.colliders.BoxCollider;
+import inf112.skeleton.model.game_objects.Player;
 import inf112.skeleton.utility.TiledManager;
 import inf112.skeleton.view.Renderable;
 
 import java.util.ArrayList;
 
 public class WorldModel implements Renderable {
-    public World world;
-    private final ArrayList<Renderable> ViewableObjects;
+    public final World world;
+    private final ArrayList<Renderable> ViewableObjects = new ArrayList<>();
 
     public WorldModel(Vector2 gravity, boolean doSleep) {
-        world = new World(gravity, doSleep);
-        ViewableObjects = new ArrayList<>();
+        this.world = new World(gravity, doSleep);
     }
 
     public void onStep(float dt) {
         world.step(dt, 3, 3);
     }
 
-    public Character createCharacter(Vector2 size) {
+    public Player createPlayer() {
         Stats stats = new Stats(
                 100,
-                2,
-                16,
+                7,
+                5,
                 5,
                 1
         );
-        Character charac = new Character("Tester", stats, size, world);
 
-        ViewableObjects.add(charac);
-        return charac;
+        Texture texture1 = new Texture(Gdx.files.internal("blackhole.png"));
+
+        Character charac = new Character("p1", stats, new Vector2(1,1), world);
+        charac.animator.addAnimation("idle", texture1, 1, 7, 8);
+        charac.animator.play("idle");
+
+
+        Player plr = new Player(charac);
+        plr.controller.bindKeyHold(Input.Keys.D, () -> plr.character.setVelocity(
+                new Vector2(stats.speed(), plr.character.getVelocity().y))
+        );
+        plr.controller.bindKeyHold(Input.Keys.A, () -> plr.character.setVelocity(
+                new Vector2(-stats.speed(), plr.character.getVelocity().y))
+        );
+        plr.controller.bindKeyPress(Input.Keys.SPACE, () -> plr.character.applyImpulse(
+                new Vector2(0, stats.jumpPower()))
+        );
+        ViewableObjects.add(plr.character);
+        return plr;
     }
 
     public BoxCollider createTile(Vector2 position, Vector2 size, Texture texture) {

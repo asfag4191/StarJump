@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import inf112.skeleton.model.StarJump;
 import inf112.skeleton.model.WorldModel;
+import inf112.skeleton.model.game_objects.Player;
 
 public class GameScreen implements Screen {
     private static boolean DEBUG_MODE = true;
@@ -24,6 +26,7 @@ public class GameScreen implements Screen {
     private final Stage stage;
     private final Box2DDebugRenderer debugger;
     private final WorldModel worldModel;
+    private Player plr;
 
     public GameScreen(StarJump game) {
         this.game = game;
@@ -52,15 +55,20 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-    }
 
-    public void handleInput(float dt) {
-        if (Gdx.input.isTouched())
-            gamecam.position.y += 10 * dt;
+        // JUST FOR DEMO
+        float middleX = gamecam.position.x;
+        float middleY = gamecam.position.y;
+
+        Texture texture = new Texture(Gdx.files.internal("star.png"));
+        worldModel.createTile( new Vector2(middleX, middleY*0.25f), new Vector2(10, 2), texture);
+
+        this.plr = worldModel.createPlayer();
+        this.plr.character.setTransform(new Vector2(middleX, middleY));
+        // // //
     }
 
     public void update(float dt) {
-        handleInput(dt);
 
         int mapTileHeight = map.getProperties().get("height", Integer.class);
         float mapWorldHeight = mapTileHeight; // since 1 world unit equals 1 tile
@@ -80,7 +88,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float dt) {
-        input();
+        input(dt);
         draw(dt);
         debug();
         logic(dt);
@@ -98,10 +106,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {}
-
     @Override
     public void resume() {}
-
     @Override
     public void hide() {}
 
@@ -109,6 +115,7 @@ public class GameScreen implements Screen {
     public void dispose() {
         map.dispose();
         renderer.dispose();
+        worldModel.world.dispose();
     }
 
     private void debug() {
@@ -121,7 +128,11 @@ public class GameScreen implements Screen {
         worldModel.onStep(dt);
     }
 
-    private void input() {
+    private void input(float dt) {
+        if (Gdx.input.isTouched()) {
+            gamecam.position.y += 10 * dt;
+        }
+        this.plr.controller.update();
     }
 
     private void draw(float dt) {

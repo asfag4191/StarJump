@@ -22,7 +22,7 @@ public class StarJump extends Game {
     private static final float UI_WIDTH = 1280;
     private static final float UI_HEIGHT = 720;
     private static final float GAME_WIDTH = 20; 
-    private static final float GAME_HEIGHT =15; 
+    private static final float GAME_HEIGHT = 15;
 
     private GameState gameState;
     public Settings settings;

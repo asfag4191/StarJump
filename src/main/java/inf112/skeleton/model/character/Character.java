@@ -8,7 +8,7 @@ import inf112.skeleton.view.Animator;
 import inf112.skeleton.view.Renderable;
 
 /**
- * This abstract class represenst a general character in the game.
+ * This class represenst a general character in the game.
  * Examples of children classes can be: Player and different types of Enemies
  */
 public class Character extends HumanoidBody implements Renderable {
@@ -17,6 +17,7 @@ public class Character extends HumanoidBody implements Renderable {
     private Stats stats;
     private float hp;
     public final Vector2 size;
+    private CharacterState state;
 
     public Character(String name, Stats stats, Vector2 size, World world) {
         super(world, size);
@@ -25,6 +26,7 @@ public class Character extends HumanoidBody implements Renderable {
         this.stats = stats;
         this.hp = stats.maxHp();
         this.size = size;
+        this.state = CharacterState.IDLE;
     }
 
     /**
@@ -46,34 +48,50 @@ public class Character extends HumanoidBody implements Renderable {
     }
 
     /**
-     * Get maximum health points of the character
-     * 
-     * @return maximum health points of character
+     * Gets the stats of the character.
+     * @return The {@link Stats} associated with this character.
      */
-    public float getMaxHp() {
-        return stats.maxHp();
+    public Stats getStats() {
+        return stats;
     }
 
     /**
-     * Get strength of the character
-     * 
-     * @return strength of character
+     * Gets the current state of the character
+     * @return the state of the character.
      */
-    public float getStrength() {
-        return stats.strength();
+    public CharacterState getState() {
+        return state;
+    }
+
+    /**
+     * Sets the stats for the character.
+     * @param stats The new {@link Stats} to assign.
+     */
+    public void setStats(Stats stats) {
+        this.stats = stats;
+    }
+
+    /**
+     * Sets the state of the character to the given value.
+     * @param state the state of the character.
+     */
+    public void setState(CharacterState state) {
+        if (this.state == CharacterState.DEAD) return;
+        this.state = state;
     }
 
     /**
      * The character takes a given amount of damage. This method reduces 
      * the number of health points the characer has by <code>damageTaken</code>.
-     * It is not possible to give negative damage.
-     * 
+     * If the hp of the character gets to zero, the character state will be set
+     * to {@link CharacterState#DEAD} and locked.
      * @param damageTaken the amount to reduce the character's hp by
      */
     public void takeDamage(float damageTaken) {
         hp -= damageTaken;
-        if (hp < 0) {
+        if (hp <= 0) {
             hp = 0;
+            setState(CharacterState.DEAD);
         }
     }
 
@@ -82,12 +100,15 @@ public class Character extends HumanoidBody implements Renderable {
         Vector2 bodyPos = this.getTransform().getPosition();
         float bodyDeg = this.getTransform().getRotation();
         TextureRegion nextFrame = animator.update(dt);
-        batch.draw(nextFrame,
-                bodyPos.x - size.x / 2,
-                bodyPos.y - size.y / 2,
-                size.x / 2, size.y / 2,   // Origin
-                size.x, size.y,                         // Width and height
-                1f, 1f,                          // Scale (no scaling)
-                bodyDeg);
+
+        if (nextFrame != null) {
+            batch.draw(nextFrame,
+                    bodyPos.x - size.x / 2,
+                    bodyPos.y - size.y / 2,
+                    size.x / 2, size.y / 2,   // Origin
+                    size.x, size.y,                         // Width and height
+                    1f, 1f,                          // Scale (no scaling)
+                    bodyDeg);
+        }
     }
 }
