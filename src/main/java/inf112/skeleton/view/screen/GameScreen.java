@@ -1,6 +1,7 @@
 package inf112.skeleton.view.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import inf112.skeleton.model.Player;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
@@ -18,7 +20,7 @@ import inf112.skeleton.utility.ColliderToBox2D;
 import inf112.skeleton.model.WorldModel;
 
 public class GameScreen implements Screen {
-    private static boolean DEBUG_MODE = true;
+    private final static boolean DEBUG_MODE = true;
 
     private final StarJump game;
     private final TiledMap map;
@@ -27,8 +29,9 @@ public class GameScreen implements Screen {
     private final Stage stage;
     private ShapeRenderer shapeRenderer;
     private final int gridSize = 1;
-    private World world;
+    private final World world;
     private final WorldModel worldModel;
+    private final Player player;
     private Box2DDebugRenderer debugger;
 
     public GameScreen(StarJump game) {
@@ -42,12 +45,14 @@ public class GameScreen implements Screen {
         Gdx.input.setInputProcessor(this.stage);
         shapeRenderer = new ShapeRenderer();
 
+
         // Load TMX map
         map = new TmxMapLoader().load("src/main/assets/map/tilemaps/map1.tmx");
 
         // Set up renderer (assuming tiles are 16x16 pixels)
         renderer = new OrthogonalTiledMapRenderer(map, 1f / 16f);
 
+        this.player = worldModel.getPlayer();
         // Center the camera
         float w = game.gameViewport.getWorldWidth();
         float h = game.gameViewport.getWorldHeight();
@@ -71,6 +76,12 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.ESCAPE)) {
             game.setScreen(new MainMenuScreen(game));
         }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
+            player.applyImpulse(new Vector2(0, 4f));
+        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) && player.getVelocity().x <= 2)
+            player.applyImpulse(new Vector2(1f, 0));
+        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT) && player.getVelocity().x >= -2)
+            player.applyImpulse(new Vector2(-1f, 0));
     }
 
     public void update(float dt) {
@@ -170,8 +181,10 @@ public class GameScreen implements Screen {
         renderer.setView(gamecam);
         renderer.render();
 
+        game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
         worldModel.render(game.batch, dt);
+        player.render(game.batch, dt);
         game.batch.end();
 
         renderGrid();
