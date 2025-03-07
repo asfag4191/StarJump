@@ -11,7 +11,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.Stats;
 import inf112.skeleton.model.colliders.BoxCollider;
-import inf112.skeleton.utility.TiledManager;
+import inf112.skeleton.model.colliders.ViewableBody;
+import inf112.skeleton.utility.ColliderToBox2D;
 import inf112.skeleton.view.Renderable;
 
 import java.util.ArrayList;
@@ -23,6 +24,14 @@ public class WorldModel implements Renderable {
     public WorldModel(Vector2 gravity, boolean doSleep) {
         world = new World(gravity, doSleep);
         ViewableObjects = new ArrayList<>();
+
+        TiledMap tiledMap = new TmxMapLoader().load("src/main/assets/map/tilemaps/map1.tmx");
+        System.out.println("Map loaded successfully!");
+        MapObjects objects = tiledMap.getLayers().get("Tiles").getObjects();
+        if (tiledMap.getLayers().get("Tiles") == null) {
+            System.out.println("Error: Layer 'Tiles' not found in TMX file!");
+        }
+        ColliderToBox2D.parseTiledObjects(world, objects,tiledMap.getProperties().get("tilewidth", Integer.class));
     }
 
     public void onStep(float dt) {

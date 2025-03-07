@@ -4,14 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+
 import inf112.skeleton.model.StarJump;
+import inf112.skeleton.utility.ColliderToBox2D;
 import inf112.skeleton.model.WorldModel;
 
 public class GameScreen implements Screen {
@@ -22,8 +25,11 @@ public class GameScreen implements Screen {
     private final OrthogonalTiledMapRenderer renderer;
     private final OrthographicCamera gamecam;
     private final Stage stage;
-    private final Box2DDebugRenderer debugger;
+    private ShapeRenderer shapeRenderer;
+    private final int gridSize = 1;
+    private World world;
     private final WorldModel worldModel;
+    private Box2DDebugRenderer debugger;
 
     public GameScreen(StarJump game) {
         this.game = game;
@@ -34,7 +40,7 @@ public class GameScreen implements Screen {
         this.gamecam = (OrthographicCamera) game.gameViewport.getCamera();
         this.stage = new Stage(this.game.gameViewport);
         Gdx.input.setInputProcessor(this.stage);
-
+        shapeRenderer = new ShapeRenderer();
 
         // Load TMX map
         map = new TmxMapLoader().load("src/main/assets/map/tilemaps/map1.tmx");
@@ -47,6 +53,11 @@ public class GameScreen implements Screen {
         float h = game.gameViewport.getWorldHeight();
         gamecam.position.set(w / 2f, h / 2f, 0f);
         gamecam.update();
+
+        // Creates a world and adds all colliders from tiled map
+        this.world = new World(new Vector2(0,-9.81f), true);
+        ColliderToBox2D.parseTiledObjects(this.world, map.getLayers().get("Tiles").getObjects(), map.getProperties().get("tilewidth", Integer.class));
+        this.debugger = new Box2DDebugRenderer();
     }
 
     @Override
@@ -57,6 +68,9 @@ public class GameScreen implements Screen {
     public void handleInput(float dt) {
         if (Gdx.input.isTouched())
             gamecam.position.y += 10 * dt;
+        if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.ESCAPE)) {
+            game.setScreen(new MainMenuScreen(game));
+        }
     }
 
     public void update(float dt) {
@@ -121,6 +135,27 @@ public class GameScreen implements Screen {
         worldModel.onStep(dt);
     }
 
+    /**
+     * Renders the grid from World, makes for easy tile debugging
+     */
+    private void renderGrid() {
+        shapeRenderer.setProjectionMatrix(gamecam.combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(1, 1, 1, 1); // White grid
+
+        // Draw vertical lines
+        for (int x = 0; x <= Gdx.graphics.getWidth(); x += gridSize) {
+            shapeRenderer.line(x, 0, x, Gdx.graphics.getHeight());
+        }
+
+        // Draw horizontal lines
+        for (int y = 0; y <= Gdx.graphics.getHeight(); y += gridSize) {
+            shapeRenderer.line(0, y, Gdx.graphics.getWidth(), y);
+        }
+
+        shapeRenderer.end();
+    }
+
     private void input() {
     }
 
@@ -138,5 +173,8 @@ public class GameScreen implements Screen {
         game.batch.begin();
         worldModel.render(game.batch, dt);
         game.batch.end();
+
+        renderGrid();
+        debug();
     }
 }
