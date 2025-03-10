@@ -11,13 +11,16 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import inf112.skeleton.model.Player;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
+import inf112.skeleton.model.Player;
 import inf112.skeleton.model.StarJump;
-import inf112.skeleton.utility.ColliderToBox2D;
 import inf112.skeleton.model.WorldModel;
+import inf112.skeleton.model.colliders.PowerUpCollisionHandler;
+import inf112.skeleton.model.colliders.PowerUpManager;
+import inf112.skeleton.model.colliders.WorldContactListener;
+import inf112.skeleton.utility.ColliderToBox2D;
 
 public class GameScreen implements Screen {
     private final static boolean DEBUG_MODE = true;
@@ -33,6 +36,11 @@ public class GameScreen implements Screen {
     private final WorldModel worldModel;
     private final Player player;
     private Box2DDebugRenderer debugger;
+    private PowerUpManager powerUpManager;
+
+
+    private final WorldContactListener worldContactListener;
+
 
     public GameScreen(StarJump game) {
         this.game = game;
@@ -63,6 +71,10 @@ public class GameScreen implements Screen {
         this.world = new World(new Vector2(0,-9.81f), true);
         ColliderToBox2D.parseTiledObjects(this.world, map.getLayers().get("Tiles").getObjects(), map.getProperties().get("tilewidth", Integer.class));
         this.debugger = new Box2DDebugRenderer();
+        this.powerUpManager = new PowerUpManager(world);
+        this.worldContactListener = new WorldContactListener(new PowerUpCollisionHandler(powerUpManager));
+        this.world.setContactListener(worldContactListener);
+        
     }
 
     @Override
@@ -85,7 +97,12 @@ public class GameScreen implements Screen {
     }
 
     public void update(float dt) {
+
         handleInput(dt);
+
+        world.step(1 / 60f, 6, 2);
+
+        powerUpManager.update(dt);  
 
         int mapTileHeight = map.getProperties().get("height", Integer.class);
         float mapWorldHeight = mapTileHeight; // since 1 world unit equals 1 tile
@@ -190,4 +207,13 @@ public class GameScreen implements Screen {
         renderGrid();
         debug();
     }
+
+    public TiledMap getMap() {
+        return map;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
 }
