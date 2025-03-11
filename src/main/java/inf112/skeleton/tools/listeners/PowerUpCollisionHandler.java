@@ -1,4 +1,4 @@
-package inf112.skeleton.model.colliders;
+package inf112.skeleton.tools.listeners;
 
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -16,6 +16,6 @@ public class PowerUpCollisionHandler implements CollisionHandler {
 
         Player player = (Player) playerFixture.getUserData();
 
-    player.applyPowerUp(new FlyingPowerUp(player), 3f); // 3 seconds flying
+    player.applyPowerUp(new FlyingPowerUp(player), 1f); // 3 seconds flying
 }
 }

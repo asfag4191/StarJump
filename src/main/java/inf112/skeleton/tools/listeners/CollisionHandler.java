@@ -1,4 +1,4 @@
-package inf112.skeleton.model.colliders;
+package inf112.skeleton.tools.listeners;
 
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;

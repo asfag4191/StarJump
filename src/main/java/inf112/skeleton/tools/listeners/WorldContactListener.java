@@ -1,4 +1,4 @@
-package inf112.skeleton.model.colliders;
+package inf112.skeleton.tools.listeners;
 
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -8,8 +8,6 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 
 import inf112.skeleton.model.Player;
 import inf112.skeleton.model.items.powerup.PowerUpObject;
-// import inf112.skeleton.model.Enemy; <-- later
-// import inf112.skeleton.model.items.DangerObject;
 
 public class WorldContactListener implements ContactListener {
 

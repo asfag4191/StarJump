@@ -17,9 +17,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import inf112.skeleton.model.Player;
 import inf112.skeleton.model.StarJump;
 import inf112.skeleton.model.WorldModel;
-import inf112.skeleton.model.colliders.PowerUpCollisionHandler;
-import inf112.skeleton.model.colliders.WorldContactListener;
 import inf112.skeleton.model.items.powerup.PowerUpManager;
+import inf112.skeleton.tools.listeners.PowerUpCollisionHandler;
+import inf112.skeleton.tools.listeners.WorldContactListener;
 import inf112.skeleton.utility.ColliderToBox2D;
 
 public class GameScreen implements Screen {
