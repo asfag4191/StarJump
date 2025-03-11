@@ -30,7 +30,7 @@ public class GameScreen implements Screen {
 
     public GameScreen(StarJump game) {
         this.game = game;
-        this.worldModel = new WorldModel(new Vector2(0, -9.81f), true);
+        this.worldModel = new WorldModel(new Vector2(0, -9.81f*2), true);
         this.debugger = new Box2DDebugRenderer(true, true, true, true, true, true);
 
         // Use gameViewport (tile-based)
@@ -146,6 +146,7 @@ public class GameScreen implements Screen {
         renderer.setView(gamecam);
         renderer.render();
 
+        game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
         worldModel.render(game.batch, dt);
         game.batch.end();

@@ -22,6 +22,7 @@ public class HumanoidBody extends RigidBody {
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.DynamicBody;
         def.fixedRotation = true;
+        def.linearDamping = 1;
         return def;
     }
 

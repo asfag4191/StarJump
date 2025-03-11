@@ -10,6 +10,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
+import inf112.skeleton.controller.PlayerController;
 import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.Stats;
 import inf112.skeleton.model.colliders.BoxCollider;
@@ -34,29 +35,19 @@ public class WorldModel implements Renderable {
     public Player createPlayer() {
         Stats stats = new Stats(
                 100,
-                7,
-                5,
+                10,
+                3.5f,
                 5,
                 1
         );
 
-        Texture texture1 = new Texture(Gdx.files.internal("blackhole.png"));
-
         Character charac = new Character("p1", stats, new Vector2(1,1), world);
+        Texture texture1 = new Texture(Gdx.files.internal("blackhole.png"));
         charac.animator.addAnimation("idle", texture1, 1, 7, 8);
         charac.animator.play("idle");
 
-
         Player plr = new Player(charac);
-        plr.controller.bindKeyHold(Input.Keys.D, () -> plr.character.setVelocity(
-                new Vector2(stats.speed(), plr.character.getVelocity().y))
-        );
-        plr.controller.bindKeyHold(Input.Keys.A, () -> plr.character.setVelocity(
-                new Vector2(-stats.speed(), plr.character.getVelocity().y))
-        );
-        plr.controller.bindKeyPress(Input.Keys.SPACE, () -> plr.character.applyImpulse(
-                new Vector2(0, stats.jumpPower()))
-        );
+        PlayerController.setupWASD(plr);
         ViewableObjects.add(plr.character);
         return plr;
     }
