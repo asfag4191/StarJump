@@ -21,7 +21,7 @@ import inf112.skeleton.view.screen.GameScreen;
 /**
  * Base class for interactive objects like power-ups and obstacles.
  */
-public abstract class InteractiveTileObject implements IItem {
+public abstract class InteractiveTileObject implements iItem {
     protected World world;
     protected TiledMap map;
     protected Body body;
@@ -33,37 +33,35 @@ public abstract class InteractiveTileObject implements IItem {
         this.object = object;
         this.screen = screen;
         this.world = screen.getWorld();
-    
+
         BodyDef bdef = new BodyDef();
         FixtureDef fdef = new FixtureDef();
         Shape shape;
-    
+
         bdef.type = BodyDef.BodyType.StaticBody;
-    
+
         if (object instanceof RectangleMapObject) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
             bdef.position.set(
-                (rectangle.x + rectangle.width / 2) / 16f,
-                (rectangle.y + rectangle.height / 2) / 16f
-            );
+                    (rectangle.x + rectangle.width / 2) / 16f,
+                    (rectangle.y + rectangle.height / 2) / 16f);
             PolygonShape rectShape = new PolygonShape();
             rectShape.setAsBox(rectangle.width / 2 / 16f, rectangle.height / 2 / 16f);
             shape = rectShape;
-    
+
         } else if (object instanceof EllipseMapObject) {
             Ellipse ellipse = ((EllipseMapObject) object).getEllipse();
             bdef.position.set(
-                (ellipse.x + ellipse.width / 2) / 16f,
-                (ellipse.y + ellipse.height / 2) / 16f
-            );
-    
+                    (ellipse.x + ellipse.width / 2) / 16f,
+                    (ellipse.y + ellipse.height / 2) / 16f);
+
             CircleShape circleShape = new CircleShape();
             circleShape.setRadius((ellipse.width / 2) / 16f);
             shape = circleShape;
         } else {
             throw new IllegalArgumentException("Unsupported object type: " + object.getClass().getSimpleName());
         }
-    
+
         body = world.createBody(bdef);
         fdef.shape = shape;
         fdef.isSensor = true;
@@ -72,7 +70,7 @@ public abstract class InteractiveTileObject implements IItem {
         shape.dispose();
     }
 
-    public abstract void onPlayerCollide();  // Define collision behavior
+    public abstract void onPlayerCollide(); // Define collision behavior
 
     public void setCategoryFilter(short filterBit) {
         Filter filter = new Filter();
