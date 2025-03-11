@@ -85,9 +85,6 @@ public class GameScreen implements Screen {
         // JUST FOR DEMO
         float middleX = gamecam.position.x;
         float middleY = gamecam.position.y;
-
-        Texture texture = new Texture(Gdx.files.internal("star.png"));
-        worldModel.createTile( new Vector2(middleX, middleY*0.25f), new Vector2(10, 2), texture);
         this.player.character.setTransform(new Vector2(middleX, middleY));
     }
 
