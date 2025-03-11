@@ -38,8 +38,6 @@ public class GameScreen implements Screen {
     private Box2DDebugRenderer debugger;
     private PowerUpManager powerUpManager;
 
-
-
     public GameScreen(StarJump game) {
         this.game = game;
 
@@ -57,14 +55,13 @@ public class GameScreen implements Screen {
         Gdx.input.setInputProcessor(this.stage);
         shapeRenderer = new ShapeRenderer();
 
-
         // Load TMX map
         map = new TmxMapLoader().load("src/main/assets/map/tilemaps/map1.tmx");
 
         // Set up renderer (assuming tiles are 16x16 pixels)
         renderer = new OrthogonalTiledMapRenderer(map, 1f / 16f);
 
-        //this.player = worldModel.getPlayer();
+        // this.player = worldModel.getPlayer();
         // Center the camera
         float w = game.gameViewport.getWorldWidth();
         float h = game.gameViewport.getWorldHeight();
@@ -72,23 +69,21 @@ public class GameScreen implements Screen {
         gamecam.update();
 
         // Creates a world and adds all colliders from tiled map
-        //this.world = new World(new Vector2(0,-9.81f), true);
-        ColliderToBox2D.parseTiledObjects(this.world, map.getLayers().get("Tiles").getObjects(), map.getProperties().get("tilewidth", Integer.class));
+        ColliderToBox2D.parseTiledObjects(this.worldModel.world, map.getLayers().get("Tiles").getObjects(),
+                map.getProperties().get("tilewidth", Integer.class));
         this.debugger = new Box2DDebugRenderer();
 
-
-        // Set up power-up 
+        // Set up power-up
         powerUpManager = new PowerUpManager(this, player);
-            // Instantiate collision handlers
+        // Instantiate collision handlers
         WorldContactListener contactListener = new WorldContactListener(
-            new PowerUpCollisionHandler()
-            //new EnemyCollisionHandler(player),
-            //new DangerCollisionHandler(player)
+                new PowerUpCollisionHandler()
+        // new EnemyCollisionHandler(player),
+        // new DangerCollisionHandler(player)
         );
 
-    world.setContactListener(contactListener);
+        world.setContactListener(contactListener);
 
-        
     }
 
     @Override
@@ -113,26 +108,13 @@ public class GameScreen implements Screen {
     public void update(float dt) {
 
         handleInput(dt);
-        
 
-        world.step(1 / 60f, 6, 2);
+        worldModel.world.step(1 / 60f, 6, 2);
 
-        powerUpManager.update(dt);  
-
-        int mapTileHeight = map.getProperties().get("height", Integer.class);
-        float mapWorldHeight = mapTileHeight; // since 1 world unit equals 1 tile
-
-        // Viewport height in world units
-        float viewportHeight = game.gameViewport.getWorldHeight();
-
-        // Calculate clamping boundaries
-        float maxCameraY = mapWorldHeight - (viewportHeight / 2f);
-        float minCameraY = viewportHeight / 2f;
-
-        // Clamp the camera's Y position
-        gamecam.position.y = Math.max(minCameraY, Math.min(gamecam.position.y, maxCameraY));
+        powerUpManager.update(dt);
 
         gamecam.update();
+        adjustCamera(this.player, 3f);
     }
 
     @Override
@@ -154,13 +136,16 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void pause() {}
+    public void pause() {
+    }
 
     @Override
-    public void resume() {}
+    public void resume() {
+    }
 
     @Override
-    public void hide() {}
+    public void hide() {
+    }
 
     @Override
     public void dispose() {
@@ -170,14 +155,14 @@ public class GameScreen implements Screen {
 
     private void debug() {
         if (DEBUG_MODE) {
-            debugger.render(world, gamecam.combined);
-            //debugger.render(world, gamecam.combined);
+            debugger.render(worldModel.world, gamecam.combined);
+            // debugger.render(world, gamecam.combined);
         }
-        
+
     }
 
     private void logic(float dt) {
-        //worldModel.onStep(dt);
+        // worldModel.onStep(dt);
     }
 
     /**
@@ -210,7 +195,7 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         powerUpManager.update(dt);
-        
+
         game.gameViewport.apply();
         gamecam.update();
 
@@ -223,7 +208,6 @@ public class GameScreen implements Screen {
         player.render(game.batch, dt);
         game.batch.end();
 
-
         renderGrid();
         debug();
     }
@@ -235,13 +219,47 @@ public class GameScreen implements Screen {
     public World getWorld() {
         return world;
     }
-    
+
     public PowerUpManager getPowerUpManager() {
         return powerUpManager;
     }
-    
 
+    /**
+     * Adjusts the camera to follow the player
+     * 
+     * @param player         The player to follow
+     * @param playerCamDelta The maximum distance the camera can be from the player
+     */
+    private void adjustCamera(Player player, float playerCamDelta) {
+        float playerPosX = player.getPosition().x;
+        float playerPosY = player.getPosition().y;
 
+        // Viewport height in world units
+        float viewportHeight = game.gameViewport.getWorldHeight();
+        float viewportWidth = game.gameViewport.getWorldWidth();
 
+        // Calculate clamping boundaries
+        float maxCameraY = map.getProperties().get("height", Integer.class) - (viewportHeight / 2f);
+        float minCameraY = viewportHeight / 2f;
+        float maxCameraX = map.getProperties().get("width", Integer.class) - (viewportWidth / 2f);
+        float minCameraX = viewportWidth / 2f;
 
+        // Clamp the camera's position to player position
+        if (gamecam.position.y < playerPosY - playerCamDelta) {
+            gamecam.position.y = playerPosY - playerCamDelta;
+        } else if (gamecam.position.y > playerPosY + playerCamDelta) {
+            gamecam.position.y = playerPosY + playerCamDelta;
+        }
+        if (gamecam.position.x < playerPosX - playerCamDelta) {
+            gamecam.position.x = playerPosX - playerCamDelta;
+        } else if (gamecam.position.x > playerPosX + playerCamDelta) {
+            gamecam.position.x = playerPosX + playerCamDelta;
+        }
+
+        // Clamp the camera's position
+        gamecam.position.y = Math.max(minCameraY, Math.min(gamecam.position.y, maxCameraY));
+        gamecam.position.x = Math.max(minCameraX, Math.min(gamecam.position.x, maxCameraX));
+
+        gamecam.update();
+    }
 }
