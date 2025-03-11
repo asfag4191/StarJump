@@ -29,7 +29,7 @@ public class GameScreen implements Screen {
     private final Stage stage;
     private ShapeRenderer shapeRenderer;
     private final int gridSize = 1;
-    private final World world;
+    // private final World world;
     private final WorldModel worldModel;
     private final Player player;
     private Box2DDebugRenderer debugger;
@@ -45,7 +45,6 @@ public class GameScreen implements Screen {
         Gdx.input.setInputProcessor(this.stage);
         shapeRenderer = new ShapeRenderer();
 
-
         // Load TMX map
         map = new TmxMapLoader().load("src/main/assets/map/tilemaps/map1.tmx");
 
@@ -60,8 +59,9 @@ public class GameScreen implements Screen {
         gamecam.update();
 
         // Creates a world and adds all colliders from tiled map
-        this.world = new World(new Vector2(0,-9.81f), true);
-        ColliderToBox2D.parseTiledObjects(this.world, map.getLayers().get("Tiles").getObjects(), map.getProperties().get("tilewidth", Integer.class));
+        // this.world = new World(new Vector2(0, -9.81f), true);
+        ColliderToBox2D.parseTiledObjects(this.worldModel.world, map.getLayers().get("Tiles").getObjects(),
+                map.getProperties().get("tilewidth", Integer.class));
         this.debugger = new Box2DDebugRenderer();
     }
 
@@ -86,21 +86,7 @@ public class GameScreen implements Screen {
 
     public void update(float dt) {
         handleInput(dt);
-
-        int mapTileHeight = map.getProperties().get("height", Integer.class);
-        float mapWorldHeight = mapTileHeight; // since 1 world unit equals 1 tile
-
-        // Viewport height in world units
-        float viewportHeight = game.gameViewport.getWorldHeight();
-
-        // Calculate clamping boundaries
-        float maxCameraY = mapWorldHeight - (viewportHeight / 2f);
-        float minCameraY = viewportHeight / 2f;
-
-        // Clamp the camera's Y position
-        gamecam.position.y = Math.max(minCameraY, Math.min(gamecam.position.y, maxCameraY));
-
-        gamecam.update();
+        adjustCamera(this.player, 3f);
     }
 
     @Override
@@ -122,13 +108,16 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void pause() {}
+    public void pause() {
+    }
 
     @Override
-    public void resume() {}
+    public void resume() {
+    }
 
     @Override
-    public void hide() {}
+    public void hide() {
+    }
 
     @Override
     public void dispose() {
@@ -189,5 +178,46 @@ public class GameScreen implements Screen {
 
         renderGrid();
         debug();
+    }
+
+    /**
+     * Adjusts the camera to follow the player
+     * 
+     * @param player         The player to follow
+     * @param playerCamDelta The maximum distance the camera can be from the player
+     */
+    private void adjustCamera(Player player, float playerCamDelta) {
+        float playerPosX = player.getPosition().x;
+        float playerPosY = player.getPosition().y;
+
+        // Viewport height in world units
+        float viewportHeight = game.gameViewport.getWorldHeight();
+        float viewportWidth = game.gameViewport.getWorldWidth();
+
+        // Calculate clamping boundaries
+        float maxCameraY = map.getProperties().get("height", Integer.class) - (viewportHeight / 2f);
+        float minCameraY = viewportHeight / 2f;
+        float maxCameraX = map.getProperties().get("width", Integer.class) - (viewportWidth / 2f);
+        float minCameraX = viewportWidth / 2f;
+
+        // Clamp the camera's position to player position
+        if (gamecam.position.y < playerPosY - playerCamDelta) {
+            gamecam.position.y = playerPosY - playerCamDelta;
+        } else if (gamecam.position.y > playerPosY + playerCamDelta) {
+            gamecam.position.y = playerPosY + playerCamDelta;
+        }
+        if (gamecam.position.x < playerPosX - playerCamDelta) {
+            gamecam.position.x = playerPosX - playerCamDelta;
+        } else if (gamecam.position.x > playerPosX + playerCamDelta) {
+            gamecam.position.x = playerPosX + playerCamDelta;
+        }
+
+        // Clamp the camera's position
+        gamecam.position.y = Math.max(minCameraY, Math.min(gamecam.position.y, maxCameraY));
+        gamecam.position.x = Math.max(minCameraX, Math.min(gamecam.position.x, maxCameraX));
+
+        gamecam.update();
+        System.out.println("Camera position: " + gamecam.position);
+        System.out.println("Player position: " + player.getPosition());
     }
 }
