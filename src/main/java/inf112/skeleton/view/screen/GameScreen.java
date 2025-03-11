@@ -39,7 +39,7 @@ public class GameScreen implements Screen {
     public GameScreen(StarJump game) {
         this.game = game;
         this.worldModel = new WorldModel(new Vector2(0, -9.81f*2), true);
-        this.debugger = new Box2DDebugRenderer(true, true, true, true, true, true);
+        this.debugger = new Box2DDebugRenderer(true, true, false, true, true, true);
         this.player = worldModel.createPlayer();
 
         // Use gameViewport (tile-based)
@@ -63,7 +63,6 @@ public class GameScreen implements Screen {
         // Creates a world and adds all colliders from tiled map
         ColliderToBox2D.parseTiledObjects(this.worldModel.world, map.getLayers().get("Tiles").getObjects(),
                 map.getProperties().get("tilewidth", Integer.class));
-        this.debugger = new Box2DDebugRenderer();
 
         // Set up power-up
         powerUpManager = new PowerUpManager(this, player);
@@ -95,8 +94,6 @@ public class GameScreen implements Screen {
 
         // Viewport height in world units
         float viewportHeight = game.gameViewport.getWorldHeight();
-
-        powerUpManager.update(dt);
 
         gamecam.update();
         adjustCamera(this.player, 3f);
