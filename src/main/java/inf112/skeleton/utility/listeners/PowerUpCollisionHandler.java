@@ -1,9 +1,9 @@
-package inf112.skeleton.tools.listeners;
+package inf112.skeleton.utility.listeners;
 
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 
-import inf112.skeleton.model.Player;
+import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.model.items.powerup.FlyingPowerUp;
 import inf112.skeleton.model.items.powerup.PowerUpObject;
 

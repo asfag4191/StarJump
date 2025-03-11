@@ -1,17 +1,16 @@
-package inf112.skeleton.model;
+package inf112.skeleton.model.character.controllable_characters;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 
+import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.Stats;
-import inf112.skeleton.model.items.powerup.FlyingPowerUp;
 import inf112.skeleton.model.items.powerup.AbstractPowerUp;
 
 
@@ -25,7 +24,7 @@ public class Player extends Character {
     private boolean isFlying = false;
     private float powerUpTimer = 0;
     private boolean isGrounded;
-    TextureRegion texture = new TextureRegion(new Texture(Gdx.files.internal("star.png")));
+    Texture texture = new Texture(Gdx.files.internal("star.png"));
 
     public Player(Vector2 size, World world) {
         super("Star", new Stats(100, 2, 16, 5, 1), size, world, true);

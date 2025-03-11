@@ -1,11 +1,11 @@
 package inf112.skeleton.app;
 
+import org.lwjgl.system.Configuration;
+
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.utils.Os;
 import com.badlogic.gdx.utils.SharedLibraryLoader;
-import inf112.skeleton.model.StarJump;
-import org.lwjgl.system.Configuration;
 
 public class Main {
 	public static void main(String[] args) {

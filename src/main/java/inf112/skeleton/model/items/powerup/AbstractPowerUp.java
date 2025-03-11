@@ -1,6 +1,6 @@
 package inf112.skeleton.model.items.powerup;
 
-import inf112.skeleton.model.Player;
+import inf112.skeleton.model.character.controllable_characters.Player;
 
 public abstract class AbstractPowerUp {
     

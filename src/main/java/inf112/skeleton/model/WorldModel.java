@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 
+import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.model.colliders.BoxCollider;
 import inf112.skeleton.utility.ColliderToBox2D;
 import inf112.skeleton.view.Renderable;

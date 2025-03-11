@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import inf112.skeleton.app.ExampleIT;
 import inf112.skeleton.model.character.BlankApplication;
+import inf112.skeleton.model.character.controllable_characters.Player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.headless.HeadlessApplication;

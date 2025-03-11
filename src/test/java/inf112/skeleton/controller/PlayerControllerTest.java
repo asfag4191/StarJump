@@ -10,8 +10,8 @@ import org.junit.jupiter.api.*;
 
 import com.badlogic.gdx.Input;
 
+import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.GameState;
-import inf112.skeleton.model.StarJump;
 import inf112.skeleton.model.character.Character;
 
 public class PlayerControllerTest {

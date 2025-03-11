@@ -14,13 +14,13 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-import inf112.skeleton.model.Player;
-import inf112.skeleton.model.StarJump;
+import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.WorldModel;
+import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.model.items.powerup.PowerUpManager;
-import inf112.skeleton.tools.listeners.PowerUpCollisionHandler;
-import inf112.skeleton.tools.listeners.WorldContactListener;
 import inf112.skeleton.utility.ColliderToBox2D;
+import inf112.skeleton.utility.listeners.PowerUpCollisionHandler;
+import inf112.skeleton.utility.listeners.WorldContactListener;
 
 public class GameScreen implements Screen {
     private final static boolean DEBUG_MODE = true;
