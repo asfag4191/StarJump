@@ -16,7 +16,7 @@ import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
  * 
  * (Run using `mvn verify`)
  */
-public class ExampleIT {
+public class ExampleIT extends ExampleTest {
 	/**
 	 * Static method run before everything else
 	 */
