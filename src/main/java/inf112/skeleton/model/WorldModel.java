@@ -1,5 +1,7 @@
 package inf112.skeleton.model;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapObjects;
@@ -8,19 +10,18 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
+
 import inf112.skeleton.model.colliders.BoxCollider;
 import inf112.skeleton.utility.ColliderToBox2D;
 import inf112.skeleton.view.Renderable;
-
-import java.util.ArrayList;
 
 public class WorldModel implements Renderable {
     public World world;
     private final ArrayList<Renderable> ViewableObjects;
     private final Player player;
 
-    public WorldModel(Vector2 gravity, boolean doSleep) {
-        world = new World(gravity, doSleep);
+    public WorldModel(World sharedworld) {
+        this.world = sharedworld;
         ViewableObjects = new ArrayList<>();
 
         TiledMap tiledMap = new TmxMapLoader().load("src/main/assets/map/tilemaps/map1.tmx");

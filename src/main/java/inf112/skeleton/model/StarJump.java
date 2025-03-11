@@ -24,6 +24,13 @@ public class StarJump extends Game {
     private static final float GAME_WIDTH = 20; 
     private static final float GAME_HEIGHT =15; 
 
+    // Collision bits for Box2D
+    public static final short PLAYER_BIT = 1;
+    public static final short POWERUP = 2;
+    public static final short DANGEROUS_OBJECTS = 4;
+    public static final short GROUND_BIT = 8;
+
+
     private GameState gameState;
     public Settings settings;
 

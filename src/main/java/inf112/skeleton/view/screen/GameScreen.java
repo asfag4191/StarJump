@@ -18,8 +18,8 @@ import inf112.skeleton.model.Player;
 import inf112.skeleton.model.StarJump;
 import inf112.skeleton.model.WorldModel;
 import inf112.skeleton.model.colliders.PowerUpCollisionHandler;
-import inf112.skeleton.model.colliders.PowerUpManager;
 import inf112.skeleton.model.colliders.WorldContactListener;
+import inf112.skeleton.model.items.powerup.PowerUpManager;
 import inf112.skeleton.utility.ColliderToBox2D;
 
 public class GameScreen implements Screen {
@@ -39,12 +39,16 @@ public class GameScreen implements Screen {
     private PowerUpManager powerUpManager;
 
 
-    private final WorldContactListener worldContactListener;
-
 
     public GameScreen(StarJump game) {
         this.game = game;
-        this.worldModel = new WorldModel(new Vector2(0, -9.81f), true);
+
+        // SINGLE SHARED WORLD instance
+        this.world = new World(new Vector2(0, -9.81f), true);
+
+        // Pass the SAME WORLD to WorldModel
+        this.worldModel = new WorldModel(world);
+        this.player = worldModel.getPlayer();
         this.debugger = new Box2DDebugRenderer(true, true, true, true, true, true);
 
         // Use gameViewport (tile-based)
@@ -60,7 +64,7 @@ public class GameScreen implements Screen {
         // Set up renderer (assuming tiles are 16x16 pixels)
         renderer = new OrthogonalTiledMapRenderer(map, 1f / 16f);
 
-        this.player = worldModel.getPlayer();
+        //this.player = worldModel.getPlayer();
         // Center the camera
         float w = game.gameViewport.getWorldWidth();
         float h = game.gameViewport.getWorldHeight();
@@ -68,12 +72,22 @@ public class GameScreen implements Screen {
         gamecam.update();
 
         // Creates a world and adds all colliders from tiled map
-        this.world = new World(new Vector2(0,-9.81f), true);
+        //this.world = new World(new Vector2(0,-9.81f), true);
         ColliderToBox2D.parseTiledObjects(this.world, map.getLayers().get("Tiles").getObjects(), map.getProperties().get("tilewidth", Integer.class));
         this.debugger = new Box2DDebugRenderer();
-        this.powerUpManager = new PowerUpManager(world);
-        this.worldContactListener = new WorldContactListener(new PowerUpCollisionHandler(powerUpManager));
-        this.world.setContactListener(worldContactListener);
+
+
+        // Set up power-up 
+        powerUpManager = new PowerUpManager(this, player);
+            // Instantiate collision handlers
+        WorldContactListener contactListener = new WorldContactListener(
+            new PowerUpCollisionHandler()
+            //new EnemyCollisionHandler(player),
+            //new DangerCollisionHandler(player)
+        );
+
+    world.setContactListener(contactListener);
+
         
     }
 
@@ -99,6 +113,7 @@ public class GameScreen implements Screen {
     public void update(float dt) {
 
         handleInput(dt);
+        
 
         world.step(1 / 60f, 6, 2);
 
@@ -155,12 +170,14 @@ public class GameScreen implements Screen {
 
     private void debug() {
         if (DEBUG_MODE) {
-            debugger.render(worldModel.world, gamecam.combined);
+            debugger.render(world, gamecam.combined);
+            //debugger.render(world, gamecam.combined);
         }
+        
     }
 
     private void logic(float dt) {
-        worldModel.onStep(dt);
+        //worldModel.onStep(dt);
     }
 
     /**
@@ -192,6 +209,8 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        powerUpManager.update(dt);
+        
         game.gameViewport.apply();
         gamecam.update();
 
@@ -204,6 +223,7 @@ public class GameScreen implements Screen {
         player.render(game.batch, dt);
         game.batch.end();
 
+
         renderGrid();
         debug();
     }
@@ -215,5 +235,13 @@ public class GameScreen implements Screen {
     public World getWorld() {
         return world;
     }
+    
+    public PowerUpManager getPowerUpManager() {
+        return powerUpManager;
+    }
+    
+
+
+
 
 }

@@ -4,31 +4,18 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 
 import inf112.skeleton.model.Player;
-import inf112.skeleton.model.items.powerup.AbstractPowerUp;
+import inf112.skeleton.model.items.powerup.FlyingPowerUp;
+import inf112.skeleton.model.items.powerup.PowerUpObject;
 
-public class PowerUpCollisionHandler {
-    private final PowerUpManager powerUpManager;
+public class PowerUpCollisionHandler implements CollisionHandler {
 
-    public PowerUpCollisionHandler(PowerUpManager powerUpManager) {
-        this.powerUpManager = powerUpManager;
-    }
+    @Override
+    public void handleCollision(Contact contact, Fixture playerFixture, Fixture powerUpFixture) {
+        PowerUpObject powerUp = (PowerUpObject) powerUpFixture.getUserData();
+        powerUp.onPlayerCollide();
 
-    public void handleCollision(Contact contact) {
-        Fixture fixA = contact.getFixtureA();
-        Fixture fixB = contact.getFixtureB();
-    
-        Object objA = fixA.getBody().getUserData();
-        Object objB = fixB.getBody().getUserData();
-    
-        if (objA instanceof Player && objB instanceof AbstractPowerUp) {
-            System.out.println(" Player collected power-up!");
-            ((AbstractPowerUp) objB).collectPowerUp();
-            powerUpManager.addPowerUpToRemove(fixB.getBody());  //  Add to removal list
-        } else if (objB instanceof Player && objA instanceof AbstractPowerUp) {
-            System.out.println(" Player collected power-up!");
-            ((AbstractPowerUp) objA).collectPowerUp();
-            powerUpManager.addPowerUpToRemove(fixA.getBody());  //  Add to removal list
-        }
-    }
-}    
- 
+        Player player = (Player) playerFixture.getUserData();
+
+    player.applyPowerUp(new FlyingPowerUp(player), 3f); // 3 seconds flying
+}
+}
