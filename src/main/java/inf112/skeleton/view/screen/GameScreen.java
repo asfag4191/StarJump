@@ -217,7 +217,5 @@ public class GameScreen implements Screen {
         gamecam.position.x = Math.max(minCameraX, Math.min(gamecam.position.x, maxCameraX));
 
         gamecam.update();
-        System.out.println("Camera position: " + gamecam.position);
-        System.out.println("Player position: " + player.getPosition());
     }
 }
