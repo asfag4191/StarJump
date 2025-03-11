@@ -3,10 +3,10 @@ package inf112.skeleton.model.character;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+
 import inf112.skeleton.view.Animator;
 import inf112.skeleton.view.Renderable;
 
@@ -18,7 +18,7 @@ public abstract class Character extends HumanoidBody implements Renderable {
     public Animator animator;
     public TextureRegion texture;
     private final String name;
-    private Stats stats;
+    private Stats stats;  // Change from private to protected
     private float hp;
     public final Vector2 size;
     private final boolean isStatic;
@@ -66,8 +66,13 @@ public abstract class Character extends HumanoidBody implements Renderable {
      *
      * @return strength of character
      */
-    public float getStrength() {
-        return stats.strength();
+    public Stats getStats() {
+        return stats;
+    }
+
+    public void setStats(Stats stats) {
+        this.stats = stats;
+    
     }
 
     /**

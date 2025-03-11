@@ -1,4 +1,8 @@
 package inf112.skeleton.model.items;
 
-public interface iItem {
+public interface IItem {
+    void update(float dt);
+    void dispose();
+    
+
 }
