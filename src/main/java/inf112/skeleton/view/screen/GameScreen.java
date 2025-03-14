@@ -56,7 +56,7 @@ public class GameScreen implements Screen {
         shapeRenderer = new ShapeRenderer();
 
         // Load TMX map
-        map = new TmxMapLoader().load("src/main/assets/map/tilemaps/map1.tmx");
+        map = new TmxMapLoader().load("src/main/assets/map/tilemaps/map_level1.tmx");
 
         // Set up renderer (assuming tiles are 16x16 pixels)
         renderer = new OrthogonalTiledMapRenderer(map, 1f / 16f);

@@ -3,6 +3,7 @@ package inf112.skeleton.model.items.powerup;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -45,7 +46,8 @@ public class PowerUpManager {
             }
 
 
-            PowerUpObject powerUp = new PowerUpObject(screen, object, player);
+            Sprite sprite = new Sprite(); // Create or obtain a Sprite instance
+            PowerUpObject powerUp = new PowerUpObject(screen, object, player, sprite);
             powerUps.add(powerUp);
 
             System.out.println("Power-Up Created at " + object.getProperties());
@@ -63,6 +65,8 @@ public class PowerUpManager {
                 world.destroyBody(powerUp.getBody());
                 powerUp.setBody(null);
             }
+            // Remove the sprite from rendering (e.g., by setting visibility)
+            powerUp.getSprite().setAlpha(0f); // or remove from your render list
             powerUps.remove(powerUp);
         }
         removalQueue.clear();

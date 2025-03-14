@@ -13,9 +13,9 @@ public class FlyingPowerUp extends AbstractPowerUp {
         player.enableFlying();
     }
 
-    @Override
-    public void removePowerUpEffect() {
-        player.disableFlying();
-    }
+    //@Override
+    //public void removePowerUpEffect() {
+     //   player.disableFlying();
+    //}
 }
 

@@ -1,5 +1,6 @@
 package inf112.skeleton.model.items.powerup;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -14,12 +15,14 @@ public class PowerUpObject extends InteractiveTileObject {
 
     private boolean isCollected = false;
     private final Player player;
-
-
-    public PowerUpObject(GameScreen screen, MapObject object, Player player) {
-        super(screen, object);
-        this.player = player;
-        setCollisionFilter();
+    private final Sprite sprite; 
+    
+    
+        public PowerUpObject(GameScreen screen, MapObject object, Player player, Sprite sprite) {
+            super(screen, object);
+            this.player = player;
+            this.sprite = sprite;
+            setCollisionFilter();
     }
 
     private void setCollisionFilter() {
@@ -74,4 +77,10 @@ public class PowerUpObject extends InteractiveTileObject {
         }
     }
 
-}
+    public Sprite getSprite() {
+        return sprite;
+    }
+    
+        }
+
+

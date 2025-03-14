@@ -25,7 +25,7 @@ public class WorldModel implements Renderable {
         this.world = sharedworld;
         ViewableObjects = new ArrayList<>();
 
-        TiledMap tiledMap = new TmxMapLoader().load("src/main/assets/map/tilemaps/map1.tmx");
+        TiledMap tiledMap = new TmxMapLoader().load("src/main/assets/map/tilemaps/map_level1.tmx");
         System.out.println("Map loaded successfully!");
         MapObjects objects = tiledMap.getLayers().get("Tiles").getObjects();
         if (tiledMap.getLayers().get("Tiles") == null) {

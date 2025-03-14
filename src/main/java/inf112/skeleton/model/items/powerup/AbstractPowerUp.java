@@ -13,6 +13,6 @@ public abstract class AbstractPowerUp {
     }
 
     public abstract void applyPowerUpEffect();
-    public abstract void removePowerUpEffect();
+    //public abstract void removePowerUpEffect();
 }
 
