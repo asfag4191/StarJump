@@ -9,19 +9,19 @@ import com.badlogic.gdx.physics.box2d.World;
 import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.model.items.InteractiveTileObject;
+import inf112.skeleton.model.items.iItem;
 import inf112.skeleton.view.screen.GameScreen;
 
-public class PowerUpObject extends InteractiveTileObject {
+public class PowerUpObject extends InteractiveTileObject implements iItem {
 
     private boolean isCollected = false;
+    private final AbstractPowerUp powerUp;
     private final Player player;
-    private final Sprite sprite; 
     
-    
-        public PowerUpObject(GameScreen screen, MapObject object, Player player, Sprite sprite) {
+        public PowerUpObject(GameScreen screen, MapObject object, AbstractPowerUp powerUp, Player player, Sprite sprite) {
             super(screen, object);
+            this.powerUp = powerUp;
             this.player = player;
-            this.sprite = sprite;
             setCollisionFilter();
     }
 
@@ -37,10 +37,12 @@ public class PowerUpObject extends InteractiveTileObject {
     public void onPlayerCollide() {
         if (!isCollected) {
             System.out.println("Power-up collected!");
+            powerUp.applyPowerUpEffect();
+            screen.getPowerUpManager().markForRemoval(this);
             player.getBody().applyLinearImpulse(new Vector2(0, 5f), player.getBody().getWorldCenter(), true);
     
             isCollected = true;
-            screen.getPowerUpManager().markForRemoval(this);
+            //screen.getPowerUpManager().markForRemoval(this);
         }
     }
 
@@ -66,21 +68,22 @@ public class PowerUpObject extends InteractiveTileObject {
 
     }
 
-    
+    @Override
     public void dispose() {
         world.destroyBody(body);
     }
 
-    public void update(float dt) {
-        if (isCollected) {
-            dispose();
-        }
+@Override
+public void update(float dt) {
+    if (isCollected) {
+        dispose();
     }
+}
 
     public Sprite getSprite() {
-        return sprite;
+        return powerUp.getSprite();
     }
     
-        }
+}
 
 

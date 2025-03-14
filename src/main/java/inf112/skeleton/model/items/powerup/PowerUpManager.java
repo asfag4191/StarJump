@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.math.Ellipse;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
 import inf112.skeleton.model.character.controllable_characters.Player;
@@ -19,41 +21,48 @@ public class PowerUpManager {
     private final GameScreen screen;
     private final Player player;
     private final World world;
+    private final PowerUpFactory factory;
 
 
     public PowerUpManager(GameScreen screen, Player player) {
         this.screen = screen;
         this.player = player;
         this.world = screen.getWorld();
+        this.factory=new PowerUpFactory(screen);
         loadPowerUps();
     }
 
     private void loadPowerUps() {
         TiledMap map = screen.getMap();
-        World world = screen.getWorld();
-
-        // Check if layer exists
+    
         if (map.getLayers().get("PowerUp") == null) {
             System.out.println("Error: Layer 'PowerUp' not found!");
             return;
         }
-
-        // Create power-ups for each ellipse object in the Tiled map
+    
         for (MapObject object : map.getLayers().get("PowerUp").getObjects()) {
-            if (!(object instanceof EllipseMapObject)) {
-                System.out.println("Skipping non-ellipse object: " + object);
-                continue;
-            }
-
-
-            Sprite sprite = new Sprite(); // Create or obtain a Sprite instance
-            PowerUpObject powerUp = new PowerUpObject(screen, object, player, sprite);
-            powerUps.add(powerUp);
-
-            System.out.println("Power-Up Created at " + object.getProperties());
+            if (!(object instanceof EllipseMapObject ellipseObj)) continue;
+    
+            Ellipse ellipse = ellipseObj.getEllipse();
+    
+            // Correct Box2D position
+            Vector2 position = new Vector2(
+                (ellipse.x + ellipse.width / 2f) / 16f, 
+                (ellipse.y + ellipse.height / 2f) / 16f
+            );
+    
+            // Properly create AbstractPowerUp from factory (with sprite!)
+            AbstractPowerUp flyingPowerUp = factory.createFlyingPowerUp(player, position);
+    
+            // Use the sprite from AbstractPowerUp directly
+            Sprite sprite = flyingPowerUp.getSprite();
+            sprite.setPosition(position.x - sprite.getWidth() / 2f, position.y - sprite.getHeight() / 2f);
+    
+            PowerUpObject powerUpObject = new PowerUpObject(screen, object, flyingPowerUp, player, sprite);
+            powerUps.add(powerUpObject);
         }
-        System.out.println("Total Power-Ups: " + powerUps.size());
     }
+    
 
     /**
      * Called every frame (after world.step(...)).

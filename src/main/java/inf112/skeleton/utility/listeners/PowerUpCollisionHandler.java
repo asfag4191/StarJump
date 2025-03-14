@@ -16,6 +16,6 @@ public class PowerUpCollisionHandler implements CollisionHandler {
 
         Player player = (Player) playerFixture.getUserData();
 
-    player.applyPowerUp(new FlyingPowerUp(player), 1f); // 3 seconds flying
+    player.applyPowerUp(new FlyingPowerUp(player, null, null), 1f); // 3 seconds flying
 }
 }
