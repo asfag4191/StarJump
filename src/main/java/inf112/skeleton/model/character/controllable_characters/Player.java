@@ -15,7 +15,6 @@ import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.Stats;
 import inf112.skeleton.model.items.powerup.AbstractPowerUp;
 
-
 /**
  * Represents the player character in the game.
  * This class extends the Character class and provides
@@ -27,13 +26,13 @@ public class Player extends Character {
     private float powerUpTimer = 0;
     private boolean isGrounded;
 
-
     public Player(Vector2 size, World world) {
         super("Star", new Stats(100, 2, 16, 5, 1), size, world, true);
         this.getBody().setUserData(this);
 
         Filter filter = new Filter();
-        //this.texture = new TextureRegion(new Texture(Gdx.files.internal("sprites/star.png")));
+        // this.texture = new TextureRegion(new
+        // Texture(Gdx.files.internal("sprites/star.png")));
 
         filter.categoryBits = StarJump.PLAYER_BIT;
         filter.maskBits = StarJump.GROUND_BIT | StarJump.POWERUP;
@@ -73,19 +72,16 @@ public class Player extends Character {
         powerUpTimer = duration;
     }
 
-    //@Override
+    // @Override
     public void update(float dt) {
-        if (powerUpTimer > 0) {
-            powerUpTimer -= dt;
+        if (isFlying) {
+            if (powerUpTimer > 0) {
+                powerUpTimer -= dt;
+            }
             if (powerUpTimer <= 0) {
-                disableFlying();  // Disable or remove power-up effect when time expires
+                disableFlying(); // Disable or remove power-up effect when time expires
             }
         }
-
-        if (isFlying) {
-            // Flying logic (smooth control, etc.)
-        }
-        // Other player update logic...
     }
 
     public void enableFlying() {
