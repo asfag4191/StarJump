@@ -5,8 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 
-import inf112.skeleton.model.Player;
-import inf112.skeleton.model.StarJump;
+import inf112.skeleton.app.StarJump;
+import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.model.items.InteractiveTileObject;
 import inf112.skeleton.view.screen.GameScreen;
 

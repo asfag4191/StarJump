@@ -1,4 +1,4 @@
-package inf112.skeleton.model;
+package inf112.skeleton.app;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import inf112.skeleton.model.GameState;
+import inf112.skeleton.model.Settings;
 import inf112.skeleton.view.screen.MainMenuScreen;
 
 public class StarJump extends Game {

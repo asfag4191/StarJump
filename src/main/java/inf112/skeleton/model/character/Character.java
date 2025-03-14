@@ -1,7 +1,5 @@
 package inf112.skeleton.model.character;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -31,7 +29,7 @@ public abstract class Character extends HumanoidBody implements Renderable {
         this.size = size;
         this.isStatic = isStatic;
         this.animator = new Animator();
-        this.texture = new TextureRegion(new Texture(Gdx.files.internal("star.png")));
+        //this.texture = new TextureRegion(new Texture(Gdx.files.internal("star.png")));
     }
 
     /**

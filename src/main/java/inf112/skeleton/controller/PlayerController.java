@@ -5,8 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.backends.lwjgl3.audio.Mp3.Sound;
 
+import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.GameState;
-import inf112.skeleton.model.StarJump;
 import inf112.skeleton.model.character.Character;
 import inf112.skeleton.view.screen.GameScreen;
 import inf112.skeleton.view.screen.MainMenuScreen;

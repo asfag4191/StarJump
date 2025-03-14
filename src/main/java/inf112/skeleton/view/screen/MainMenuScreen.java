@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import inf112.skeleton.model.StarJump;
+import inf112.skeleton.app.StarJump;
 
 /*
 TODO:
