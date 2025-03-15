@@ -9,10 +9,9 @@ import com.badlogic.gdx.physics.box2d.World;
 import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.model.items.InteractiveTileObject;
-import inf112.skeleton.model.items.iItem;
 import inf112.skeleton.view.screen.GameScreen;
 
-public class PowerUpObject extends InteractiveTileObject implements iItem {
+public class PowerUpObject extends InteractiveTileObject {
 
     private boolean isCollected = false;
     private final AbstractPowerUp powerUp;
@@ -30,23 +29,24 @@ public class PowerUpObject extends InteractiveTileObject implements iItem {
         filter.categoryBits = StarJump.POWERUP;
         filter.maskBits = StarJump.PLAYER_BIT;
         fixture.setFilterData(filter);
-        fixture.setUserData(this); //  Add this line
+        fixture.setUserData(this); 
     }
 
+    /**
+    * Handles collision with player, applying power-up effect.
+    */
     @Override
     public void onPlayerCollide() {
         if (!isCollected) {
-            System.out.println("Power-up collected!");
             powerUp.applyPowerUpEffect();
             screen.getPowerUpManager().markForRemoval(this);
-            player.getBody().applyLinearImpulse(new Vector2(0, 5f), player.getBody().getWorldCenter(), true);
+    
+            player.getBody().setLinearVelocity(player.getBody().getLinearVelocity().x, 0);
+            player.getBody().applyLinearImpulse(new Vector2(0, 10f), player.getBody().getWorldCenter(), true);
     
             isCollected = true;
-            //screen.getPowerUpManager().markForRemoval(this);
         }
     }
-
-
 
     public boolean isCollected() {
         return isCollected;

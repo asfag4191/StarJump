@@ -198,6 +198,8 @@ public class GameScreen implements Screen {
     private void input() {
     }
 
+
+    
     private void draw(float dt) {
         update(dt);
         Gdx.gl.glClearColor(0, 0, 0, 1);

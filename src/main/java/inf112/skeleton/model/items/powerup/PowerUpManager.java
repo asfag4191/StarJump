@@ -32,29 +32,33 @@ public class PowerUpManager {
         loadPowerUps();
     }
 
+    /**
+    * Loads and initializes power-ups defined in the Tiled map.
+    */
     private void loadPowerUps() {
         TiledMap map = screen.getMap();
     
         if (map.getLayers().get("PowerUp") == null) {
-            System.out.println("Error: Layer 'PowerUp' not found!");
             return;
         }
-    
         for (MapObject object : map.getLayers().get("PowerUp").getObjects()) {
             if (!(object instanceof EllipseMapObject ellipseObj)) continue;
-    
+
             Ellipse ellipse = ellipseObj.getEllipse();
     
-            // Correct Box2D position
             Vector2 position = new Vector2(
                 (ellipse.x + ellipse.width / 2f) / 16f, 
                 (ellipse.y + ellipse.height / 2f) / 16f
             );
     
-            // Properly create AbstractPowerUp from factory (with sprite!)
-            AbstractPowerUp flyingPowerUp = factory.createFlyingPowerUp(player, position);
+            String typeStr = object.getProperties().get("type", String.class);
+            if (typeStr == null) {
+            typeStr = "FLYING"; // Default value for testing purposes
+            }
+
+            PowerUpEnum type = PowerUpEnum.valueOf(typeStr.toUpperCase());
+            AbstractPowerUp flyingPowerUp = factory.createFlyingPowerUp(type, player, position);
     
-            // Use the sprite from AbstractPowerUp directly
             Sprite sprite = flyingPowerUp.getSprite();
             sprite.setPosition(position.x - sprite.getWidth() / 2f, position.y - sprite.getHeight() / 2f);
     
@@ -62,20 +66,20 @@ public class PowerUpManager {
             powerUps.add(powerUpObject);
         }
     }
-    
 
     /**
-     * Called every frame (after world.step(...)).
-     * This is where we safely remove the Box2D bodies for collected power-ups.
-     */
+    * Updates and safely removes power-ups collected by the player.
+    * Called after the physics update step each frame.
+    *
+    * @param dt Delta time since last frame.
+    */
     public void update(float dt) {
         for (PowerUpObject powerUp : removalQueue) {
             if (powerUp.getBody() != null) {
                 world.destroyBody(powerUp.getBody());
                 powerUp.setBody(null);
             }
-            // Remove the sprite from rendering (e.g., by setting visibility)
-            powerUp.getSprite().setAlpha(0f); // or remove from your render list
+            powerUp.getSprite().setAlpha(0f); 
             powerUps.remove(powerUp);
         }
         removalQueue.clear();
@@ -86,8 +90,11 @@ public class PowerUpManager {
     }
 
     /**
-     * Defer removal so that Box2D bodies are only destroyed after the physics step.
-     */
+    * Marks a power-up object for removal.
+    * Actual removal happens in update() method after physics step.
+    *
+    * @param powerUp The PowerUpObject to remove.
+    */
     public void markForRemoval(PowerUpObject powerUp) {
         removalQueue.add(powerUp);
     }

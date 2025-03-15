@@ -138,12 +138,21 @@
  <objectgroup id="20" name="PowerUp">
   <object id="159" x="144" y="1376" width="16" height="16">
    <ellipse/>
+    <properties>
+      <property name="type" value="flying"/>
+    </properties>
   </object>
   <object id="160" x="64" y="1088" width="16" height="16">
    <ellipse/>
+    <properties>
+      <property name="type" value="flying"/>
+    </properties>
   </object>
   <object id="161" x="192" y="560" width="16" height="16">
    <ellipse/>
+    <properties>
+      <property name="type" value="flying"/>
+    </properties>
   </object>
  </objectgroup>
 </map>

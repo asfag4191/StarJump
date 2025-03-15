@@ -1,6 +1,9 @@
 package inf112.skeleton.model.items.powerup;
 
-//allows easier expansions
+/**
+ * Enumerates different power-up types.
+ * Allowing for easy extension of power-ups.
+ */
 public enum PowerUpEnum {
-    FLYING;
+    FLYING
 }
