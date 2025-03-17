@@ -1,25 +1,27 @@
 package inf112.skeleton.model.items.powerup;
 
-import java.util.ArrayList;
+import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.mockito.ArgumentMatchers.anyString;
+import org.mockito.Mockito;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Files;
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
-import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -30,89 +32,105 @@ import inf112.skeleton.view.screen.GameScreen;
 class PowerUpManagerTest {
 
     private PowerUpManager powerUpManager;
-    private GameScreen mockScreen;
+    private GameScreen screen;
     private World world;
     private Player player;
-    private TiledMap mockMap;
-    private MapLayers mockLayers;
-    private MapLayer mockPowerUpLayer;
-    private PowerUpFactory powerUpFactory;
+    private TiledMap map;
+    private MapLayer powerUpLayer;
+    private MapObjects mapObjects;
 
-    @BeforeAll
-    static void init() {
-        if (Gdx.app == null) {
-            new HeadlessApplication(new ApplicationAdapter() {}, new HeadlessApplicationConfiguration());
-        }
-
-        Gdx.files = mock(Files.class);
-        when(Gdx.files.internal(anyString())).thenReturn(mock(FileHandle.class));
-
-        Gdx.gl = Gdx.gl20 = mock(com.badlogic.gdx.graphics.GL20.class);
+@BeforeAll
+static void initGdx() {
+    if (Gdx.app == null) {
+        new HeadlessApplication(new ApplicationListener() {
+            @Override public void create() {}
+            @Override public void resize(int width, int height) {}
+            @Override public void render() {}
+            @Override public void pause() {}
+            @Override public void resume() {}
+            @Override public void dispose() {}
+        }, new HeadlessApplicationConfiguration());
     }
+        // Mock OpenGL functions to prevent crashes
+    Gdx.gl = Mockito.mock(GL20.class);
+    Gdx.gl20 = Gdx.gl;
+}
+ 
 @BeforeEach
 void setUp() {
-    world = new World(new Vector2(0, -9.81f), true);
-
-    mockScreen = mock(GameScreen.class);
-    mockMap = mock(TiledMap.class);
-    mockLayers = mock(MapLayers.class);
-    mockPowerUpLayer = mock(MapLayer.class);
-    MapObjects mockObjects = mock(MapObjects.class);
-    Iterable<MapObject> emptyIterable = new ArrayList<>(); // ✅ Provide an empty iterable
-
-    when(mockScreen.getWorld()).thenReturn(world);
-    when(mockScreen.getMap()).thenReturn(mockMap);
-    when(mockMap.getLayers()).thenReturn(mockLayers);
-    when(mockLayers.get("PowerUp")).thenReturn(mockPowerUpLayer);
-    when(mockPowerUpLayer.getObjects()).thenReturn(mockObjects);
-    when(mockObjects.iterator()).thenReturn(emptyIterable.iterator()); // ✅ Mock iterator
-
+    screen = mock(GameScreen.class);
+    world = mock(World.class);
+    map = mock(TiledMap.class);
+    powerUpLayer = mock(MapLayer.class);
+    mapObjects = mock(MapObjects.class);
+    
     player = mock(Player.class);
 
-    powerUpFactory = new PowerUpFactory(mockScreen);
-    powerUpManager = new PowerUpManager(mockScreen, player);
+    world = new World(new Vector2(0, -9.81f), true); 
+    when(screen.getWorld()).thenReturn(world);
+
+     when(screen.getMap()).thenReturn(map);
+
+     MapLayers mapLayers = mock(MapLayers.class);
+     when(map.getLayers()).thenReturn(mapLayers); 
+     when(mapLayers.get("PowerUp")).thenReturn(powerUpLayer); 
+ 
+     when(powerUpLayer.getObjects()).thenReturn(mapObjects);
+     when(mapObjects.iterator()).thenReturn(List.of(createMockPowerUp(100, 200)).iterator());
+
+    powerUpManager = new PowerUpManager(screen, player);
+}
+
+
+    private MapObject createMockPowerUp(float x, float y) {
+    EllipseMapObject ellipseMapObject = new EllipseMapObject(x, y, 16, 16);
+    
+    ellipseMapObject.getProperties().put("type", "FLYING");
+
+    return ellipseMapObject;
+}
+    
+
+    
+
+
+//ensure the map is empty when no power ups are defined.
+@Test
+void testNoPowerUps() {
+    when(mapObjects.iterator()).thenReturn(List.<MapObject>of().iterator()); // No power-ups
+    powerUpManager = new PowerUpManager(screen, player);
+    assertTrue(powerUpManager.getPowerUps().isEmpty(), "Should be empty if no power-ups are defined in TiledMap");
 }
 
 
 
-    @Test
-    void testManagerInitializationEmptyIfNoPowerUps() {
-        assertTrue(powerUpManager.getPowerUps().isEmpty(), "Should be empty if no power-ups are defined in TiledMap");
-    }
+//Ensures that power-ups are properly loaded from the TiledMap.
+//Confirms that the power-ups are positioned correctly in the game world.
+//Prevents incorrect power-up placement issues that could break gameplay
 
-    @Test
-    void testPowerUpLoadingWhenPowerUpsExist() {
-        /*
-        // Mock MapObjects and a single Power-Up object
-        MapObjects mockObjects = mock(MapObjects.class);
-        MapObject mockPowerUp = mock(MapObject.class);
-        MapProperties mockProperties = mock(MapProperties.class);
+@Test
+void testPowerUpLoadingWhenPowerUpsExist() {
+    when(mapObjects.iterator()).thenReturn(List.of(createMockPowerUp(100, 200)).iterator());
+    powerUpManager = new PowerUpManager(screen, player);
 
-        // Ensure the power-up object is iterable
-        Iterable<MapObject> iterable = Collections.singletonList(mockPowerUp);
+    int expectedPowerUps = 1; // Since we're adding 1 mock power-up
 
-        // Ensure the PowerUp layer has objects
-        when(mockPowerUpLayer.getObjects()).thenReturn(mockObjects);
-        when(mockObjects.iterator()).thenReturn(iterable.iterator());
+    assertFalse(powerUpManager.getPowerUps().isEmpty(), "PowerUpManager should load at least 1 power-up.");
+    assertEquals(expectedPowerUps, powerUpManager.getPowerUps().size(), 
+        "PowerUpManager should have exactly " + expectedPowerUps + " power-up.");
 
-        // Ensure the power-up object has properties
-        when(mockPowerUp.getProperties()).thenReturn(mockProperties);
-        when(mockProperties.get("type", String.class)).thenReturn("FLYING");
-
-        // Inject mocks into PowerUpManager
-        powerUpManager = new PowerUpManager(mockScreen, player);
-
-        // Debugging: Print loaded power-ups
-        System.out.println("Power-ups loaded: " + powerUpManager.getPowerUps().size());
-
-        // Check if at least 1 power-up is loaded
-        assertFalse(powerUpManager.getPowerUps().isEmpty(), "PowerUpManager should load at least 1 power-up.");
-        */
-    }
-
+    float expectedX = 100 / 16f;
+    float expectedY = ((200 + 16 / 2f) / 16f) - (16 / 2f) / 16f; // Adjusted for sprite offset
     
-    
-    
+    PowerUpObject loadedPowerUp = powerUpManager.getPowerUps().get(0);
+    float actualX = loadedPowerUp.getSprite().getX();
+    float actualY = loadedPowerUp.getSprite().getY();
+
+    float delta = 0.1f;
+    assertEquals(expectedX, actualX, delta, "Power-up X position should be correct.");
+    assertEquals(expectedY, actualY, delta, "Power-up Y position should be correct.");
+}
+   
 
 }
 

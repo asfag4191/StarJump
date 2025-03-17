@@ -57,6 +57,7 @@ public class PowerUpManager {
             }
 
             PowerUpEnum type = PowerUpEnum.valueOf(typeStr.toUpperCase());
+
             AbstractPowerUp flyingPowerUp = factory.createFlyingPowerUp(type, player, position);
     
             Sprite sprite = flyingPowerUp.getSprite();
@@ -66,6 +67,7 @@ public class PowerUpManager {
             powerUps.add(powerUpObject);
         }
     }
+
 
     /**
     * Updates and safely removes power-ups collected by the player.
