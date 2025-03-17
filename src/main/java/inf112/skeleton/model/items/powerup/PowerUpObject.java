@@ -63,20 +63,35 @@ public class PowerUpObject extends InteractiveTileObject {
     public Body getBody() {
         return body;
     }
+
+    public AbstractPowerUp getPowerUp() {
+        return powerUp;
+
+    }
+
     public void setBody(Body body) {
         this.body = body;
 
     }
 
+
+    public Player getPlayer() {
+        return player;
+    }
+
     @Override
     public void dispose() {
-        world.destroyBody(body);
+        if (body != null) {
+            world.destroyBody(body);
+            body = null; 
+        }
     }
 
 @Override
 public void update(float dt) {
     if (isCollected) {
         dispose();
+
     }
 }
 

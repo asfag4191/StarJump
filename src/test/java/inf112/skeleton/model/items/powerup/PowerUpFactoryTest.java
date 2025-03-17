@@ -39,12 +39,11 @@ class PowerUpFactoryTest {
     void setUp() {
         Gdx.gl = Gdx.gl20 = Mockito.mock(com.badlogic.gdx.graphics.GL20.class);
 
-        World world = new World(new Vector2(0, -9.81f), true);
+        world = new World(new Vector2(0, -9.81f), true);
         GameScreen mockScreen = Mockito.mock(GameScreen.class);
         Mockito.when(mockScreen.getWorld()).thenReturn(world);
 
         player = new Player(new Vector2(1, 1), world);
-
         factory = new PowerUpFactory(mockScreen);
     }
 
@@ -65,6 +64,7 @@ class PowerUpFactoryTest {
 
     @AfterEach
     void tearDown() {
+        world.dispose();
         Gdx.gl = null;
         Gdx.gl20 = null;
     }

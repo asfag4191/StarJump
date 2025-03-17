@@ -51,7 +51,7 @@ static void initGdx() {
             @Override public void dispose() {}
         }, new HeadlessApplicationConfiguration());
     }
-        // Mock OpenGL functions to prevent crashes
+    // Mock OpenGL functions to prevent crashes
     Gdx.gl = Mockito.mock(GL20.class);
     Gdx.gl20 = Gdx.gl;
 }
