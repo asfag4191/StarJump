@@ -1,5 +1,6 @@
 package inf112.skeleton.model.items.powerup;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -13,13 +14,14 @@ import inf112.skeleton.view.screen.GameScreen;
 public class PowerUpObject extends InteractiveTileObject {
 
     private boolean isCollected = false;
+    private final AbstractPowerUp powerUp;
     private final Player player;
-
-
-    public PowerUpObject(GameScreen screen, MapObject object, Player player) {
-        super(screen, object);
-        this.player = player;
-        setCollisionFilter();
+    
+        public PowerUpObject(GameScreen screen, MapObject object, AbstractPowerUp powerUp, Player player, Sprite sprite) {
+            super(screen, object);
+            this.powerUp = powerUp;
+            this.player = player;
+            setCollisionFilter();
     }
 
     private void setCollisionFilter() {
@@ -27,21 +29,24 @@ public class PowerUpObject extends InteractiveTileObject {
         filter.categoryBits = StarJump.POWERUP;
         filter.maskBits = StarJump.PLAYER_BIT;
         fixture.setFilterData(filter);
-        fixture.setUserData(this); //  Add this line
+        fixture.setUserData(this); 
     }
 
+    /**
+    * Handles collision with player, applying power-up effect.
+    */
     @Override
     public void onPlayerCollide() {
         if (!isCollected) {
-            System.out.println("Power-up collected!");
-            player.getBody().applyLinearImpulse(new Vector2(0, 5f), player.getBody().getWorldCenter(), true);
+            powerUp.applyPowerUpEffect();
+            screen.getPowerUpManager().markForRemoval(this);
+    
+            player.getBody().setLinearVelocity(player.getBody().getLinearVelocity().x, 0);
+            player.getBody().applyLinearImpulse(new Vector2(0, 10f), player.getBody().getWorldCenter(), true);
     
             isCollected = true;
-            screen.getPowerUpManager().markForRemoval(this);
         }
     }
-
-
 
     public boolean isCollected() {
         return isCollected;
@@ -58,20 +63,42 @@ public class PowerUpObject extends InteractiveTileObject {
     public Body getBody() {
         return body;
     }
+
+    public AbstractPowerUp getPowerUp() {
+        return powerUp;
+
+    }
+
     public void setBody(Body body) {
         this.body = body;
 
     }
 
-    
-    public void dispose() {
-        world.destroyBody(body);
+
+    public Player getPlayer() {
+        return player;
     }
 
-    public void update(float dt) {
-        if (isCollected) {
-            dispose();
+    @Override
+    public void dispose() {
+        if (body != null) {
+            world.destroyBody(body);
+            body = null; 
         }
     }
 
+@Override
+public void update(float dt) {
+    if (isCollected) {
+        dispose();
+
+    }
 }
+
+    public Sprite getSprite() {
+        return powerUp.getSprite();
+    }
+    
+}
+
+

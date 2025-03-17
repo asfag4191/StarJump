@@ -3,9 +3,12 @@ package inf112.skeleton.model.items.powerup;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.math.Ellipse;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
 import inf112.skeleton.model.character.controllable_characters.Player;
@@ -18,51 +21,67 @@ public class PowerUpManager {
     private final GameScreen screen;
     private final Player player;
     private final World world;
+    private final PowerUpFactory factory;
 
 
     public PowerUpManager(GameScreen screen, Player player) {
         this.screen = screen;
         this.player = player;
         this.world = screen.getWorld();
+        this.factory=new PowerUpFactory(screen);
         loadPowerUps();
     }
 
+    /**
+    * Loads and initializes power-ups defined in the Tiled map.
+    */
     private void loadPowerUps() {
         TiledMap map = screen.getMap();
-        World world = screen.getWorld();
-
-        // Check if layer exists
+    
         if (map.getLayers().get("PowerUp") == null) {
-            System.out.println("Error: Layer 'PowerUp' not found!");
             return;
         }
-
-        // Create power-ups for each ellipse object in the Tiled map
         for (MapObject object : map.getLayers().get("PowerUp").getObjects()) {
-            if (!(object instanceof EllipseMapObject)) {
-                System.out.println("Skipping non-ellipse object: " + object);
-                continue;
+            if (!(object instanceof EllipseMapObject ellipseObj)) continue;
+
+            Ellipse ellipse = ellipseObj.getEllipse();
+    
+            Vector2 position = new Vector2(
+                (ellipse.x + ellipse.width / 2f) / 16f, 
+                (ellipse.y + ellipse.height / 2f) / 16f
+            );
+    
+            String typeStr = object.getProperties().get("type", String.class);
+            if (typeStr == null) {
+            typeStr = "FLYING"; // Default value for testing purposes
             }
 
+            PowerUpEnum type = PowerUpEnum.valueOf(typeStr.toUpperCase());
 
-            PowerUpObject powerUp = new PowerUpObject(screen, object, player);
-            powerUps.add(powerUp);
-
-            System.out.println("Power-Up Created at " + object.getProperties());
+            AbstractPowerUp flyingPowerUp = factory.createFlyingPowerUp(type, player, position);
+    
+            Sprite sprite = flyingPowerUp.getSprite();
+            sprite.setPosition(position.x - sprite.getWidth() / 2f, position.y - sprite.getHeight() / 2f);
+    
+            PowerUpObject powerUpObject = new PowerUpObject(screen, object, flyingPowerUp, player, sprite);
+            powerUps.add(powerUpObject);
         }
-        System.out.println("Total Power-Ups: " + powerUps.size());
     }
 
+
     /**
-     * Called every frame (after world.step(...)).
-     * This is where we safely remove the Box2D bodies for collected power-ups.
-     */
+    * Updates and safely removes power-ups collected by the player.
+    * Called after the physics update step each frame.
+    *
+    * @param dt Delta time since last frame.
+    */
     public void update(float dt) {
         for (PowerUpObject powerUp : removalQueue) {
             if (powerUp.getBody() != null) {
                 world.destroyBody(powerUp.getBody());
                 powerUp.setBody(null);
             }
+            powerUp.getSprite().setAlpha(0f); 
             powerUps.remove(powerUp);
         }
         removalQueue.clear();
@@ -73,8 +92,11 @@ public class PowerUpManager {
     }
 
     /**
-     * Defer removal so that Box2D bodies are only destroyed after the physics step.
-     */
+    * Marks a power-up object for removal.
+    * Actual removal happens in update() method after physics step.
+    *
+    * @param powerUp The PowerUpObject to remove.
+    */
     public void markForRemoval(PowerUpObject powerUp) {
         removalQueue.add(powerUp);
     }
