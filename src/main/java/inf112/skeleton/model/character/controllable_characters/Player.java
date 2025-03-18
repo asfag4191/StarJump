@@ -23,12 +23,6 @@ import inf112.skeleton.model.items.powerup.AbstractPowerUp;
 public class Player extends Character {
     private static final float JUMP_FORCE = 7f;
 
-
-    /**
-     * Creates a new player character with the given size and world.
-     * @param size The size of the player character.
-     * @param world The world in which the player character exists.
-     */
     // Power-up related fields
     private boolean isFlying = false;
     private float powerUpTimer = 0;
@@ -38,6 +32,11 @@ public class Player extends Character {
     //private float flyingTime = 0f; // flying duration timer
     private final float MAX_FLYING_TIME = 1f; // flying duration (2 seconds)
 
+    /**
+     * Creates a new player character with the given size and world.
+     * @param size The size of the player character.
+     * @param world The world in which the player character exists.
+     */
     public Player(Vector2 size, World world) {
         super("Star", new Stats(100, 2, 16, 5, 1), size, world, true);
         this.getBody().setUserData(this);
@@ -67,6 +66,7 @@ public class Player extends Character {
         getBody().setTransform(position, getBody().getAngle());
     }
 
+
     /**
      * Enables or disables collision for the object's body.
      * When collision is enabled, the fixture behaves as a solid object.
@@ -78,47 +78,14 @@ public class Player extends Character {
         this.getBody().getFixtureList().first().setSensor(!enabled);
     }
 
-    public void applyPowerUp(AbstractPowerUp powerUp, float duration) {
-        powerUp.applyPowerUpEffect();
-        powerUpTimer = duration;
-    }
-
-
-    /**
-    * Updates player's state each frame.
-    *
-    * @param dt Delta time since last frame.
-    */
-    public void update(float dt) {
-        if (isFlying) {
-            powerUpTimer += dt;
-            if (powerUpTimer < MAX_FLYING_TIME) {
-                body.setGravityScale(0f);
-                body.setLinearVelocity(body.getLinearVelocity().x, 5f); // Increase from 5f to 8f if too slow
-            } else {
-                disableFlying();
-            }
-        }
-    } 
-
-    /**
-     * Enables flying mode, ignoring gravity and collision for a limited time.
-    */
-    public void enableFlying() {
-        isFlying = true;
-        powerUpTimer = 0f; // Clear timer!
-        body.setGravityScale(0f);
-        setCollisionEnabled(false); // Flying through objects
-    }
-
     /**
      * Disables the flying state, re-enabling gravity and collisions.
      */
     public void disableFlying() {
         isFlying = false;
-        powerUpTimer = 0f; 
+        powerUpTimer = 0f;
         body.setGravityScale(1f);
-        setCollisionEnabled(true); 
+        setCollisionEnabled(true);
     }
 
     public void jump(){

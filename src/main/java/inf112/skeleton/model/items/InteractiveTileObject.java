@@ -34,7 +34,7 @@ public abstract class InteractiveTileObject implements iItem {
     /**
      * Constructs a new {@code InteractiveTileObject} using the provided screen and map object.
      * This constructor initializes the object's physics body based on the map object (either rectangle or ellipse).
-     *
+     * 
      * @param screen The game screen containing this object.
      * @param object The map object representing this interactive item.
      */
@@ -89,7 +89,7 @@ public abstract class InteractiveTileObject implements iItem {
 
     /**
      * Sets the category filter for this object's fixture. This determines which objects can interact with this object.
-     *
+     * 
      * @param filterBit The filter bit representing the category of the object in the collision system.
      */
     public void setCategoryFilter(short filterBit) {
