@@ -37,13 +37,14 @@ public class WorldModel implements Renderable {
         );
 
         Character charac = new Character("p1", stats, new Vector2(1,1), world);
+        Player plr = new Player(charac);
+
         Texture texture1 = new Texture(Gdx.files.internal("blackhole.png"));
         charac.animator.addAnimation("idle", texture1, 1, 7, 8);
         charac.animator.play("idle");
+        ViewableObjects.add(charac);
 
-        Player plr = new Player(charac);
         PlayerController.setupWASD(plr);
-        ViewableObjects.add(plr.character);
         return plr;
     }
 

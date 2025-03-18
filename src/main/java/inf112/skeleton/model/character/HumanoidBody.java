@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import inf112.skeleton.model.colliders.RigidBody;
 
-public class HumanoidBody extends RigidBody {
+public abstract class HumanoidBody extends RigidBody {
     private static final PolygonShape SHAPE = new PolygonShape();
     private static final BodyDef BODY_DEF = getBodyDef();
 
