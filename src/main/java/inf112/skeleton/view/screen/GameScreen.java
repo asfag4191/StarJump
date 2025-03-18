@@ -106,7 +106,8 @@ public class GameScreen implements Screen {
             game.setScreen(new MainMenuScreen(game));
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
-            player.applyImpulse(new Vector2(0, 4f));
+            player.jump();
+            //player.applyImpulse(new Vector2(0, 7f));
         if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) && player.getVelocity().x <= 2)
             player.applyImpulse(new Vector2(1f, 0));
         if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT) && player.getVelocity().x >= -2)

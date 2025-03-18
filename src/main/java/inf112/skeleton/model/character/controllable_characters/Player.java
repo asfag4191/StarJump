@@ -21,13 +21,15 @@ import inf112.skeleton.model.items.powerup.AbstractPowerUp;
  * player-specific functionality such as jumping and rendering.
  */
 public class Player extends Character {
-    private static final float JUMP_FORCE = 5f;
+    private static final float JUMP_FORCE = 7f;
 
 
     // Power-up related fields
     private boolean isFlying = false;
     private float powerUpTimer = 0;
-    //private boolean isGrounded;
+    public boolean isGrounded = false;
+    private int jumpMade = 0;
+    private final int MAX_JUMP = 2;
     //private float flyingTime = 0f; // flying duration timer
     private final float MAX_FLYING_TIME = 1f; // flying duration (2 seconds)
 
@@ -58,10 +60,6 @@ public class Player extends Character {
 
     public void setPosition(Vector2 position) {
         getBody().setTransform(position, getBody().getAngle());
-    }
-
-    public Body getBody() {
-        return this.body;
     }
 
     public void setCollisionEnabled(boolean enabled) {
@@ -113,5 +111,19 @@ public class Player extends Character {
         powerUpTimer = 0f; 
         body.setGravityScale(1f);
         setCollisionEnabled(true); 
+    }
+
+    public void jump(){
+        if (jumpMade < MAX_JUMP) {
+            body.setLinearVelocity(body.getLinearVelocity().x, 0);
+            body.applyLinearImpulse(new Vector2(0, JUMP_FORCE), body.getWorldCenter(), true);
+            jumpMade++;
+            isGrounded = false;
+        }
+    }
+
+    public void landed(){
+        jumpMade = 0;
+        isGrounded = true;
     }
 }

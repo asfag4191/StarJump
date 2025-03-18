@@ -18,7 +18,7 @@ public class PowerUpObject extends InteractiveTileObject {
     private final Player player;
     
         public PowerUpObject(GameScreen screen, MapObject object, AbstractPowerUp powerUp, Player player, Sprite sprite) {
-            super(screen, object);
+            super(screen, object, StarJump.POWERUP);
             this.powerUp = powerUp;
             this.player = player;
             setCollisionFilter();

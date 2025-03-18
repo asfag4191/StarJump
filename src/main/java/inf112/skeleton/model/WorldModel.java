@@ -5,14 +5,17 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 
+import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.model.colliders.BoxCollider;
+import inf112.skeleton.model.items.InteractiveTileObject;
 import inf112.skeleton.utility.ColliderToBox2D;
 import inf112.skeleton.view.Renderable;
 
@@ -28,6 +31,7 @@ public class WorldModel implements Renderable {
         TiledMap tiledMap = new TmxMapLoader().load("src/main/assets/map/tilemaps/map_level1.tmx");
         System.out.println("Map loaded successfully!");
         MapObjects objects = tiledMap.getLayers().get("Tiles").getObjects();
+
         if (tiledMap.getLayers().get("Tiles") == null) {
             System.out.println("Error: Layer 'Tiles' not found in TMX file!");
         }
@@ -44,7 +48,7 @@ public class WorldModel implements Renderable {
      */
     public Player createPlayer(Vector2 size) {
         Player player = new Player(size, world);
-        player.setPosition(new Vector2(10, 10));
+        player.setPosition(new Vector2(10, 3));
         ViewableObjects.add(player);
         return player;
     }

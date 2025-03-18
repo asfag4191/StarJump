@@ -131,4 +131,9 @@ public class RigidBody {
         bdy.createFixture(shape, 1);
         if (doDispose) shape.dispose();
     }
+
+    public Body getBody(){
+        return this.body;
+    }
+
 }

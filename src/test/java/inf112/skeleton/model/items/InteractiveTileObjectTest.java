@@ -1,5 +1,6 @@
 package inf112.skeleton.model.items;
 
+import inf112.skeleton.app.StarJump;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -119,7 +120,7 @@ class InteractiveTileObjectTest {
      */
     private static class TestInteractiveTileObject extends InteractiveTileObject {
         public TestInteractiveTileObject(GameScreen screen, MapObject object) {
-            super(screen, object);
+            super(screen, object, StarJump.POWERUP);
         }
 
         @Override
