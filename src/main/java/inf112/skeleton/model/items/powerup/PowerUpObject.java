@@ -141,7 +141,7 @@ public class PowerUpObject extends InteractiveTileObject {
 
         }
     }
-    
+
     /**
      * Gets the sprite used to render the power-up.
      *
@@ -151,6 +151,7 @@ public class PowerUpObject extends InteractiveTileObject {
         return powerUp.getSprite();
     }
     
+
 }
 
 

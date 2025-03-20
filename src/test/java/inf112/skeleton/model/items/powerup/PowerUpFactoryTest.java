@@ -19,6 +19,9 @@ import com.badlogic.gdx.physics.box2d.World;
 import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.view.screen.GameScreen;
 
+/**
+ * Test class for powerUpFactory
+ */
 class PowerUpFactoryTest {
     private PowerUpFactory factory;
     private Player player;

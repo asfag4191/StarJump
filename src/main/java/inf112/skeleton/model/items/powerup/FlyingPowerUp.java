@@ -15,11 +15,14 @@ public class FlyingPowerUp extends AbstractPowerUp {
     private static final float FLYING_DURATION = 1.0f; 
 
     /**
-     * Creates a FlyingPowerUp at the specified position for the given player.
-     *
-     * @param player   the player who will receive the power-up
-     * @param position the position where the power-up appears
-     * @param sprite   the sprite representing the power-up
+     * Constructor for FlyingPowerUp.
+     * Enables the player to fly for a short duration.
+     * Sets the player's gravity scale to 0, and linear velocity to 5.
+     * Disables collision for the player.
+     * 
+     * @param player   Player who receives the power-up effect.
+     * @param position The position where the power-up appears.
+     * @param sprite   The graphical representation of the power-up.
      */
     public FlyingPowerUp(Player player, Vector2 position, Sprite sprite) {
         super(player, position, sprite);
