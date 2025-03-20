@@ -100,6 +100,16 @@ public class PowerUpManager {
     public void markForRemoval(PowerUpObject powerUp) {
         removalQueue.add(powerUp);
     }
+
+    /**
+    * Gets the removal queue.
+    *
+    * @return The removal queue.
+    */
+    public List<PowerUpObject> getRemovalQueue() {
+        return removalQueue;
+    
+    }
 }
 
 
