@@ -33,9 +33,6 @@ class InteractiveTileObjectTest {
     private MapObject rectangleObject;
     private MapObject ellipseObject;
 
-    /**
-     * Initialize LibGDX for headless testing.
-     */
     @BeforeAll
     static void initLibGdx() {
         if (Gdx.app == null) {
@@ -44,26 +41,17 @@ class InteractiveTileObjectTest {
         }
     }
 
-    /**
-     * Set up a test environment with Box2D and mocked screen.
-     */
     @BeforeEach
     void setUp() {
-        // Mock GameScreen
         screen = mock(GameScreen.class);
 
-        // Create real Box2D world
         world = new World(new Vector2(0, -9.81f), true);
         when(screen.getWorld()).thenReturn(world);
 
-        // Create test MapObjects (rectangle & ellipse)
         rectangleObject = new RectangleMapObject(50, 100, 16, 16);
         ellipseObject = new EllipseMapObject(30, 60, 10, 10);
     }
 
-    /**
-     * Test Rectangle-based InteractiveTileObject initialization.
-     */
     @Test
     void testRectangleObjectInitialization() {
         testObject = new TestInteractiveTileObject(screen, rectangleObject);
@@ -72,9 +60,6 @@ class InteractiveTileObjectTest {
         assertEquals(100 / 16f + 0.5f, testObject.getBody().getPosition().y, 0.1);
     }
 
-    /**
-     *  Test Ellipse-based InteractiveTileObject initialization.
-     */
     @Test
     void testEllipseObjectInitialization() {
         testObject = new TestInteractiveTileObject(screen, ellipseObject);
@@ -83,9 +68,6 @@ class InteractiveTileObjectTest {
         assertEquals(60 / 16f + 0.5f, testObject.getBody().getPosition().y, 0.2);
     }
 
-    /**
-     *  Test setting category filter.
-     */
     @Test
     void testSetCategoryFilter() {
         testObject = new TestInteractiveTileObject(screen, rectangleObject);
@@ -93,9 +75,6 @@ class InteractiveTileObjectTest {
         assertEquals(2, testObject.getFixture().getFilterData().categoryBits);
     }
 
-    /**
-     * Test object disposal.
-     */
     @Test
     void testDispose() {
         testObject = new TestInteractiveTileObject(screen, rectangleObject);
@@ -103,9 +82,7 @@ class InteractiveTileObjectTest {
         assertEquals(0, world.getBodyCount(), "Body should be removed from world");
     }
 
-    /**
-     * Clean up the physics world.
-     */
+
     @AfterEach
     void tearDown() {
         world.dispose();

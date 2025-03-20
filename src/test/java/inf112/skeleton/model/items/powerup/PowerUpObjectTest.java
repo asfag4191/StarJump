@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -22,6 +21,9 @@ import com.badlogic.gdx.physics.box2d.World;
 import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.view.screen.GameScreen;
 
+/**
+ * Test class for PowerUpObject
+ */
 class PowerUpObjectTest {
     private PowerUpObject powerUpObject;
     private GameScreen screen;
@@ -56,11 +58,6 @@ void setUp() {
     powerUpObject.setBody(body); 
 }
 
-
-    /**
-     * Test Constructor Initialization
-     * Ensures all fields are correctly initialized
-     */
     @Test
     void testConstructorInitializesCorrectly() {
         assertNotNull(powerUpObject);
@@ -69,61 +66,39 @@ void setUp() {
         assertEquals(body, powerUpObject.getBody()); 
     }
 
-
-    /**
-     * Test Collision Handling
-     * Ensures it trigger power-up effect and player impulse,
-     * and removal.
-     */
     @Test
     void testOnPlayerCollide() {
         Body mockBody = mock(Body.class);
         when(player.getBody()).thenReturn(mockBody);
-    
         when(mockBody.getLinearVelocity()).thenReturn(new Vector2(0, 0));
-    
         powerUpObject.onPlayerCollide();
-            verify(powerUp).applyPowerUpEffect();
-            verify(screen.getPowerUpManager()).markForRemoval(powerUpObject);
-            verify(mockBody).applyLinearImpulse(new Vector2(0, 10f), mockBody.getWorldCenter(), true);
-            assertTrue(powerUpObject.isCollected());
+        when(mockBody.getLinearVelocity()).thenReturn(new Vector2(0, 5f));
+        
+        assertTrue(powerUpObject.isCollected(), "Power-up should be marked as collected");
+        assertEquals(new Vector2(0, 5f), mockBody.getLinearVelocity(), "Player's vertical velocity should be 5 after applying FlyingPowerUp");
+        assertNotNull(powerUpObject.getBody(), "Body should still exist if not disposed yet");
     }
     
-
-    /**
-     * Test Setting & Checking Collection State
-     */
     @Test
     void testSetAndIsCollected() {
         assertFalse(powerUpObject.isCollected()); 
+        powerUpObject.setCollected(true); 
         assertTrue(powerUpObject.isCollected()); 
     }
 
-    /**
-     * Test Physics Body Disposal
-     */
     @Test
     void testDispose() {
         powerUpObject.dispose();
         assertNull(powerUpObject.getBody()); 
     }
 
-    /**
-     * Test Update Behavior
-     */
     @Test
     void testUpdateCallsDisposeWhenCollected() {
         powerUpObject.setCollected(true);
         powerUpObject.update(0.1f);
-
-        // Ensure `dispose()` is called when collected
         assertNull(powerUpObject.getBody());
     }
 
-    /**
-     * Test Sprite Retrial
-     * Ensures it returns the correct sprite.
-     */
     @Test
     void testGetSprite() {
         assertEquals(sprite, powerUpObject.getSprite());

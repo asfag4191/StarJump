@@ -19,7 +19,9 @@ import com.badlogic.gdx.physics.box2d.World;
 import inf112.skeleton.view.screen.GameScreen;
 
 /**
- * Base class for interactive objects like power-ups and obstacles.
+ * The {@code InteractiveTileObject} class is a base class for interactive objects that exist in the game world.
+ * It includes power-ups, obstacles, and other items that interact with the player.
+ * The class is responsible for defining the physics body and fixture, as well as handling interactions with the player.
  */
 public abstract class InteractiveTileObject implements iItem {
     protected World world;
@@ -29,6 +31,13 @@ public abstract class InteractiveTileObject implements iItem {
     protected MapObject object;
     protected Fixture fixture;
 
+    /**
+     * Constructs a new {@code InteractiveTileObject} using the provided screen and map object.
+     * This constructor initializes the object's physics body based on the map object (either rectangle or ellipse).
+     *
+     * @param screen The game screen containing this object.
+     * @param object The map object representing this interactive item.
+     */
     public InteractiveTileObject(GameScreen screen, MapObject object, short categoryBit) {
         this.object = object;
         this.screen = screen;
@@ -72,8 +81,17 @@ public abstract class InteractiveTileObject implements iItem {
         shape.dispose();
     }
 
+    /**
+     * Handles the collision with the player. This method is called when the player interacts with this object.
+     * Subclasses must define the specific collision behavior, such as applying power-up effects or removing obstacles.
+     */
     public abstract void onPlayerCollide(); // Define collision behavior
 
+    /**
+     * Sets the category filter for this object's fixture. This determines which objects can interact with this object.
+     *
+     * @param filterBit The filter bit representing the category of the object in the collision system.
+     */
     public void setCategoryFilter(short filterBit) {
         Filter filter = new Filter();
         filter.categoryBits = filterBit;

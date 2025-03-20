@@ -152,6 +152,7 @@ public class PowerUpObject extends InteractiveTileObject {
         return powerUp.getSprite();
     }
     
+
 }
 
 
