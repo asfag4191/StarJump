@@ -116,7 +116,6 @@ public class GameScreen implements Screen {
     public void update(float dt) {
 
         handleInput(dt);
-        player.update(dt);
 
         worldModel.world.step(1 / 60f, 6, 2);
 

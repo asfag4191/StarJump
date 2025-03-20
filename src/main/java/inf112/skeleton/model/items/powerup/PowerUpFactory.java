@@ -16,7 +16,6 @@ public class PowerUpFactory {
 
     public PowerUpFactory(GameScreen screen) {
         this.screen = screen;
-
     }
 
     /**

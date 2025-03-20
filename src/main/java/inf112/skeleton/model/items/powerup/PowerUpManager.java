@@ -53,7 +53,7 @@ public class PowerUpManager {
     
             String typeStr = object.getProperties().get("type", String.class);
             if (typeStr == null) {
-            typeStr = "FLYING"; // Default value for testing purposes
+            typeStr = "FLYING";
             }
 
             PowerUpEnum type = PowerUpEnum.valueOf(typeStr.toUpperCase());
@@ -100,6 +100,16 @@ public class PowerUpManager {
     public void markForRemoval(PowerUpObject powerUp) {
         removalQueue.add(powerUp);
     }
+
+    /**
+    * Gets the removal queue.
+    *
+    * @return The removal queue.
+    */
+    public List<PowerUpObject> getRemovalQueue() {
+        return removalQueue;
+    }
+    
 }
 
 
