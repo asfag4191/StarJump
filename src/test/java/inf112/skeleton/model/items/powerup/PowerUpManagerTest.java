@@ -17,6 +17,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.MapObject;
@@ -24,6 +25,8 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 
 import inf112.skeleton.model.character.controllable_characters.Player;
@@ -38,6 +41,8 @@ class PowerUpManagerTest {
     private TiledMap map;
     private MapLayer powerUpLayer;
     private MapObjects mapObjects;
+    private PowerUpObject mockPowerUp;
+
 
 @BeforeAll
 static void initGdx() {
@@ -51,7 +56,6 @@ static void initGdx() {
             @Override public void dispose() {}
         }, new HeadlessApplicationConfiguration());
     }
-    // Mock OpenGL functions to prevent crashes
     Gdx.gl = Mockito.mock(GL20.class);
     Gdx.gl20 = Gdx.gl;
 }
@@ -69,16 +73,26 @@ void setUp() {
     world = new World(new Vector2(0, -9.81f), true); 
     when(screen.getWorld()).thenReturn(world);
 
-     when(screen.getMap()).thenReturn(map);
+    when(screen.getMap()).thenReturn(map);
 
-     MapLayers mapLayers = mock(MapLayers.class);
-     when(map.getLayers()).thenReturn(mapLayers); 
-     when(mapLayers.get("PowerUp")).thenReturn(powerUpLayer); 
+    MapLayers mapLayers = mock(MapLayers.class);
+    when(map.getLayers()).thenReturn(mapLayers); 
+    when(mapLayers.get("PowerUp")).thenReturn(powerUpLayer); 
  
-     when(powerUpLayer.getObjects()).thenReturn(mapObjects);
-     when(mapObjects.iterator()).thenReturn(List.of(createMockPowerUp(100, 200)).iterator());
+    when(powerUpLayer.getObjects()).thenReturn(mapObjects);
+    when(mapObjects.iterator()).thenReturn(List.of(createMockPowerUp(100, 200)).iterator());
 
     powerUpManager = new PowerUpManager(screen, player);
+
+    mockPowerUp = Mockito.mock(PowerUpObject.class);
+    Body realBody = world.createBody(new BodyDef()); // Create a real Box2D body
+    Mockito.when(mockPowerUp.getBody()).thenReturn(realBody);
+
+    // Add the power-up to PowerUpManager
+    powerUpManager.getPowerUps().add(mockPowerUp);
+
+
+
 }
 
 
@@ -91,10 +105,6 @@ void setUp() {
 }
     
 
-    
-
-
-//ensure the map is empty when no power ups are defined.
 @Test
 void testNoPowerUps() {
     when(mapObjects.iterator()).thenReturn(List.<MapObject>of().iterator()); // No power-ups
@@ -130,7 +140,42 @@ void testPowerUpLoadingWhenPowerUpsExist() {
     assertEquals(expectedX, actualX, delta, "Power-up X position should be correct.");
     assertEquals(expectedY, actualY, delta, "Power-up Y position should be correct.");
 }
-   
+
+
+@Test
+void testMarkForRemoval() {
+    powerUpManager.markForRemoval(mockPowerUp);
+    assertEquals(1, powerUpManager.getRemovalQueue().size(), "Power-up should be added to removal queue.");
+}
+
+@Test
+void testUpdateRemovesPowerUps() {
+    // Create a real PowerUpObject instead of a mock
+    EllipseMapObject ellipseMapObject = new EllipseMapObject(100, 200, 16, 16);
+    AbstractPowerUp powerUpMock = mock(AbstractPowerUp.class);
+    Sprite mockSprite = new Sprite();
+    when(powerUpMock.getSprite()).thenReturn(mockSprite); // Ensure it returns a valid sprite
+    
+    PowerUpObject realPowerUp = new PowerUpObject(screen, ellipseMapObject, powerUpMock, player, mockSprite);
+        
+    // Add the power-up to the manager
+    powerUpManager.getPowerUps().add(realPowerUp);
+    
+    // Mark it for removal
+    powerUpManager.markForRemoval(realPowerUp);
+    
+    // Ensure it's in the removal queue before update
+    assertEquals(1, powerUpManager.getRemovalQueue().size(), "Power-up should be added to removal queue.");
+
+    // Call update to remove it
+    powerUpManager.update(0.016f); // Simulate a frame update
+
+    // Assert that it has been removed
+    assertEquals(0, powerUpManager.getPowerUps().size(), "Power-ups should be removed after update.");
+    assertTrue(powerUpManager.getRemovalQueue().isEmpty(), "Removal queue should be cleared after update.");
+}
 
 }
+   
+
 

@@ -66,7 +66,7 @@ void setUp() {
         assertNotNull(powerUpObject);
         assertEquals(player, powerUpObject.getPlayer());
         assertEquals(powerUp, powerUpObject.getPowerUp());
-        assertEquals(body, powerUpObject.getBody()); // Ensure physics body is assigned
+        assertEquals(body, powerUpObject.getBody()); 
     }
 
 
@@ -95,9 +95,8 @@ void setUp() {
      */
     @Test
     void testSetAndIsCollected() {
-        assertFalse(powerUpObject.isCollected()); // Initial state should be false
-        powerUpObject.setCollected(true);
-        assertTrue(powerUpObject.isCollected()); // Ensure it updates correctly
+        assertFalse(powerUpObject.isCollected()); 
+        assertTrue(powerUpObject.isCollected()); 
     }
 
     /**
@@ -106,9 +105,7 @@ void setUp() {
     @Test
     void testDispose() {
         powerUpObject.dispose();
-
-        // Ensure the physics body is destroyed
-        assertNull(powerUpObject.getBody()); // Ensure body reference is cleared
+        assertNull(powerUpObject.getBody()); 
     }
 
     /**

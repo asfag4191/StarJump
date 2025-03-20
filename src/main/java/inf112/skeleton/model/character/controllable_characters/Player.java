@@ -24,6 +24,11 @@ public class Player extends Character {
     private static final float JUMP_FORCE = 7f;
 
 
+    /**
+     * Creates a new player character with the given size and world.
+     * @param size The size of the player character.
+     * @param world The world in which the player character exists.
+     */
     // Power-up related fields
     private boolean isFlying = false;
     private float powerUpTimer = 0;
@@ -62,12 +67,15 @@ public class Player extends Character {
         getBody().setTransform(position, getBody().getAngle());
     }
 
+    /**
+     * Enables or disables collision for the object's body.
+     * When collision is enabled, the fixture behaves as a solid object.
+     * When disabled, the fixture becomes a sensor, allowing other objects to pass through.
+     *
+     * @param enabled {@code true} to enable collision, {@code false} to disable it
+     */
     public void setCollisionEnabled(boolean enabled) {
-        if (enabled) {
-            this.getBody().getFixtureList().first().setSensor(false);
-        } else {
-            this.getBody().getFixtureList().first().setSensor(true);
-        }
+        this.getBody().getFixtureList().first().setSensor(!enabled);
     }
 
     public void applyPowerUp(AbstractPowerUp powerUp, float duration) {
