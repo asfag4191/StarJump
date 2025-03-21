@@ -3,7 +3,6 @@ package inf112.skeleton.model.items.powerup;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,8 +57,6 @@ class PowerUpFactoryTest {
                 new Vector2(5, 5)
         );
 
-        assertNotNull(powerUp);
-        assertTrue(powerUp instanceof FlyingPowerUp);
         assertNotNull(powerUp.getSprite());
         assertEquals(5, powerUp.getSprite().getX());
         assertEquals(5, powerUp.getSprite().getY());

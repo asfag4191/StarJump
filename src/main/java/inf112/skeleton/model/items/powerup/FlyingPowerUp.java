@@ -32,6 +32,8 @@ public class FlyingPowerUp implements iPowerUp {
         this.player = player;
         this.position = position;
         this.sprite = sprite;
+        this.sprite.setPosition(position.x, position.y);
+
     }
 
     @Override

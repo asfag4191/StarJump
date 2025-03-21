@@ -33,6 +33,7 @@ public class PowerUpFactory {
                 texture = new Texture("map/tilemaps/tilesets/rainbow16.png");
                 Sprite sprite = new Sprite(texture);
                 sprite.setSize(1, 1);
+                sprite.setPosition(position.x, position.y);
                 yield new FlyingPowerUp(player, position, sprite);
             }
             default -> throw new IllegalArgumentException("Unknown power-up type: " + type);

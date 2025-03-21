@@ -29,6 +29,8 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.view.screen.GameScreen;
+import inf112.skeleton.model.items.iItem;
+
 
 
 /**
@@ -116,7 +118,7 @@ void testPowerUpLoading() {
     float expectedX = 100 / 16f;
     float expectedY = ((200 + 16 / 2f) / 16f) - (16 / 2f) / 16f; // Adjusted for sprite offset
     
-    PowerUpObject loadedPowerUp = powerUpManager.getPowerUps().get(0);
+    PowerUpObject loadedPowerUp = powerUpManager.getPowerUps().get(0); 
     float actualX = loadedPowerUp.getSprite().getX();
     float actualY = loadedPowerUp.getSprite().getY();
 
