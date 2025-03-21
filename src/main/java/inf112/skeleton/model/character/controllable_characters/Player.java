@@ -5,7 +5,6 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
@@ -13,7 +12,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.Stats;
-import inf112.skeleton.model.items.powerup.AbstractPowerUp;
+
 
 /**
  * Represents the player character in the game.

@@ -17,7 +17,7 @@ import inf112.skeleton.view.screen.GameScreen;
 public class PowerUpObject extends InteractiveTileObject {
 
     private boolean isCollected = false;
-    private final AbstractPowerUp powerUp;
+    private final iPowerUp powerUp;
     private final Player player;
 
     /**
@@ -29,7 +29,7 @@ public class PowerUpObject extends InteractiveTileObject {
      * @param player  the player who can collect the power-up
      * @param sprite  the sprite representing the power-up
      */
-    public PowerUpObject(GameScreen screen, MapObject object, AbstractPowerUp powerUp, Player player, Sprite sprite) {
+    public PowerUpObject(GameScreen screen, MapObject object, iPowerUp powerUp, Player player, Sprite sprite) {
         super(screen, object, StarJump.POWERUP);
         this.powerUp = powerUp;
         this.player = player;
@@ -101,7 +101,7 @@ public class PowerUpObject extends InteractiveTileObject {
      *
      * @return the AbstractPowerUp instance
      */
-    public AbstractPowerUp getPowerUp() {
+    public iPowerUp getPowerUp() {
         return powerUp;
 
     }

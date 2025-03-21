@@ -10,9 +10,13 @@ import inf112.skeleton.model.character.controllable_characters.Player;
 /**
  * A power-up that grants the player temporary flying ability.
  */
-public class FlyingPowerUp extends AbstractPowerUp {
+public class FlyingPowerUp implements iPowerUp {
 
     private static final float FLYING_DURATION = 1.0f; 
+    private final Player player;
+    private final Sprite sprite;
+    private final Vector2 position; 
+    
 
     /**
      * Constructor for FlyingPowerUp.
@@ -25,7 +29,11 @@ public class FlyingPowerUp extends AbstractPowerUp {
      * @param sprite   The graphical representation of the power-up.
      */
     public FlyingPowerUp(Player player, Vector2 position, Sprite sprite) {
-        super(player, position, sprite);
+        this.player = player;
+        this.position = position;
+        this.sprite = sprite;
+        this.sprite.setPosition(position.x, position.y);
+
     }
 
     @Override
@@ -46,6 +54,11 @@ public class FlyingPowerUp extends AbstractPowerUp {
                 player.setCollisionEnabled(true);    
             }
         }, FLYING_DURATION);
+    }
+
+    @Override
+    public Sprite getSprite() {
+        return sprite;
     }
 }
 

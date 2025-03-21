@@ -19,20 +19,21 @@ public class PowerUpFactory {
     }
 
     /**
-     * Creates an AbstractPowerUp instance based on given enum type.
+     * Creates an iPowerUp instance based on given enum type.
      *
      * @param type     The PowerUpEnum type.
      * @param player   Player who receives the power-up effect.
      * @param position The position where the power-up appears.
      * @return Instance of specified AbstractPowerUp.
      */
-    public AbstractPowerUp createFlyingPowerUp(PowerUpEnum type, Player player, Vector2 position) {
+    public iPowerUp createFlyingPowerUp(PowerUpEnum type, Player player, Vector2 position) {
         Texture texture;
         return switch (type) {
             case FLYING -> {
                 texture = new Texture("map/tilemaps/tilesets/rainbow16.png");
                 Sprite sprite = new Sprite(texture);
                 sprite.setSize(1, 1);
+                sprite.setPosition(position.x, position.y);
                 yield new FlyingPowerUp(player, position, sprite);
             }
             default -> throw new IllegalArgumentException("Unknown power-up type: " + type);

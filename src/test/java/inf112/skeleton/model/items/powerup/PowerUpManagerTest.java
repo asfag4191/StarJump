@@ -29,6 +29,8 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.view.screen.GameScreen;
+import inf112.skeleton.model.items.iItem;
+
 
 
 /**
@@ -70,7 +72,7 @@ void setUp() {
     map = mock(TiledMap.class);
     powerUpLayer = mock(MapLayer.class);
     mapObjects = mock(MapObjects.class);
-    player = mock(Player.class);
+    //player = mock(Player.class);
 
     when(screen.getWorld()).thenReturn(world);
     when(screen.getMap()).thenReturn(map);
@@ -116,7 +118,7 @@ void testPowerUpLoading() {
     float expectedX = 100 / 16f;
     float expectedY = ((200 + 16 / 2f) / 16f) - (16 / 2f) / 16f; // Adjusted for sprite offset
     
-    PowerUpObject loadedPowerUp = powerUpManager.getPowerUps().get(0);
+    PowerUpObject loadedPowerUp = powerUpManager.getPowerUps().get(0); 
     float actualX = loadedPowerUp.getSprite().getX();
     float actualY = loadedPowerUp.getSprite().getY();
 
@@ -137,7 +139,7 @@ void testUpdateRemovesPowerUps() {
     assertEquals(0, powerUpManager.getPowerUps().size(), "powerUps should be empty before adding any power-ups.");
     
     EllipseMapObject ellipseMapObject = new EllipseMapObject(100, 200, 16, 16);
-    AbstractPowerUp powerUpMock = mock(AbstractPowerUp.class);
+    iPowerUp powerUpMock = mock(iPowerUp.class);
     Sprite mockSprite = new Sprite();
     when(powerUpMock.getSprite()).thenReturn(mockSprite); 
     
