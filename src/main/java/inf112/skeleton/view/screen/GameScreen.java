@@ -19,7 +19,6 @@ import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.WorldModel;
 import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.model.items.powerup.PowerUpManager;
-import inf112.skeleton.model.items.powerup.PowerUpView;
 import inf112.skeleton.utility.ColliderToBox2D;
 import inf112.skeleton.utility.listeners.PowerUpCollisionHandler;
 import inf112.skeleton.utility.listeners.WorldContactListener;
@@ -39,7 +38,6 @@ public class GameScreen implements Screen {
     private final Player player;
     private Box2DDebugRenderer debugger;
     private PowerUpManager powerUpManager;
-    private final PowerUpView powerUpView;
     private SpriteBatch batch;
 
 
@@ -81,7 +79,6 @@ public class GameScreen implements Screen {
         // Set up power-up
         batch = new SpriteBatch();
         powerUpManager = new PowerUpManager(this, player);
-        powerUpView = new PowerUpView(powerUpManager);
 
         // Instantiate collision handlers
         WorldContactListener contactListener = new WorldContactListener(
@@ -219,7 +216,7 @@ public class GameScreen implements Screen {
                 //tried here for the read in
 
         game.batch.begin();  //  Start the SpriteBatch
-        powerUpView.render(game.batch);  // draw power-ups
+        powerUpManager.render(game.batch);  // draw power-ups
         powerUpManager.update(dt);
         worldModel.render(game.batch, dt);
         player.render(game.batch, dt);

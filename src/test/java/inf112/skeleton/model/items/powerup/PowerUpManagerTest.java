@@ -70,7 +70,7 @@ void setUp() {
     map = mock(TiledMap.class);
     powerUpLayer = mock(MapLayer.class);
     mapObjects = mock(MapObjects.class);
-    player = mock(Player.class);
+    //player = mock(Player.class);
 
     when(screen.getWorld()).thenReturn(world);
     when(screen.getMap()).thenReturn(map);
@@ -137,7 +137,7 @@ void testUpdateRemovesPowerUps() {
     assertEquals(0, powerUpManager.getPowerUps().size(), "powerUps should be empty before adding any power-ups.");
     
     EllipseMapObject ellipseMapObject = new EllipseMapObject(100, 200, 16, 16);
-    AbstractPowerUp powerUpMock = mock(AbstractPowerUp.class);
+    iPowerUp powerUpMock = mock(iPowerUp.class);
     Sprite mockSprite = new Sprite();
     when(powerUpMock.getSprite()).thenReturn(mockSprite); 
     

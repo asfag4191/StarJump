@@ -19,14 +19,14 @@ public class PowerUpFactory {
     }
 
     /**
-     * Creates an AbstractPowerUp instance based on given enum type.
+     * Creates an iPowerUp instance based on given enum type.
      *
      * @param type     The PowerUpEnum type.
      * @param player   Player who receives the power-up effect.
      * @param position The position where the power-up appears.
      * @return Instance of specified AbstractPowerUp.
      */
-    public AbstractPowerUp createFlyingPowerUp(PowerUpEnum type, Player player, Vector2 position) {
+    public iPowerUp createFlyingPowerUp(PowerUpEnum type, Player player, Vector2 position) {
         Texture texture;
         return switch (type) {
             case FLYING -> {

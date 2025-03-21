@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -58,7 +59,7 @@ public class PowerUpManager {
 
             PowerUpEnum type = PowerUpEnum.valueOf(typeStr.toUpperCase());
 
-            AbstractPowerUp flyingPowerUp = factory.createFlyingPowerUp(type, player, position);
+            iPowerUp flyingPowerUp = factory.createFlyingPowerUp(type, player, position);
     
             Sprite sprite = flyingPowerUp.getSprite();
             sprite.setPosition(position.x - sprite.getWidth() / 2f, position.y - sprite.getHeight() / 2f);
@@ -110,6 +111,19 @@ public class PowerUpManager {
         return removalQueue;
     }
     
+
+     /**
+     * Renders all power-ups that are not collected.
+     * 
+     * @param batch
+     */
+    public void render(SpriteBatch batch) {
+        for (PowerUpObject powerUp : getPowerUps()) {
+            if (!powerUp.isCollected()) {
+                powerUp.getSprite().draw(batch);
+            }
+}
+}
 }
 
 
