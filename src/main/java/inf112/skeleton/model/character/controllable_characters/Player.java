@@ -63,11 +63,6 @@ public class Player extends Character {
         }
     }
 
-    public void setPosition(Vector2 position) {
-        getBody().setTransform(position, getBody().getAngle());
-    }
-
-
     /**
      * Enables or disables collision for the object's body.
      * When collision is enabled, the fixture behaves as a solid object.
