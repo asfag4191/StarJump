@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.Stats;
+import inf112.skeleton.model.items.powerup.AbstractPowerUp;
 
 /**
  * Represents the player character in the game.
@@ -20,8 +21,16 @@ import inf112.skeleton.model.character.Stats;
  * player-specific functionality such as jumping and rendering.
  */
 public class Player extends Character {
-    private static final float JUMP_FORCE = 5f;
+    private static final float JUMP_FORCE = 7f;
 
+    // Power-up related fields
+    private boolean isFlying = false;
+    private float powerUpTimer = 0;
+    public boolean isGrounded = false;
+    private int jumpMade = 0;
+    private final int MAX_JUMP = 2;
+    //private float flyingTime = 0f; // flying duration timer
+    private final float MAX_FLYING_TIME = 1f; // flying duration (2 seconds)
 
     /**
      * Creates a new player character with the given size and world.
@@ -53,14 +62,6 @@ public class Player extends Character {
         }
     }
 
-    public void setPosition(Vector2 position) {
-        getBody().setTransform(position, getBody().getAngle());
-    }
-
-    public Body getBody() {
-        return this.body;
-    }
-
     /**
      * Enables or disables collision for the object's body.
      * When collision is enabled, the fixture behaves as a solid object.
@@ -70,5 +71,18 @@ public class Player extends Character {
      */
     public void setCollisionEnabled(boolean enabled) {
         this.getBody().getFixtureList().first().setSensor(!enabled);
+    }
+    public void jump(){
+        if (jumpMade < MAX_JUMP) {
+            body.setLinearVelocity(body.getLinearVelocity().x, 0);
+            body.applyLinearImpulse(new Vector2(0, JUMP_FORCE), body.getWorldCenter(), true);
+            jumpMade++;
+            isGrounded = false;
+        }
+    }
+
+    public void landed(){
+        jumpMade = 0;
+        isGrounded = true;
     }
 }

@@ -34,11 +34,11 @@ public abstract class InteractiveTileObject implements iItem {
     /**
      * Constructs a new {@code InteractiveTileObject} using the provided screen and map object.
      * This constructor initializes the object's physics body based on the map object (either rectangle or ellipse).
-     * 
+     *
      * @param screen The game screen containing this object.
      * @param object The map object representing this interactive item.
      */
-    public InteractiveTileObject(GameScreen screen, MapObject object) {
+    public InteractiveTileObject(GameScreen screen, MapObject object, short categoryBit) {
         this.object = object;
         this.screen = screen;
         this.world = screen.getWorld();
@@ -76,6 +76,8 @@ public abstract class InteractiveTileObject implements iItem {
         fdef.isSensor = true;
         fixture = body.createFixture(fdef);
         fixture.setUserData(this); // Important for collision detection
+
+        setCategoryFilter(categoryBit);
         shape.dispose();
     }
 
@@ -87,7 +89,7 @@ public abstract class InteractiveTileObject implements iItem {
 
     /**
      * Sets the category filter for this object's fixture. This determines which objects can interact with this object.
-     * 
+     *
      * @param filterBit The filter bit representing the category of the object in the collision system.
      */
     public void setCategoryFilter(short filterBit) {

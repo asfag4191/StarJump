@@ -19,8 +19,7 @@ public class PowerUpObject extends InteractiveTileObject {
     private boolean isCollected = false;
     private final AbstractPowerUp powerUp;
     private final Player player;
-    
-    
+
     /**
      * Constructs a PowerUpObject with the given parameters.
      *
@@ -31,7 +30,7 @@ public class PowerUpObject extends InteractiveTileObject {
      * @param sprite  the sprite representing the power-up
      */
     public PowerUpObject(GameScreen screen, MapObject object, AbstractPowerUp powerUp, Player player, Sprite sprite) {
-        super(screen, object);
+        super(screen, object, StarJump.POWERUP);
         this.powerUp = powerUp;
         this.player = player;
         setCollisionFilter();

@@ -113,4 +113,7 @@ public abstract class Character extends HumanoidBody implements Renderable {
         return this.getTransform().getPosition();
     }
 
+    public void setPosition(Vector2 position){
+        getBody().setTransform(position, getBody().getAngle());
+    }
 }

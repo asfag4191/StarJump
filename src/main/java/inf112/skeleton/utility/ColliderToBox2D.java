@@ -37,16 +37,31 @@ public final class ColliderToBox2D {
         for (MapObject obj : mapObjects) {
             Shape shape;
             BodyDef def = new BodyDef();
+            def.type = BodyDef.BodyType.StaticBody;
 
             // Checks object for type and gets corresponding shape
             if (obj instanceof PolylineMapObject) {
                 shape = getPolyline((PolylineMapObject) obj, ppt);
+                def.position.set(0,0);
 
             } else if (obj instanceof PolygonMapObject) {
                 shape = getPolygon((PolygonMapObject) obj, ppt);
+                def.position.set(0,0);
 
             }  else if (obj instanceof RectangleMapObject) {
-                shape = getRectangle((RectangleMapObject) obj, ppt);
+                Rectangle rectangle = ((RectangleMapObject) obj).getRectangle();//RectangleMapObject) obj, ppt);
+
+                Vector2 position = new Vector2(
+                        (rectangle.x + rectangle.width * 0.5f) / ppt,
+                        (rectangle.y + rectangle.height * 0.5f) / ppt
+                );
+                def.position.set(position);
+
+                PolygonShape polyShape = new PolygonShape();
+                polyShape.setAsBox(rectangle.width * 0.5f / ppt, rectangle.height * 0.5f / ppt);
+
+                shape = polyShape;
+
             } else {
                 String errorMessage = "Error: Unknown map object type: " + obj.getClass().getSimpleName();
                 logger.log(Level.WARNING, errorMessage);
@@ -63,10 +78,12 @@ public final class ColliderToBox2D {
         // ✅ Assign collision filtering
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
+        fixtureDef.isSensor = false;
+
         fixtureDef.filter.categoryBits = StarJump.GROUND_BIT; // Ground objects
         fixtureDef.filter.maskBits = StarJump.PLAYER_BIT; // Only players collide with it
 
-        body.createFixture(fixtureDef);
+        body.createFixture(fixtureDef).setUserData("ground");
         shape.dispose();
         }
     }
