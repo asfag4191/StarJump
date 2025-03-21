@@ -42,25 +42,12 @@ public final class ColliderToBox2D {
             // Checks object for type and gets corresponding shape
             if (obj instanceof PolylineMapObject) {
                 shape = getPolyline((PolylineMapObject) obj, ppt);
-                def.position.set(0,0);
 
             } else if (obj instanceof PolygonMapObject) {
                 shape = getPolygon((PolygonMapObject) obj, ppt);
-                def.position.set(0,0);
 
             }  else if (obj instanceof RectangleMapObject) {
-                Rectangle rectangle = ((RectangleMapObject) obj).getRectangle();//RectangleMapObject) obj, ppt);
-
-                Vector2 position = new Vector2(
-                        (rectangle.x + rectangle.width * 0.5f) / ppt,
-                        (rectangle.y + rectangle.height * 0.5f) / ppt
-                );
-                def.position.set(position);
-
-                PolygonShape polyShape = new PolygonShape();
-                polyShape.setAsBox(rectangle.width * 0.5f / ppt, rectangle.height * 0.5f / ppt);
-
-                shape = polyShape;
+                shape = getRectangle((RectangleMapObject) obj, ppt);
 
             } else {
                 String errorMessage = "Error: Unknown map object type: " + obj.getClass().getSimpleName();
