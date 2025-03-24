@@ -22,6 +22,7 @@ import inf112.skeleton.model.items.powerup.PowerUpManager;
 import inf112.skeleton.utility.ColliderToBox2D;
 import inf112.skeleton.utility.listeners.PowerUpCollisionHandler;
 import inf112.skeleton.utility.listeners.WorldContactListener;
+import inf112.skeleton.view.HUD;
 
 public class GameScreen implements Screen {
     private final static boolean DEBUG_MODE = true;
@@ -39,6 +40,8 @@ public class GameScreen implements Screen {
     private Box2DDebugRenderer debugger;
     private PowerUpManager powerUpManager;
     private SpriteBatch batch;
+    private HUD hud;
+
 
 
     public GameScreen(StarJump game) {
@@ -89,6 +92,10 @@ public class GameScreen implements Screen {
 
         world.setContactListener(contactListener);
 
+        // Initialize HUD with the game's SpriteBatch
+        hud = new HUD(game.batch);
+
+
     }
 
     @Override
@@ -135,6 +142,7 @@ public class GameScreen implements Screen {
     public void resize(int width, int height) {
         game.gameViewport.update(width, height, false);
         // Recenter camera based on fixed world size
+        hud.getHudViewport().update(width, height, true);
         float w = game.gameViewport.getWorldWidth();
         float h = game.gameViewport.getWorldHeight();
         gamecam.position.set(w / 2f, h / 2f, 0);
@@ -157,6 +165,8 @@ public class GameScreen implements Screen {
     public void dispose() {
         map.dispose();
         renderer.dispose();
+        hud.dispose(); 
+
     }
 
     private void debug() {
@@ -224,6 +234,12 @@ public class GameScreen implements Screen {
 
         renderGrid();
         debug();
+
+        // Update HUD
+        //hud.update(player.getHealth(), player.getScore());  // or whatever methods you have
+    
+        // Draw HUD last
+        hud.hudStage.draw();
     }
 
     public TiledMap getMap() {
