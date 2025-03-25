@@ -51,7 +51,7 @@ class PowerUpFactoryTest {
 
     @Test
     void createFlyingPowerUpTest() {
-        iPowerUp powerUp = factory.createFlyingPowerUp(
+        iPowerUp powerUp = factory.createPowerUp(
                 PowerUpEnum.FLYING, 
                 player, 
                 new Vector2(5, 5)
