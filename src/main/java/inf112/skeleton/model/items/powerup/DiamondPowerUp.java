@@ -14,7 +14,7 @@ public class DiamondPowerUp implements iPowerUp {
     private final Sprite sprite;
     private final Vector2 position;
     private final int scoreValue = 10;
-    private int score;
+    private static int score;
 
 
     public DiamondPowerUp(Player player, Vector2 position, Sprite sprite) {
@@ -28,10 +28,15 @@ public class DiamondPowerUp implements iPowerUp {
     public void addScore(int value) {
         score += value;
     }
+
+    public static int getScore() {
+        return score;
+    }
+    
     @Override
     public void applyPowerUpEffect() {
-    addScore(scoreValue);
-    System.out.print("Diamond is collected");
+        addScore(scoreValue);
+        System.out.println("Diamond collected! Current score: " + score); // Debug
     }
 
     @Override
