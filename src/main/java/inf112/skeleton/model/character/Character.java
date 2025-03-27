@@ -27,6 +27,7 @@ public class Character extends HumanoidBody implements Renderable {
         this.hp = stats.maxHp();
         this.size = size;
         this.state = CharacterState.IDLE;
+        this.body.setUserData(this);
     }
 
     /**
