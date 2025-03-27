@@ -36,7 +36,6 @@ public class PowerUpFactory {
                 sprite.setPosition(position.x, position.y);
                 yield new FlyingPowerUp(player, position, sprite);
             }
-            default -> throw new IllegalArgumentException("Unknown power-up type: " + type);
             case DIAMOND -> {
                 texture = new Texture("map/tilemaps/tilesets/Diamond.png");
                 Sprite sprite = new Sprite(texture);
