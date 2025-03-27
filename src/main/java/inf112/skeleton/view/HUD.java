@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import inf112.skeleton.model.items.powerup.DiamondPowerUp;
+
 /**
  * The HUD (Heads-Up Display) class manages the game's user interface elements,
  * such as the player's life and score. It displays these elements on the screen
@@ -33,7 +35,7 @@ public class HUD {
      */
     public HUD(SpriteBatch batch) {
         life = 3;    
-        score = 0;  
+        score = DiamondPowerUp.getScore(); // Get initial score
 
         hudCamera = new OrthographicCamera();
         hudViewport = new FitViewport(1280, 720, hudCamera);
@@ -62,9 +64,9 @@ public class HUD {
      * @param life The player's current life.
      * @param score The player's current score.
      */
-    public void update(int life, int score) {
+    public void update() {
         this.life = life;
-        this.score = score;
+        this.score = DiamondPowerUp.getScore(); // Update score from DiamondPowerUp
         lifeLabel.setText(String.format("LIFE: %d", life));
         scoreLabel.setText(String.format("SCORE: %d", score));
     }

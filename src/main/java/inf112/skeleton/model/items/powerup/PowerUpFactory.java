@@ -26,7 +26,7 @@ public class PowerUpFactory {
      * @param position The position where the power-up appears.
      * @return Instance of specified AbstractPowerUp.
      */
-    public iPowerUp createFlyingPowerUp(PowerUpEnum type, Player player, Vector2 position) {
+    public iPowerUp createPowerUp(PowerUpEnum type, Player player, Vector2 position) {
         Texture texture;
         return switch (type) {
             case FLYING -> {
@@ -36,7 +36,13 @@ public class PowerUpFactory {
                 sprite.setPosition(position.x, position.y);
                 yield new FlyingPowerUp(player, position, sprite);
             }
-            default -> throw new IllegalArgumentException("Unknown power-up type: " + type);
+            case DIAMOND -> {
+                texture = new Texture("map/tilemaps/tilesets/Diamond.png");
+                Sprite sprite = new Sprite(texture);
+                sprite.setSize(1, 1);
+                sprite.setPosition(position.x, position.y);
+                yield new DiamondPowerUp(player, position, sprite);
+            }
         };
     }
 }

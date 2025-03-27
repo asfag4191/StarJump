@@ -239,7 +239,10 @@ public class GameScreen implements Screen {
         //hud.update(player.getHealth(), player.getScore());  // or whatever methods you have
     
         // Draw HUD last
+        hud.update();  // 
+        hud.hudStage.act(dt);
         hud.hudStage.draw();
+
     }
 
     public TiledMap getMap() {

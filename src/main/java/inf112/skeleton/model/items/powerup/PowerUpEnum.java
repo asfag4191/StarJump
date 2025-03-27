@@ -5,5 +5,6 @@ package inf112.skeleton.model.items.powerup;
  * Allowing for easy extension of power-ups.
  */
 public enum PowerUpEnum {
-    FLYING
+    FLYING,
+    DIAMOND
 }

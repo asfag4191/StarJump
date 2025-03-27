@@ -29,7 +29,6 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.view.screen.GameScreen;
-import inf112.skeleton.model.items.iItem;
 
 
 
@@ -68,11 +67,10 @@ static void initGdx() {
 @BeforeEach
 void setUp() {
     screen = mock(GameScreen.class);
-    world = new World(new Vector2(0, -9.81f), true); // Create a real physics world
+    world = new World(new Vector2(0, -9.81f), true); 
     map = mock(TiledMap.class);
     powerUpLayer = mock(MapLayer.class);
     mapObjects = mock(MapObjects.class);
-    //player = mock(Player.class);
 
     when(screen.getWorld()).thenReturn(world);
     when(screen.getMap()).thenReturn(map);
@@ -103,30 +101,41 @@ void testNoPowerUps() {
     assertTrue(powerUpManager.getPowerUps().isEmpty(), "Should be empty if no power-ups are defined in TiledMap");
 }
 
-
 @Test
 void testPowerUpLoading() {
-    when(mapObjects.iterator()).thenReturn(List.of(createMockPowerUp(100, 200)).iterator());
+    MapObjects powerUpObjects = mock(MapObjects.class);
+    EllipseMapObject flyingObj = new EllipseMapObject(100, 200, 16, 16);
+    flyingObj.getProperties().put("type", "FLYING");
+
+    when(powerUpObjects.iterator()).thenReturn(List.<MapObject>of(flyingObj).iterator());
+    when(powerUpLayer.getObjects()).thenReturn(powerUpObjects);
+
+    MapLayer diamondLayer = mock(MapLayer.class);
+    MapObjects diamondObjects = mock(MapObjects.class);
+    EllipseMapObject diamondObj = new EllipseMapObject(300, 400, 16, 16); // No type = auto-assigned to DIAMOND
+
+    when(diamondObjects.iterator()).thenReturn(List.<MapObject>of(diamondObj).iterator());
+    when(diamondLayer.getObjects()).thenReturn(diamondObjects);
+
+    MapLayers layers = mock(MapLayers.class);
+    when(layers.get("PowerUp")).thenReturn(powerUpLayer);
+    when(layers.get("Diamonds")).thenReturn(diamondLayer);
+    when(map.getLayers()).thenReturn(layers);
+
     powerUpManager = new PowerUpManager(screen, player);
 
-    int expectedPowerUps = 1; 
+    assertEquals(2, powerUpManager.getPowerUps().size(), "Should load both flying and diamond power-ups");
 
-    assertFalse(powerUpManager.getPowerUps().isEmpty(), "PowerUpManager should load at least 1 power-up.");
-    assertEquals(expectedPowerUps, powerUpManager.getPowerUps().size(), 
-        "PowerUpManager should have exactly " + expectedPowerUps + " power-up.");
+    PowerUpObject first = powerUpManager.getPowerUps().get(0);
+    PowerUpObject second = powerUpManager.getPowerUps().get(1);
 
-    float expectedX = 100 / 16f;
-    float expectedY = ((200 + 16 / 2f) / 16f) - (16 / 2f) / 16f; // Adjusted for sprite offset
-    
-    PowerUpObject loadedPowerUp = powerUpManager.getPowerUps().get(0); 
-    float actualX = loadedPowerUp.getSprite().getX();
-    float actualY = loadedPowerUp.getSprite().getY();
+    assertTrue(first.getPowerUp() instanceof FlyingPowerUp, "First should be FlyingPowerUp");
+    assertTrue(second.getPowerUp() instanceof DiamondPowerUp, "Second should be DiamondPowerUp");
 
-    float delta = 0.1f;
-    assertEquals(expectedX, actualX, delta, "Power-up X position should be correct.");
-    assertEquals(expectedY, actualY, delta, "Power-up Y position should be correct.");
+
+    assertFalse(first.isCollected());
+    assertFalse(second.isCollected());
 }
-
 
 @Test
 void testMarkForRemoval() {

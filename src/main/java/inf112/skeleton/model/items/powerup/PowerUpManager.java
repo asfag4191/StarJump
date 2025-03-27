@@ -33,42 +33,44 @@ public class PowerUpManager {
         loadPowerUps();
     }
 
-    /**
-    * Loads and initializes power-ups defined in the Tiled map.
-    */
-    private void loadPowerUps() {
-        TiledMap map = screen.getMap();
-    
-        if (map.getLayers().get("PowerUp") == null) {
-            return;
+
+private void loadPowerUps() {
+    TiledMap map = screen.getMap();
+
+    String[] layers = {"PowerUp", "Diamonds"};
+
+    for (String layerName : layers) {
+        if (map.getLayers().get(layerName) == null) {
+            continue;
         }
-        for (MapObject object : map.getLayers().get("PowerUp").getObjects()) {
+
+        for (MapObject object : map.getLayers().get(layerName).getObjects()) {
             if (!(object instanceof EllipseMapObject ellipseObj)) continue;
 
             Ellipse ellipse = ellipseObj.getEllipse();
-    
+
             Vector2 position = new Vector2(
-                (ellipse.x + ellipse.width / 2f) / 16f, 
-                (ellipse.y + ellipse.height / 2f) / 16f
+                    (ellipse.x + ellipse.width / 2f) / 16f,
+                    (ellipse.y + ellipse.height / 2f) / 16f
             );
-    
+
             String typeStr = object.getProperties().get("type", String.class);
             if (typeStr == null) {
-            typeStr = "FLYING";
+                typeStr = layerName.equals("Diamonds") ? "DIAMOND" : "FLYING";
             }
 
             PowerUpEnum type = PowerUpEnum.valueOf(typeStr.toUpperCase());
 
-            iPowerUp flyingPowerUp = factory.createFlyingPowerUp(type, player, position);
-    
-            Sprite sprite = flyingPowerUp.getSprite();
+            iPowerUp powerUp = factory.createPowerUp(type, player, position);
+
+            Sprite sprite = powerUp.getSprite();
             sprite.setPosition(position.x - sprite.getWidth() / 2f, position.y - sprite.getHeight() / 2f);
-    
-            PowerUpObject powerUpObject = new PowerUpObject(screen, object, flyingPowerUp, player, sprite);
+
+            PowerUpObject powerUpObject = new PowerUpObject(screen, object, powerUp, player, sprite);
             powerUps.add(powerUpObject);
         }
     }
-
+}
 
     /**
     * Updates and safely removes power-ups collected by the player.

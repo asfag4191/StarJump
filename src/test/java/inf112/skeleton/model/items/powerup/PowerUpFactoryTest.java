@@ -51,7 +51,7 @@ class PowerUpFactoryTest {
 
     @Test
     void createFlyingPowerUpTest() {
-        iPowerUp powerUp = factory.createFlyingPowerUp(
+        iPowerUp powerUp = factory.createPowerUp(
                 PowerUpEnum.FLYING, 
                 player, 
                 new Vector2(5, 5)
@@ -62,6 +62,15 @@ class PowerUpFactoryTest {
         assertEquals(5, powerUp.getSprite().getY());
     }
 
+    @Test
+    void createDiamondPowerUpTest() {
+        iPowerUp powerUp = factory.createPowerUp(PowerUpEnum.DIAMOND, player, new Vector2(7, 7));
+
+        assertNotNull(powerUp.getSprite());
+        assertEquals(7f, powerUp.getSprite().getX());
+        assertEquals(7f, powerUp.getSprite().getY());
+    }
+    
     @AfterEach
     void tearDown() {
         world.dispose();

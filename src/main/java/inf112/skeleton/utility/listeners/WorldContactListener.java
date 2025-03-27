@@ -36,16 +36,12 @@ public class WorldContactListener implements ContactListener {
         Object userDataA = fixA.getUserData();
         Object userDataB = fixB.getUserData();
 
-        // Clearly separate handling with instanceof checks
         if (userDataA instanceof Player && userDataB instanceof PowerUpObject) {
             powerUpCollisionHandler.handleCollision(contact, fixA, fixB);
         } else if (userDataB instanceof Player && userDataA instanceof PowerUpObject) {
             powerUpCollisionHandler.handleCollision(contact, fixB, fixA);
         } 
-        // Add additional else-if clearly here:
-        // else if (userDataA instanceof Player && userDataB instanceof Enemy) { ... }
 
-        // Handling player-ground collition
         if (userDataA instanceof Player && fixB.getFilterData().categoryBits == StarJump.GROUND_BIT) {
             ((Player) userDataA).landed();
         } else if (userDataB instanceof Player && fixA.getFilterData().categoryBits == StarJump.GROUND_BIT) {
