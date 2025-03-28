@@ -28,7 +28,7 @@ public class GameScreen implements Screen {
     private final static boolean DEBUG_MODE = true;
 
     private final StarJump game;
-    private final TiledMap map;
+    private final TiledMap tmxmap;
     private final OrthogonalTiledMapRenderer renderer;
     private final OrthographicCamera gamecam;
     private final Stage stage;
@@ -42,9 +42,7 @@ public class GameScreen implements Screen {
     private SpriteBatch batch;
     private HUD hud;
 
-
-
-    public GameScreen(StarJump game) {
+    public GameScreen(StarJump game, String map) {
         this.game = game;
 
         // SINGLE SHARED WORLD instance
@@ -62,10 +60,10 @@ public class GameScreen implements Screen {
         shapeRenderer = new ShapeRenderer();
 
         // Load TMX map
-        map = new TmxMapLoader().load("src/main/assets/map/tilemaps/map_level1.tmx");
+        tmxmap = new TmxMapLoader().load("src/main/assets/map/tilemaps/" + map);
 
         // Set up renderer (assuming tiles are 16x16 pixels)
-        renderer = new OrthogonalTiledMapRenderer(map, 1f / 16f);
+        renderer = new OrthogonalTiledMapRenderer(tmxmap, 1f / 16f);
 
         // this.player = worldModel.getPlayer();
         // Center the camera
@@ -75,8 +73,8 @@ public class GameScreen implements Screen {
         gamecam.update();
 
         // Creates a world and adds all colliders from tiled map
-        ColliderToBox2D.parseTiledObjects(this.worldModel.world, map.getLayers().get("Tiles").getObjects(),
-                map.getProperties().get("tilewidth", Integer.class));
+        ColliderToBox2D.parseTiledObjects(this.worldModel.world, tmxmap.getLayers().get("Tiles").getObjects(),
+                tmxmap.getProperties().get("tilewidth", Integer.class));
         this.debugger = new Box2DDebugRenderer();
 
         // Set up power-up
@@ -95,7 +93,10 @@ public class GameScreen implements Screen {
         // Initialize HUD with the game's SpriteBatch
         hud = new HUD(game.batch);
 
+    }
 
+    public GameScreen(StarJump game) {
+        this(game, "map_level1.tmx");
     }
 
     @Override
@@ -111,7 +112,7 @@ public class GameScreen implements Screen {
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
             player.jump();
-            //player.applyImpulse(new Vector2(0, 7f));
+        // player.applyImpulse(new Vector2(0, 7f));
         if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) && player.getVelocity().x <= 2)
             player.applyImpulse(new Vector2(1f, 0));
         if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT) && player.getVelocity().x >= -2)
@@ -163,9 +164,9 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        map.dispose();
+        tmxmap.dispose();
         renderer.dispose();
-        hud.dispose(); 
+        hud.dispose();
 
     }
 
@@ -205,14 +206,10 @@ public class GameScreen implements Screen {
     private void input() {
     }
 
-
-    
     private void draw(float dt) {
         update(dt);
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-
 
         game.gameViewport.apply();
         gamecam.update();
@@ -220,13 +217,10 @@ public class GameScreen implements Screen {
         renderer.setView(gamecam);
         renderer.render();
 
-        
-
         game.batch.setProjectionMatrix(gamecam.combined);
-                //tried here for the read in
 
-        game.batch.begin();  //  Start the SpriteBatch
-        powerUpManager.render(game.batch);  // draw power-ups
+        game.batch.begin(); // Start the SpriteBatch
+        powerUpManager.render(game.batch); // draw power-ups
         powerUpManager.update(dt);
         worldModel.render(game.batch, dt);
         player.render(game.batch, dt);
@@ -235,18 +229,15 @@ public class GameScreen implements Screen {
         renderGrid();
         debug();
 
-        // Update HUD
-        //hud.update(player.getHealth(), player.getScore());  // or whatever methods you have
-    
         // Draw HUD last
-        hud.update();  // 
+        hud.update(); //
         hud.hudStage.act(dt);
         hud.hudStage.draw();
 
     }
 
     public TiledMap getMap() {
-        return map;
+        return tmxmap;
     }
 
     public World getWorld() {
@@ -272,9 +263,9 @@ public class GameScreen implements Screen {
         float viewportWidth = game.gameViewport.getWorldWidth();
 
         // Calculate clamping boundaries
-        float maxCameraY = map.getProperties().get("height", Integer.class) - (viewportHeight / 2f);
+        float maxCameraY = tmxmap.getProperties().get("height", Integer.class) - (viewportHeight / 2f);
         float minCameraY = viewportHeight / 2f;
-        float maxCameraX = map.getProperties().get("width", Integer.class) - (viewportWidth / 2f);
+        float maxCameraX = tmxmap.getProperties().get("width", Integer.class) - (viewportWidth / 2f);
         float minCameraX = viewportWidth / 2f;
 
         // Clamp the camera's position to player position

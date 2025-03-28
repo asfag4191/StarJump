@@ -109,7 +109,6 @@ public class MainMenuScreen implements Screen {
 
         // Draw UI and title
         drawTitle(this.game.uiViewport);
-        // createUI(this.game.uiViewport);
     }
 
     private void input() {
@@ -150,7 +149,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 buttonClick.play(buttonClickVolume);
-                // game.setScreen(new LevelSelectScreen(game));
+                game.setScreen(new LevelSelectScreen(game));
             }
         });
 
