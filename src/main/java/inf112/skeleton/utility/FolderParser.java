@@ -5,6 +5,12 @@ import java.util.ArrayList;
 
 public class FolderParser {
 
+    /**
+     * Get all files in a folder
+     *
+     * @param folderPath path to folder
+     * @return list of file names
+     */
     public static ArrayList<String> getFilesInFolder(String folderPath) {
         File folder = new File(folderPath);
         File[] listOfFiles = folder.listFiles();
@@ -17,6 +23,12 @@ public class FolderParser {
         return fileNames;
     }
 
+    /**
+     * Get all TMX files in a folder
+     *
+     * @param folderPath path to folder
+     * @return list of TMX file names
+     */
     public static ArrayList<String> getTMXFilesInFolder(String folderPath) {
         ArrayList<String> fileNames = getFilesInFolder(folderPath);
         ArrayList<String> tmxFiles = new ArrayList<>();
