@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -39,7 +38,6 @@ public class GameScreen implements Screen {
     private final Player player;
     private Box2DDebugRenderer debugger;
     private PowerUpManager powerUpManager;
-    private SpriteBatch batch;
     private HUD hud;
 
     public GameScreen(StarJump game, String map) {
@@ -78,7 +76,6 @@ public class GameScreen implements Screen {
         this.debugger = new Box2DDebugRenderer();
 
         // Set up power-up
-        batch = new SpriteBatch();
         powerUpManager = new PowerUpManager(this, player);
 
         // Instantiate collision handlers
@@ -136,6 +133,7 @@ public class GameScreen implements Screen {
         input();
         draw(dt);
         debug();
+        renderGrid();
         logic(dt);
     }
 
@@ -173,7 +171,6 @@ public class GameScreen implements Screen {
     private void debug() {
         if (DEBUG_MODE) {
             debugger.render(worldModel.world, gamecam.combined);
-            // debugger.render(world, gamecam.combined);
         }
 
     }
@@ -186,6 +183,9 @@ public class GameScreen implements Screen {
      * Renders the grid from World, makes for easy tile debugging
      */
     private void renderGrid() {
+        if (!DEBUG_MODE)
+            return;
+
         shapeRenderer.setProjectionMatrix(gamecam.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(1, 1, 1, 1); // White grid
@@ -225,9 +225,6 @@ public class GameScreen implements Screen {
         worldModel.render(game.batch, dt);
         player.render(game.batch, dt);
         game.batch.end();
-
-        renderGrid();
-        debug();
 
         // Draw HUD last
         hud.update(); //

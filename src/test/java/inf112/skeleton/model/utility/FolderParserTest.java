@@ -1,9 +1,10 @@
-package inf112.skeleton.utility;
+package inf112.skeleton.model.utility;
 
 import org.junit.jupiter.api.*;
+
+import inf112.skeleton.utility.FolderParser;
+
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
