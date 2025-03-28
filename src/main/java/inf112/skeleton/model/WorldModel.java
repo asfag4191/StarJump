@@ -4,19 +4,12 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 
-import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.model.colliders.BoxCollider;
-import inf112.skeleton.model.items.InteractiveTileObject;
-import inf112.skeleton.utility.ColliderToBox2D;
 import inf112.skeleton.view.Renderable;
 
 public class WorldModel implements Renderable {
@@ -27,20 +20,12 @@ public class WorldModel implements Renderable {
     public WorldModel(World sharedworld) {
         this.world = sharedworld;
         ViewableObjects = new ArrayList<>();
-
-        TiledMap tiledMap = new TmxMapLoader().load("src/main/assets/map/tilemaps/map_level1.tmx");
-        System.out.println("Map loaded successfully!");
-        MapObjects objects = tiledMap.getLayers().get("Tiles").getObjects();
-
-        if (tiledMap.getLayers().get("Tiles") == null) {
-            System.out.println("Error: Layer 'Tiles' not found in TMX file!");
-        }
-        ColliderToBox2D.parseTiledObjects(world, objects,tiledMap.getProperties().get("tilewidth", Integer.class));
-        this.player = createPlayer(new Vector2(1,1));
+        this.player = createPlayer(new Vector2(1, 1));
     }
 
     /**
-     * Creates a new Player instance with the specified size, sets its initial position,
+     * Creates a new Player instance with the specified size, sets its initial
+     * position,
      * and adds it to the list of viewable objects.
      *
      * @param size the dimensions of the player as a Vector2 object
@@ -66,20 +51,6 @@ public class WorldModel implements Renderable {
         world.step(dt, 3, 3);
     }
 
-//    public Character createCharacter(Vector2 size) {
-//        Stats stats = new Stats(
-//                100,
-//                2,
-//                16,
-//                5,
-//                1
-//        );
-//        Character charac = new Character("Tester", stats, size, world);
-//
-//        ViewableObjects.add(charac);
-//        return charac;
-//    }
-
     public BoxCollider createTile(Vector2 position, Vector2 size, Texture texture) {
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.StaticBody;
@@ -92,12 +63,12 @@ public class WorldModel implements Renderable {
     }
 
     public BoxCollider createTile(Vector2 size, Texture texture) {
-        return createTile(new Vector2(0,0), size, texture);
+        return createTile(new Vector2(0, 0), size, texture);
     }
 
     @Override
     public void render(Batch batch, float dt) {
-        for (Renderable obj: ViewableObjects) {
+        for (Renderable obj : ViewableObjects) {
             obj.render(batch, dt);
         }
     }

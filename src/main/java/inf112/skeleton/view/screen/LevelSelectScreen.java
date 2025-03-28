@@ -24,7 +24,6 @@ public class LevelSelectScreen implements Screen {
     private final Stage stage;
     private final Skin skin;
     private final Sound buttonClick;
-    private ArrayList<String> levelFiles;
 
     /**
      * Level select screen
@@ -110,13 +109,9 @@ public class LevelSelectScreen implements Screen {
 
     private void createUI(Table table) {
         HashMap<String, String> levels = new HashMap<>();
-        System.out.println("MAPS: ");
         ArrayList<String> levelFiles = FolderParser.getTMXFilesInFolder("src/main/assets/map/tilemaps");
         for (String levelFile : levelFiles) {
             levels.put(getLevelName(levelFile), levelFile);
-        }
-        for (String levelName : levels.keySet()) {
-            System.out.println(levelName + " -> " + levels.get(levelName));
         }
 
         // Create buttons for each level
