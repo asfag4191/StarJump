@@ -12,7 +12,7 @@ import inf112.skeleton.model.character.controllable_characters.Player;
  */
 public class FlyingPowerUp implements iPowerUp {
 
-    private static final float FLYING_DURATION = 1.0f; 
+    static final float FLYING_DURATION = 1.0f; 
     private final Player player;
     private final Sprite sprite;
     private final Vector2 position; 

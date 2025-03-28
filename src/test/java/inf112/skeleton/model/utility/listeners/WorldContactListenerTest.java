@@ -1,103 +1,153 @@
-// package inf112.skeleton.model.utility.listeners;
+package inf112.skeleton.model.utility.listeners;
 
-// import static org.junit.jupiter.api.Assertions.assertFalse;
-// import org.junit.jupiter.api.BeforeEach;
-// import org.junit.jupiter.api.Test;
-// import static org.mockito.Mockito.mock;
-// import static org.mockito.Mockito.verify;
-// import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-// import com.badlogic.gdx.math.Vector2;
-// import com.badlogic.gdx.physics.box2d.Contact;
-// import com.badlogic.gdx.physics.box2d.Filter;
-// import com.badlogic.gdx.physics.box2d.Fixture;
-// import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.backends.headless.HeadlessApplication;
+import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.World;
 
-// import inf112.skeleton.app.StarJump;
-// import inf112.skeleton.model.character.controllable_characters.Player;
-// import inf112.skeleton.model.items.powerup.PowerUpObject;
-// import inf112.skeleton.utility.listeners.PowerUpCollisionHandler;
-// import inf112.skeleton.utility.listeners.WorldContactListener;
+import inf112.skeleton.app.StarJump;
+import inf112.skeleton.model.character.controllable_characters.Player;
+import inf112.skeleton.model.items.powerup.PowerUpObject;
+import inf112.skeleton.utility.listeners.PowerUpCollisionHandler;
+import inf112.skeleton.utility.listeners.WorldContactListener;
 
-// class WorldContactListenerTest {
 
-//     private WorldContactListener listener;
-//     private PowerUpCollisionHandler powerUpCollisionHandler;
+class WorldContactListenerTest {
 
-//     private Contact contact;
-//     private Fixture fixtureA;
-//     private Fixture fixtureB;
-//     private Filter groundFilter;
+    private WorldContactListener listener;
+    private PowerUpCollisionHandler powerUpCollisionHandler;
 
-//     @BeforeEach
-//     void setUp() {
-//         powerUpCollisionHandler = mock(PowerUpCollisionHandler.class);
-//         listener = new WorldContactListener(powerUpCollisionHandler);
+    private Contact contact;
+    private Fixture fixtureA;
+    private Fixture fixtureB;
+    private Filter groundFilter;
+    private World world;
+    private Player player;
 
-//         contact = mock(Contact.class);
-//         fixtureA = mock(Fixture.class);
-//         fixtureB = mock(Fixture.class);
+    @BeforeAll
+    static void initLibGdx() {
+        new HeadlessApplication(new ApplicationAdapter() {}, new HeadlessApplicationConfiguration());
+    }
+    
+    @BeforeEach
+    void setUp() {
+        powerUpCollisionHandler = mock(PowerUpCollisionHandler.class);
+        listener = new WorldContactListener(powerUpCollisionHandler);
+    
+        Gdx.gl = Gdx.gl20 = Mockito.mock(GL20.class);
+        world = new World(new Vector2(0, -9.81f), true);
+        player = new Player(new Vector2(1, 1), world);
+        contact = mock(Contact.class);
+        fixtureA = mock(Fixture.class);
+        fixtureB = mock(Fixture.class);
+        when(contact.getFixtureA()).thenReturn(fixtureA);
+        when(contact.getFixtureB()).thenReturn(fixtureB);
 
-//         when(contact.getFixtureA()).thenReturn(fixtureA);
-//         when(contact.getFixtureB()).thenReturn(fixtureB);
 
-//         groundFilter = new Filter();
-//         groundFilter.categoryBits = StarJump.GROUND_BIT;
-//     }
+        groundFilter = new Filter();
+        groundFilter.categoryBits = StarJump.GROUND_BIT;
 
-//     @Test
-//     void testPowerUpCollision_PlayerA_PowerUpB() {
-//         Player player = mock(Player.class);
-//         PowerUpObject powerUp = mock(PowerUpObject.class);
+        Filter powerUpFilter = new Filter();
+        powerUpFilter.categoryBits = StarJump.POWERUP;
+    }
 
-//         when(fixtureA.getUserData()).thenReturn(player);
-//         when(fixtureB.getUserData()).thenReturn(powerUp);
+    @Test
+    void testPowerUpCollision_PlayerA_PowerUpB() {
+        PowerUpObject powerUp = mock(PowerUpObject.class);
+        when(fixtureA.getUserData()).thenReturn(player);
+        when(fixtureB.getUserData()).thenReturn(powerUp);
+    
+        // Mock filter data to avoid NullPointerException
+        when(fixtureA.getFilterData()).thenReturn(new Filter());
+        when(fixtureB.getFilterData()).thenReturn(new Filter());
+    
+        listener.beginContact(contact);
+    
+        verify(powerUpCollisionHandler).handleCollision(contact, fixtureA, fixtureB);
+    }
 
-//         listener.beginContact(contact);
+    @Test
+    void testPowerUpCollision_PlayerB_PowerUpA() {
+        PowerUpObject powerUp = mock(PowerUpObject.class);
+        when(fixtureA.getUserData()).thenReturn(powerUp);
+        when(fixtureB.getUserData()).thenReturn(player);
+    
+        // Mock filter data to avoid NullPointerException
+        when(fixtureA.getFilterData()).thenReturn(new Filter());
+        when(fixtureB.getFilterData()).thenReturn(new Filter());
+    
+        listener.beginContact(contact);
+    
+        verify(powerUpCollisionHandler).handleCollision(contact, fixtureB, fixtureA);
+    }
 
-//         verify(powerUpCollisionHandler).handleCollision(contact, fixtureA, fixtureB);
-//     }
+    @Test
+    void testPlayerLandsOnGround_A() {
+        when(fixtureA.getUserData()).thenReturn(player);
+        when(fixtureB.getUserData()).thenReturn(new Object());
+        when(fixtureB.getFilterData()).thenReturn(groundFilter);
+    
+        // To avoid null exception when checking Player
+        when(fixtureA.getFilterData()).thenReturn(new Filter());
+    
+        listener.beginContact(contact);
+    
+        assertFalse(player.isGrounded == false, "Player should be grounded after landing.");
+    }
 
-//     @Test
-//     void testPowerUpCollision_PlayerB_PowerUpA() {
-//         Player player = mock(Player.class);
-//         PowerUpObject powerUp = mock(PowerUpObject.class);
+    @Test
+    void testPlayerLandsOnGround_B() {
+        when(fixtureA.getUserData()).thenReturn(new Object());
+        when(fixtureB.getUserData()).thenReturn(player);
+        when(fixtureA.getFilterData()).thenReturn(groundFilter);
+        when(fixtureB.getFilterData()).thenReturn(new Filter()); // Avoid null
+    
+        listener.beginContact(contact);
+    
+        assertFalse(player.isGrounded == false, "Player should be grounded after landing.");
+    }
 
-//         when(fixtureA.getUserData()).thenReturn(powerUp);
-//         when(fixtureB.getUserData()).thenReturn(player);
+    @Test
+    void testPlayerLeavesGround_A() {
+        // First, simulate that the player has landed
+        player.isGrounded = true;
+    
+        when(fixtureA.getUserData()).thenReturn(player);
+        when(fixtureB.getUserData()).thenReturn(new Object());
+        when(fixtureB.getFilterData()).thenReturn(groundFilter);
+        when(fixtureA.getFilterData()).thenReturn(new Filter());
+    
+        listener.endContact(contact);
+    
+        assertFalse(player.isGrounded, "Player should not be grounded after leaving ground.");
+    }
 
-//         listener.beginContact(contact);
-
-//         verify(powerUpCollisionHandler).handleCollision(contact, fixtureB, fixtureA);
-//     }
-
-//     @Test
-//     void testPlayerLandsOnGround_A() {
-//         Player player = mock(Player.class);
-//         when(fixtureA.getUserData()).thenReturn(player);
-//         when(fixtureB.getUserData()).thenReturn(new Object());
-//         when(fixtureB.getFilterData()).thenReturn(groundFilter);
-
-//         listener.beginContact(contact);
-
-//         verify(player).landed();
-//     }
-
-//     @Test
-//     void testPlayerLandsOnGround_B() {
-//         Player player = mock(Player.class);
-//         when(fixtureA.getUserData()).thenReturn(new Object());
-//         when(fixtureB.getUserData()).thenReturn(player);
-//         when(fixtureA.getFilterData()).thenReturn(groundFilter);
-
-//         listener.beginContact(contact);
-
-//         verify(player).landed();
-//     }
-
-//     @Test
-//     void testPlayerLeavesGround_A() {
-//         DummyPlayer player = new DummyPlayer();
-//         when(fixtureA.getUserData()).thenReturn(player);
-//         when(fixtureB.getUserData()).thenReturn(new Object());
-//         when(fixtureB.getFilterData()).then
+    @Test
+    void testPlayerLeavesGround_B() {
+        player.isGrounded = true;
+    
+        when(fixtureA.getUserData()).thenReturn(new Object());
+        when(fixtureB.getUserData()).thenReturn(player);
+        when(fixtureA.getFilterData()).thenReturn(groundFilter);
+        when(fixtureB.getFilterData()).thenReturn(new Filter());
+    
+        listener.endContact(contact);
+    
+        assertFalse(player.isGrounded, "Player should not be grounded after leaving ground.");
+    }
+}
