@@ -32,7 +32,8 @@ public class StarJump extends Game {
     public static final short POWERUP = 2;
     public static final short DANGEROUS_OBJECTS = 4;
     public static final short GROUND_BIT = 8;
-
+    public static final short DOOR_BIT = 9;
+    
     private GameState gameState;
     public Settings settings;
 

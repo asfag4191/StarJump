@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.WorldModel;
 import inf112.skeleton.model.character.controllable_characters.Player;
+import inf112.skeleton.model.items.door.doorManager;
 import inf112.skeleton.model.items.powerup.PowerUpManager;
 import inf112.skeleton.utility.ColliderToBox2D;
 import inf112.skeleton.utility.listeners.PowerUpCollisionHandler;
@@ -38,6 +39,7 @@ public class GameScreen implements Screen {
     private final Player player;
     private Box2DDebugRenderer debugger;
     private PowerUpManager powerUpManager;
+    private doorManager doorManager;
     private HUD hud;
 
     public GameScreen(StarJump game, String map) {
@@ -77,6 +79,9 @@ public class GameScreen implements Screen {
 
         // Set up power-up
         powerUpManager = new PowerUpManager(this, player);
+
+        // Set up door
+        doorManager = new doorManager(this);
 
         // Instantiate collision handlers
         WorldContactListener contactListener = new WorldContactListener(
@@ -222,6 +227,7 @@ public class GameScreen implements Screen {
         game.batch.begin(); // Start the SpriteBatch
         powerUpManager.render(game.batch); // draw power-ups
         powerUpManager.update(dt);
+        doorManager.update(dt);
         worldModel.render(game.batch, dt);
         player.render(game.batch, dt);
         game.batch.end();
@@ -283,4 +289,10 @@ public class GameScreen implements Screen {
 
         gamecam.update();
     }
+
+    public Player getPlayer() {
+        return player;
+
+    }
+
 }
