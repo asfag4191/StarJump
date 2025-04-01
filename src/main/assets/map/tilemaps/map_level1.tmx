@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="left-up" width="20" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="23" nextobjectid="199">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="left-up" width="20" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="24" nextobjectid="210">
  <tileset firstgid="1" source="tilesets/Background.tsx"/>
  <tileset firstgid="97" source="tilesets/tiles.tsx"/>
  <tileset firstgid="1377" source="tilesets/ground.tsx"/>
@@ -12,15 +12,20 @@
   </layer>
   <layer id="3" name="Stars" width="20" height="100">
    <data encoding="base64" compression="zlib">
-   eJzt10EKgzAURdE/EbsD3YNtN9DWDWi7/9VUnwNBMighCULzr3AHb3j4KDiY2VXd1F0NmfuhnuqlxoTdqsthT2pWb/VJ2J3qDzvXV9ob7lxvuGM9S+PLG+uv1Vv6vnaid394f/HW4v1Gfn9r8Xq7L168ePHixYv3P7zbP6Enr7f74sWLF2+Kd/tf9+T1dl+8ePHixYv3114BxL7aIg==
+   eJzt10EKgzAURdE/kXYHugfbbqDqBmq7/9W0fRkIwYkhEcH8K9zBGx4+CvZmdlN39VB94X6qQY1qytgXdY32S83qrT4Zu1VdtEt9e3vXu9S73qmeX+PLm+qv1bv3fe1A7/Lw/uKtxftN/P7W4vV2X7x48eLFixfvObzhn9CT19t98eLFizfHG/7XPXm93RcvXrx48W5vc+aN9x+Zbtn2
   </data>
   </layer>
  </group>
  <layer id="2" name="Colliders" width="20" height="100">
   <data encoding="base64" compression="zlib">
-   eJztmW0OgjAMhpfdSC7ixyX8ofeQRA/tFiAYddiSTtrufZKm+wFje/vBAiEATVxiCNcoN989zfUQnO8c6dYire+fS+382Sc7MNfRGqjfGel9r9Vy6R5KnLjxpNYJ99qtkYynRJ3cnNcV+sjMmnzJ+fFqgIen8yjO2GWgySfvvcNi/+gd5bv19dfEQ3wzW+0Dmi1juQdmJk36P63/13Os5loJLf2n5rOt5j6Vb7pRvol4Q8O5T0MtaQA68IFmA5T61fLemqj9v3KXxl0cfGnM8cdkp9GXxhz/BCxfXh0=
+   eJztmWsOgjAMgJfdSC/i4xKS6D0k0UO7BoloBNvZdV3plzTdD1hHX4wRgqOJcwzhEvnmu6W57ozznSJe1sjan59K6fzZJdkT18FJJzRfrp3O6/cN7ufO9eXSPZg4UeOJrRPqtbXhjCdHnVyN15X3kRc5+QL5MRWHhqX9qKU9Nve+xYJPuPnsHS32j95IvgM11y/x3fGPDYn4wvpGKUWtPG21JgAJn7XcA4HRJ73Q+n/ZqZVrS7Vr4cyjpO1Wcx/LN79hzkSsoWHfp6GWNOB+oOM+G8DUr5b31pSS/yw3SW/joOfGFH1IcnzquTFFPwCj72RT
   </data>
  </layer>
+ <objectgroup id="23" name="Enemy">
+  <object id="200" x="96" y="928" width="16" height="16"/>
+  <object id="205" x="80" y="736" width="16" height="16"/>
+  <object id="208" x="80" y="288" width="16" height="16"/>
+ </objectgroup>
  <objectgroup id="19" name="Dangerous_objects">
   <object id="144" x="208" y="240">
    <polygon points="0,0 -16,0 0,16 16,0"/>
@@ -37,7 +42,7 @@
  </objectgroup>
  <objectgroup id="18" name="Door">
   <object id="143" x="0" y="80" width="32" height="32"/>
-  <object id="198" x="256" y="1536" width="32" height="32"/>
+  <object id="209" x="272" y="1536" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="17" name="Tiles">
   <object id="97" x="0" y="1520" height="80"/>
@@ -100,6 +105,12 @@
   <object id="195" x="64" y="1104" width="16" height="16"/>
   <object id="196" x="160" y="1120" width="16" height="16"/>
   <object id="197" x="0" y="848" width="16" height="16"/>
+  <object id="201" x="32" y="912" width="16" height="32"/>
+  <object id="202" x="112" y="928" width="16" height="16"/>
+  <object id="203" x="32" y="736" width="16" height="16"/>
+  <object id="204" x="128" y="736" width="16" height="16"/>
+  <object id="206" x="64" y="272" width="16" height="48"/>
+  <object id="207" x="160" y="288" width="16" height="16"/>
  </objectgroup>
  <layer id="13" name="Objects" width="20" height="100">
   <data encoding="base64" compression="zlib">
@@ -107,6 +118,9 @@
   </data>
  </layer>
  <objectgroup id="22" name="Diamonds">
+  <properties>
+   <property name="type" value="DIAMOND"/>
+  </properties>
   <object id="176" x="176" y="1552" width="16" height="16">
    <ellipse/>
   </object>
@@ -142,6 +156,9 @@
   </object>
  </objectgroup>
  <objectgroup id="20" name="PowerUp">
+  <properties>
+   <property name="type" value="FLYING"/>
+  </properties>
   <object id="159" x="144" y="1376" width="16" height="16">
    <ellipse/>
   </object>
