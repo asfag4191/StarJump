@@ -10,13 +10,13 @@ import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.model.items.InteractiveTileObject;
 import inf112.skeleton.view.screen.GameScreen;
 
-public class doorObject extends InteractiveTileObject {
+public class DoorObject extends InteractiveTileObject {
 
     private final Player player;
     private final Rectangle bounds;
     private boolean triggered = false;
 
-    public doorObject(GameScreen screen, MapObject object, Player player) {
+    public DoorObject(GameScreen screen, MapObject object, Player player) {
         super(screen, object, StarJump.DOOR_BIT);
         this.player = player;
 
@@ -64,5 +64,8 @@ public class doorObject extends InteractiveTileObject {
             triggered = true;
             // Optional: Trigger level complete here
         }
+    }
+    public boolean isTriggered() {
+        return triggered;
     }
 }

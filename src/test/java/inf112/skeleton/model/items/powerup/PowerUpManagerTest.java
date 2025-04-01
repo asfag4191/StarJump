@@ -1,7 +1,5 @@
 package inf112.skeleton.model.items.powerup;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeAll;
@@ -18,7 +16,6 @@ import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.MapProperties;
@@ -36,17 +33,10 @@ import inf112.skeleton.view.screen.GameScreen;
  * Test class for PowerUpManager
  */
 class PowerUpManagerTest {
-
     private PowerUpManager powerUpManager;
     private GameScreen screen;
     private World world;
     private Player player;
-    private TiledMap map;
-    private MapLayer powerUpLayer;
-    private MapObjects mapObjects;
-    private PowerUpObject mockPowerUp;
-
-
 
 @BeforeAll
 static void initGdx() {
@@ -68,21 +58,23 @@ static void initGdx() {
 void setUp() {
     screen = mock(GameScreen.class);
     world = new World(new Vector2(0, -9.81f), true); 
-    map = mock(TiledMap.class);
-    powerUpLayer = mock(MapLayer.class);
-    mapObjects = mock(MapObjects.class);
-
     when(screen.getWorld()).thenReturn(world);
+
+    // Create real TiledMap
+    TiledMap map = new TiledMap();
+
+    MapLayer powerUpLayer = new MapLayer();
+    powerUpLayer.setName("PowerUp");
+    powerUpLayer.getProperties().put("type", "FLYING");
+    EllipseMapObject flyingObj = new EllipseMapObject(100, 200, 16, 16);
+    flyingObj.getProperties().put("type", "FLYING");
+    powerUpLayer.getObjects().add(flyingObj);
+    map.getLayers().add(powerUpLayer);
+
     when(screen.getMap()).thenReturn(map);
 
-    MapLayers mapLayers = mock(MapLayers.class);
-    when(map.getLayers()).thenReturn(mapLayers);
-    when(mapLayers.get("PowerUp")).thenReturn(powerUpLayer);
-    when(powerUpLayer.getObjects()).thenReturn(mapObjects);
-    when(mapObjects.iterator()).thenReturn(List.of(createMockPowerUp(100, 200)).iterator());
-
+    player = mock(Player.class); // Keep mocking Player
     powerUpManager = new PowerUpManager(screen, player);
-  
 }
 
     private MapObject createMockPowerUp(float x, float y) {
@@ -96,18 +88,17 @@ void setUp() {
 
 @Test
 void testNoPowerUps() {
-    when(mapObjects.iterator()).thenReturn(List.<MapObject>of().iterator()); // No power-ups
+    TiledMap map = new TiledMap();
+    when(screen.getMap()).thenReturn(map);
     powerUpManager = new PowerUpManager(screen, player);
-    assertTrue(powerUpManager.getPowerUps().isEmpty(), "Should be empty if no power-ups are defined in TiledMap");
+    assertTrue(powerUpManager.getPowerUps().isEmpty());
 }
 
 
 @Test
 void testPowerUpLoading() {
-    // Create real TiledMap
     TiledMap map = new TiledMap();
-
-    // --- PowerUp Layer ---
+    
     MapLayer powerUpLayer = new MapLayer();
     MapProperties powerUpProps = powerUpLayer.getProperties();
     powerUpProps.put("type", "FLYING");
@@ -119,23 +110,19 @@ void testPowerUpLoading() {
     map.getLayers().add(powerUpLayer);
     powerUpLayer.setName("PowerUp");
 
-    // --- Diamonds Layer ---
     MapLayer diamondLayer = new MapLayer();
     MapProperties diamondProps = diamondLayer.getProperties();
     diamondProps.put("type", "DIAMOND");
 
     MapObjects diamondObjects = diamondLayer.getObjects();
     EllipseMapObject diamondObj = new EllipseMapObject(300, 400, 16, 16);
-    // No "type" property on object = will use layer type
     diamondObjects.add(diamondObj);
     map.getLayers().add(diamondLayer);
     diamondLayer.setName("Diamonds");
 
     when(screen.getMap()).thenReturn(map);
 
-    // Run test
     powerUpManager = new PowerUpManager(screen, player);
-
     assertEquals(2, powerUpManager.getPowerUps().size(), "Should load both flying and diamond power-ups");
 
     PowerUpObject first = powerUpManager.getPowerUps().get(0);
@@ -147,30 +134,37 @@ void testPowerUpLoading() {
 
 @Test
 void testMarkForRemoval() {
-    powerUpManager.markForRemoval(mockPowerUp);
+    EllipseMapObject ellipseMapObject = new EllipseMapObject(100, 200, 16, 16);
+    iPowerUp powerUpMock = mock(iPowerUp.class);
+    Sprite mockSprite = new Sprite();
+    when(powerUpMock.getSprite()).thenReturn(mockSprite);
+
+    PowerUpObject powerUp = new PowerUpObject(screen, ellipseMapObject, powerUpMock, player, mockSprite);
+    powerUpManager.markForRemoval(powerUp);
+
     assertEquals(1, powerUpManager.getRemovalQueue().size(), "Power-up should be added to removal queue.");
 }
 @Test
 void testUpdateRemovesPowerUps() {
     powerUpManager.getPowerUps().clear();
     assertEquals(0, powerUpManager.getPowerUps().size(), "powerUps should be empty before adding any power-ups.");
-    
+
     EllipseMapObject ellipseMapObject = new EllipseMapObject(100, 200, 16, 16);
     iPowerUp powerUpMock = mock(iPowerUp.class);
     Sprite mockSprite = new Sprite();
-    when(powerUpMock.getSprite()).thenReturn(mockSprite); 
-    
-    PowerUpObject realPowerUp = new PowerUpObject(screen, ellipseMapObject, powerUpMock, player, mockSprite);
-        
-    powerUpManager.getPowerUps().add(realPowerUp);
-    assertEquals(1, powerUpManager.getPowerUps().size(), "powerUps should contain exactly 1 power-up.");
-    powerUpManager.markForRemoval(realPowerUp);
-    
+    when(powerUpMock.getSprite()).thenReturn(mockSprite);
+
+    PowerUpObject powerUp = new PowerUpObject(screen, ellipseMapObject, powerUpMock, player, mockSprite);
+
+    powerUpManager.getPowerUps().add(powerUp);
+    assertEquals(1, powerUpManager.getPowerUps().size(), "Should contain exactly 1 power-up.");
+
+    powerUpManager.markForRemoval(powerUp);
     assertEquals(1, powerUpManager.getRemovalQueue().size(), "Power-up should be added to removal queue.");
 
-    powerUpManager.update(0.016f); 
+    powerUpManager.update(0.016f);
 
     assertEquals(0, powerUpManager.getPowerUps().size(), "Power-ups should be removed after update.");
     assertTrue(powerUpManager.getRemovalQueue().isEmpty(), "Removal queue should be cleared after update.");
-}
+    }
 }

@@ -46,12 +46,10 @@ public class FlyingPowerUpTest {
     public void testFlyingEffectExpiresAfterDuration() {
         flyingPowerUp.applyPowerUpEffect();
 
-        // Immediately after applying effect
         assertEquals(0f, player.getBody().getGravityScale(), "Gravity should be zero immediately after applying.");
         assertTrue(player.getBody().getLinearVelocity().y > 0f, "Player should have upward velocity immediately.");
         assertTrue(player.getBody().getFixtureList().first().isSensor(), "Collision should be disabled immediately.");
 
-        // Simulate timer expiration
         Timer.instance().clear();
         Timer.Task flyingEffectTask = new Timer.Task() {
             @Override

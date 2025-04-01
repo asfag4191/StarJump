@@ -8,11 +8,14 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 
 import inf112.skeleton.view.screen.GameScreen;
 
-public class doorManager {
-    private final List<doorObject> doors = new ArrayList<>();
+/**
+ * Manages the door objects in the game.
+ */
+public class DoorManager {
+    private final List<DoorObject> doors = new ArrayList<>();
     private final GameScreen screen;
 
-    public doorManager(GameScreen screen) {
+    public DoorManager(GameScreen screen) {
         this.screen = screen;
         loadDoors();
     }
@@ -22,16 +25,16 @@ public class doorManager {
         if (map.getLayers().get("Door") == null) return;
 
         for (MapObject object : map.getLayers().get("Door").getObjects()) {
-            doors.add(new doorObject(screen, object, screen.getPlayer()));
+            doors.add(new DoorObject(screen, object, screen.getPlayer()));
         }
     }
 
-    public List<doorObject> getDoors() {
+    public List<DoorObject> getDoors() {
         return doors;
     }
 
     public void update(float dt) {
-        for (doorObject door : doors) {
+        for (DoorObject door : doors) {
             door.checkPlayerAtMiddle();
         }
     }
