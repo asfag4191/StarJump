@@ -1,6 +1,5 @@
 package inf112.skeleton.model.items;
 
-import inf112.skeleton.app.StarJump;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -21,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 
+import inf112.skeleton.app.StarJump;
 import inf112.skeleton.view.screen.GameScreen;
 
 /**
@@ -74,6 +74,19 @@ class InteractiveTileObjectTest {
         testObject.setCategoryFilter((short) 2);
         assertEquals(2, testObject.getFixture().getFilterData().categoryBits);
     }
+
+    @Test
+    void testUnsupportedMapObjectThrowsException() {
+    MapObject mockObject = mock(MapObject.class); 
+    IllegalArgumentException exception = org.junit.jupiter.api.Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () -> new TestInteractiveTileObject(screen, mockObject)
+    );
+    assertEquals(
+            "Unsupported object type: " + mockObject.getClass().getSimpleName(),
+            exception.getMessage()
+    );
+}
 
     @Test
     void testDispose() {

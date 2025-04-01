@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="left-up" width="20" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="24" nextobjectid="210">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="left-up" width="20" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="24" nextobjectid="209">
  <tileset firstgid="1" source="tilesets/Background.tsx"/>
  <tileset firstgid="97" source="tilesets/tiles.tsx"/>
  <tileset firstgid="1377" source="tilesets/ground.tsx"/>
@@ -18,7 +18,7 @@
  </group>
  <layer id="2" name="Colliders" width="20" height="100">
   <data encoding="base64" compression="zlib">
-   eJztmWsOgjAMgJfdSC/i4xKS6D0k0UO7BoloBNvZdV3plzTdD1hHX4wRgqOJcwzhEvnmu6W57ozznSJe1sjan59K6fzZJdkT18FJJzRfrp3O6/cN7ufO9eXSPZg4UeOJrRPqtbXhjCdHnVyN15X3kRc5+QL5MRWHhqX9qKU9Nve+xYJPuPnsHS32j95IvgM11y/x3fGPDYn4wvpGKUWtPG21JgAJn7XcA4HRJ73Q+n/ZqZVrS7Vr4cyjpO1Wcx/LN79hzkSsoWHfp6GWNOB+oOM+G8DUr5b31pSS/yw3SW/joOfGFH1IcnzquTFFPwCj72RT
+   eJztmG0OwiAMhgk30ov4cQmX6D1c4g4tzVz8iJstllK6PkkDPzYKbV/GCMHRxDmGcIl8493SWAPjeKeItzWy9vVTKV0/u2R74jw46YTGy/XTuX7f4F53biyX3sHkiZpPrE6oz9aGM58cOrka15XvI09y6gXq49UcGpbOo5bO2NznFgsx4eZz72hx/+iN1DtQc/4S/x3/+JDIL8xvslLUqtNWNQFIxKzlPRCYYtILzf+Xn1q1tqRdC3ceJX23WvtYvsUNcydiDQ3nPg1a0oDHgY7HbASjXy3fLSk2aW3bOLZzfUp7SHZ8tHN9SnsHEiBiXQ==
   </data>
  </layer>
  <objectgroup id="23" name="Enemy">
@@ -42,7 +42,6 @@
  </objectgroup>
  <objectgroup id="18" name="Door">
   <object id="143" x="0" y="80" width="32" height="32"/>
-  <object id="209" x="272" y="1536" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="17" name="Tiles">
   <object id="97" x="0" y="1520" height="80"/>

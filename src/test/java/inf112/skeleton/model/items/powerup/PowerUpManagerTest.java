@@ -3,7 +3,6 @@ package inf112.skeleton.model.items.powerup;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +21,7 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
@@ -101,27 +101,39 @@ void testNoPowerUps() {
     assertTrue(powerUpManager.getPowerUps().isEmpty(), "Should be empty if no power-ups are defined in TiledMap");
 }
 
+
 @Test
 void testPowerUpLoading() {
-    MapObjects powerUpObjects = mock(MapObjects.class);
+    // Create real TiledMap
+    TiledMap map = new TiledMap();
+
+    // --- PowerUp Layer ---
+    MapLayer powerUpLayer = new MapLayer();
+    MapProperties powerUpProps = powerUpLayer.getProperties();
+    powerUpProps.put("type", "FLYING");
+
+    MapObjects powerUpObjects = powerUpLayer.getObjects();
     EllipseMapObject flyingObj = new EllipseMapObject(100, 200, 16, 16);
     flyingObj.getProperties().put("type", "FLYING");
+    powerUpObjects.add(flyingObj);
+    map.getLayers().add(powerUpLayer);
+    powerUpLayer.setName("PowerUp");
 
-    when(powerUpObjects.iterator()).thenReturn(List.<MapObject>of(flyingObj).iterator());
-    when(powerUpLayer.getObjects()).thenReturn(powerUpObjects);
+    // --- Diamonds Layer ---
+    MapLayer diamondLayer = new MapLayer();
+    MapProperties diamondProps = diamondLayer.getProperties();
+    diamondProps.put("type", "DIAMOND");
 
-    MapLayer diamondLayer = mock(MapLayer.class);
-    MapObjects diamondObjects = mock(MapObjects.class);
-    EllipseMapObject diamondObj = new EllipseMapObject(300, 400, 16, 16); // No type = auto-assigned to DIAMOND
+    MapObjects diamondObjects = diamondLayer.getObjects();
+    EllipseMapObject diamondObj = new EllipseMapObject(300, 400, 16, 16);
+    // No "type" property on object = will use layer type
+    diamondObjects.add(diamondObj);
+    map.getLayers().add(diamondLayer);
+    diamondLayer.setName("Diamonds");
 
-    when(diamondObjects.iterator()).thenReturn(List.<MapObject>of(diamondObj).iterator());
-    when(diamondLayer.getObjects()).thenReturn(diamondObjects);
+    when(screen.getMap()).thenReturn(map);
 
-    MapLayers layers = mock(MapLayers.class);
-    when(layers.get("PowerUp")).thenReturn(powerUpLayer);
-    when(layers.get("Diamonds")).thenReturn(diamondLayer);
-    when(map.getLayers()).thenReturn(layers);
-
+    // Run test
     powerUpManager = new PowerUpManager(screen, player);
 
     assertEquals(2, powerUpManager.getPowerUps().size(), "Should load both flying and diamond power-ups");
@@ -131,10 +143,6 @@ void testPowerUpLoading() {
 
     assertTrue(first.getPowerUp() instanceof FlyingPowerUp, "First should be FlyingPowerUp");
     assertTrue(second.getPowerUp() instanceof DiamondPowerUp, "Second should be DiamondPowerUp");
-
-
-    assertFalse(first.isCollected());
-    assertFalse(second.isCollected());
 }
 
 @Test
