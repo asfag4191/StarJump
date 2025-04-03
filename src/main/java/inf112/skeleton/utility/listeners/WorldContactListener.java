@@ -1,7 +1,13 @@
-package inf112.skeleton.tools.listeners;
+package inf112.skeleton.utility.listeners;
 
-import com.badlogic.gdx.physics.box2d.*;
-import inf112.skeleton.model.game_objects.Player;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.Manifold;
+
+import inf112.skeleton.app.StarJump;
+import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.model.items.powerup.PowerUpObject;
 
 public class WorldContactListener implements ContactListener {
@@ -30,18 +36,35 @@ public class WorldContactListener implements ContactListener {
         Object userDataA = fixA.getUserData();
         Object userDataB = fixB.getUserData();
 
-        // Clearly separate handling with instanceof checks
         if (userDataA instanceof Player && userDataB instanceof PowerUpObject) {
             powerUpCollisionHandler.handleCollision(contact, fixA, fixB);
         } else if (userDataB instanceof Player && userDataA instanceof PowerUpObject) {
             powerUpCollisionHandler.handleCollision(contact, fixB, fixA);
         } 
-        // Add additional else-if clearly here:
-        // else if (userDataA instanceof Player && userDataB instanceof Enemy) { ... }
+
+        if (userDataA instanceof Player && fixB.getFilterData().categoryBits == StarJump.GROUND_BIT) {
+            ((Player) userDataA).landed();
+        } else if (userDataB instanceof Player && fixA.getFilterData().categoryBits == StarJump.GROUND_BIT) {
+            ((Player) userDataB).landed();
+        }
 
     }
 
-    @Override public void endContact(Contact contact) {}
+    @Override public void endContact(Contact contact) {
+        Fixture fixA = contact.getFixtureA();
+        Fixture fixB = contact.getFixtureB();
+
+        if (fixA.getUserData() == null || fixB.getUserData() == null) return;
+
+        Object userDataA = fixA.getUserData();
+        Object userDataB = fixB.getUserData();
+
+        if (userDataA instanceof Player && fixB.getFilterData().categoryBits == StarJump.GROUND_BIT) {
+            ((Player) userDataA).isGrounded = false;
+        } else if (userDataB instanceof Player && fixA.getFilterData().categoryBits == StarJump.GROUND_BIT) {
+            ((Player) userDataB).isGrounded = false;
+        }
+    }
     @Override public void preSolve(Contact contact, Manifold oldManifold) {}
     @Override public void postSolve(Contact contact, ContactImpulse impulse) {}
 }

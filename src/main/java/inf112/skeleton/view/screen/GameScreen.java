@@ -1,46 +1,57 @@
 package inf112.skeleton.view.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.Transform;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import inf112.skeleton.model.StarJump;
+
+import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.WorldModel;
-import inf112.skeleton.model.game_objects.Player;
+import inf112.skeleton.model.character.controllable_characters.Player;
+import inf112.skeleton.model.items.door.doorManager;
 import inf112.skeleton.model.items.powerup.PowerUpManager;
-import inf112.skeleton.tools.listeners.PowerUpCollisionHandler;
-import inf112.skeleton.tools.listeners.WorldContactListener;
 import inf112.skeleton.utility.ColliderToBox2D;
+import inf112.skeleton.utility.listeners.PowerUpCollisionHandler;
+import inf112.skeleton.utility.listeners.WorldContactListener;
+import inf112.skeleton.view.HUD;
 
 public class GameScreen implements Screen {
     private final static boolean DEBUG_MODE = true;
 
     private final StarJump game;
-    private final TiledMap map;
+    private final TiledMap tmxmap;
     private final OrthogonalTiledMapRenderer renderer;
     private final OrthographicCamera gamecam;
     private final Stage stage;
     private ShapeRenderer shapeRenderer;
     private final int gridSize = 1;
-    public final WorldModel worldModel;
-    private Player player;
+    private final World world;
+    private final WorldModel worldModel;
+    private final Player player;
     private Box2DDebugRenderer debugger;
     private PowerUpManager powerUpManager;
+    private doorManager doorManager;
+    private HUD hud;
 
-    public GameScreen(StarJump game) {
+    public GameScreen(StarJump game, String map) {
         this.game = game;
-        this.worldModel = new WorldModel(new Vector2(0, -9.81f*2), true);
-        this.debugger = new Box2DDebugRenderer(true, true, false, true, true, true);
-        this.player = worldModel.createPlayer();
+
+        // SINGLE SHARED WORLD instance
+        this.world = new World(new Vector2(0, -9.81f), true);
+
+        // Pass the SAME WORLD to WorldModel
+        this.worldModel = new WorldModel(world);
+        this.player = worldModel.getPlayer();
+        this.debugger = new Box2DDebugRenderer(true, true, true, true, true, true);
 
         // Use gameViewport (tile-based)
         this.gamecam = (OrthographicCamera) game.gameViewport.getCamera();
@@ -49,11 +60,12 @@ public class GameScreen implements Screen {
         shapeRenderer = new ShapeRenderer();
 
         // Load TMX map
-        map = new TmxMapLoader().load("src/main/assets/map/tilemaps/map1.tmx");
+        tmxmap = new TmxMapLoader().load("src/main/assets/map/tilemaps/" + map);
 
         // Set up renderer (assuming tiles are 16x16 pixels)
-        renderer = new OrthogonalTiledMapRenderer(map, 1f / 16f);
+        renderer = new OrthogonalTiledMapRenderer(tmxmap, 1f / 16f);
 
+        // this.player = worldModel.getPlayer();
         // Center the camera
         float w = game.gameViewport.getWorldWidth();
         float h = game.gameViewport.getWorldHeight();
@@ -61,39 +73,61 @@ public class GameScreen implements Screen {
         gamecam.update();
 
         // Creates a world and adds all colliders from tiled map
-        ColliderToBox2D.parseTiledObjects(this.worldModel.world, map.getLayers().get("Tiles").getObjects(),
-                map.getProperties().get("tilewidth", Integer.class));
+        ColliderToBox2D.parseTiledObjects(this.worldModel.world, tmxmap.getLayers().get("Tiles").getObjects(),
+                tmxmap.getProperties().get("tilewidth", Integer.class));
+        this.debugger = new Box2DDebugRenderer();
 
         // Set up power-up
         powerUpManager = new PowerUpManager(this, player);
+
+        // Set up door
+        doorManager = new doorManager(this);
+
         // Instantiate collision handlers
         WorldContactListener contactListener = new WorldContactListener(
                 new PowerUpCollisionHandler()
-//              new EnemyCollisionHandler(player),
-//              new DangerCollisionHandler(player)
+        // new EnemyCollisionHandler(player),
+        // new DangerCollisionHandler(player)
         );
 
-        worldModel.world.setContactListener(contactListener);
+        world.setContactListener(contactListener);
 
+        // Initialize HUD with the game's SpriteBatch
+        hud = new HUD(game.batch);
+
+    }
+
+    public GameScreen(StarJump game) {
+        this(game, "map_level1.tmx");
     }
 
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
+    }
 
-        // JUST FOR DEMO
-        float middleX = gamecam.position.x;
-        float middleY = gamecam.position.y;
-        this.player.character.setTransform(new Vector2(middleX, middleY));
+    public void handleInput(float dt) {
+        if (Gdx.input.isTouched())
+            gamecam.position.y += 10 * dt;
+        if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.ESCAPE)) {
+            game.setScreen(new MainMenuScreen(game));
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
+            player.jump();
+        // player.applyImpulse(new Vector2(0, 7f));
+        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) && player.getVelocity().x <= 2)
+            player.applyImpulse(new Vector2(1f, 0));
+        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT) && player.getVelocity().x >= -2)
+            player.applyImpulse(new Vector2(-1f, 0));
     }
 
     public void update(float dt) {
 
-        int mapTileHeight = map.getProperties().get("height", Integer.class);
-        float mapWorldHeight = mapTileHeight; // since 1 world unit equals 1 tile
+        handleInput(dt);
 
-        // Viewport height in world units
-        float viewportHeight = game.gameViewport.getWorldHeight();
+        worldModel.world.step(1 / 60f, 6, 2);
+
+        powerUpManager.update(dt);
 
         gamecam.update();
         adjustCamera(this.player, 3f);
@@ -101,8 +135,10 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float dt) {
-        input(dt);
+        input();
         draw(dt);
+        debug();
+        renderGrid();
         logic(dt);
     }
 
@@ -110,6 +146,7 @@ public class GameScreen implements Screen {
     public void resize(int width, int height) {
         game.gameViewport.update(width, height, false);
         // Recenter camera based on fixed world size
+        hud.getHudViewport().update(width, height, true);
         float w = game.gameViewport.getWorldWidth();
         float h = game.gameViewport.getWorldHeight();
         gamecam.position.set(w / 2f, h / 2f, 0);
@@ -117,34 +154,43 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void pause() {}
+    public void pause() {
+    }
+
     @Override
-    public void resume() {}
+    public void resume() {
+    }
+
     @Override
-    public void hide() {}
+    public void hide() {
+    }
 
     @Override
     public void dispose() {
-        map.dispose();
+        tmxmap.dispose();
         renderer.dispose();
-        worldModel.world.dispose();
+        hud.dispose();
+
     }
 
     private void debug() {
         if (DEBUG_MODE) {
             debugger.render(worldModel.world, gamecam.combined);
         }
+
     }
 
     private void logic(float dt) {
-        worldModel.onStep(dt);
-        powerUpManager.update(dt);
+        // worldModel.onStep(dt);
     }
 
     /**
      * Renders the grid from World, makes for easy tile debugging
      */
     private void renderGrid() {
+        if (!DEBUG_MODE)
+            return;
+
         shapeRenderer.setProjectionMatrix(gamecam.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(1, 1, 1, 1); // White grid
@@ -162,8 +208,7 @@ public class GameScreen implements Screen {
         shapeRenderer.end();
     }
 
-    private void input(float dt) {
-        this.player.controller.update();
+    private void input() {
     }
 
     private void draw(float dt) {
@@ -178,16 +223,28 @@ public class GameScreen implements Screen {
         renderer.render();
 
         game.batch.setProjectionMatrix(gamecam.combined);
-        game.batch.begin();
+
+        game.batch.begin(); // Start the SpriteBatch
+        powerUpManager.render(game.batch); // draw power-ups
+        powerUpManager.update(dt);
+        doorManager.update(dt);
         worldModel.render(game.batch, dt);
+        player.render(game.batch, dt);
         game.batch.end();
 
-        renderGrid();
-        debug();
+        // Draw HUD last
+        hud.update(); //
+        hud.hudStage.act(dt);
+        hud.hudStage.draw();
+
     }
 
     public TiledMap getMap() {
-        return map;
+        return tmxmap;
+    }
+
+    public World getWorld() {
+        return world;
     }
 
     public PowerUpManager getPowerUpManager() {
@@ -196,23 +253,22 @@ public class GameScreen implements Screen {
 
     /**
      * Adjusts the camera to follow the player
-     *
+     * 
      * @param player         The player to follow
      * @param playerCamDelta The maximum distance the camera can be from the player
      */
     private void adjustCamera(Player player, float playerCamDelta) {
-        Transform playerTransform = player.character.getTransform();
-        float playerPosX = playerTransform.getPosition().x;
-        float playerPosY = playerTransform.getPosition().y;
+        float playerPosX = player.getPosition().x;
+        float playerPosY = player.getPosition().y;
 
         // Viewport height in world units
         float viewportHeight = game.gameViewport.getWorldHeight();
         float viewportWidth = game.gameViewport.getWorldWidth();
 
         // Calculate clamping boundaries
-        float maxCameraY = map.getProperties().get("height", Integer.class) - (viewportHeight / 2f);
+        float maxCameraY = tmxmap.getProperties().get("height", Integer.class) - (viewportHeight / 2f);
         float minCameraY = viewportHeight / 2f;
-        float maxCameraX = map.getProperties().get("width", Integer.class) - (viewportWidth / 2f);
+        float maxCameraX = tmxmap.getProperties().get("width", Integer.class) - (viewportWidth / 2f);
         float minCameraX = viewportWidth / 2f;
 
         // Clamp the camera's position to player position
@@ -233,4 +289,10 @@ public class GameScreen implements Screen {
 
         gamecam.update();
     }
+
+    public Player getPlayer() {
+        return player;
+
+    }
+
 }

@@ -1,5 +1,8 @@
 package inf112.skeleton.utility;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
@@ -7,11 +10,15 @@ import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
-import inf112.skeleton.model.StarJump;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.ChainShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.physics.box2d.World;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import inf112.skeleton.app.StarJump;
 
 public final class ColliderToBox2D {
 
@@ -30,6 +37,7 @@ public final class ColliderToBox2D {
         for (MapObject obj : mapObjects) {
             Shape shape;
             BodyDef def = new BodyDef();
+            def.type = BodyDef.BodyType.StaticBody;
 
             // Checks object for type and gets corresponding shape
             if (obj instanceof PolylineMapObject) {
@@ -40,6 +48,7 @@ public final class ColliderToBox2D {
 
             }  else if (obj instanceof RectangleMapObject) {
                 shape = getRectangle((RectangleMapObject) obj, ppt);
+
             } else {
                 String errorMessage = "Error: Unknown map object type: " + obj.getClass().getSimpleName();
                 logger.log(Level.WARNING, errorMessage);
@@ -56,10 +65,12 @@ public final class ColliderToBox2D {
         // ✅ Assign collision filtering
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
+        fixtureDef.isSensor = false;
+
         fixtureDef.filter.categoryBits = StarJump.GROUND_BIT; // Ground objects
         fixtureDef.filter.maskBits = StarJump.PLAYER_BIT; // Only players collide with it
 
-        body.createFixture(fixtureDef);
+        body.createFixture(fixtureDef).setUserData("ground");
         shape.dispose();
         }
     }

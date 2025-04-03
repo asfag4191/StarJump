@@ -1,5 +1,7 @@
 package inf112.skeleton.view.screen;
 
+import java.util.concurrent.TimeUnit;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
@@ -8,18 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import inf112.skeleton.model.StarJump;
 
-import java.util.concurrent.TimeUnit;
-
-/*
-TODO:
- [] Change the layout to use a table instead of forced values
-        - Allows for easier implementation of new features later
- */
+import inf112.skeleton.app.StarJump;
 
 public class MainMenuScreen implements Screen {
     final StarJump game;
@@ -27,21 +23,36 @@ public class MainMenuScreen implements Screen {
     private final Stage stage;
     private final Skin skin;
     private final Sound buttonClick;
+    private float buttonClickVolume = 0.5f;
+
     /**
      * Main menu screen
+     * 
      * @param game
      */
     public MainMenuScreen(StarJump game) {
         this.game = game;
+
+        /* LOAD ASSETS */
+
+        // TO CHANGE FONT OF TITLE AND BUTTONSTYLE, CHANGE THIS SKIN ONLY
+        this.skin = new Skin(Gdx.files.internal("src/main/assets/skins/craftacular/skin/craftacular-ui.json"));
+
+        // TO CHANGE MAIN MENU BACKGROUND, CHANGE THIS
         this.background = new Texture(Gdx.files.internal("src/main/assets/backgrounds/main_menu_background.png"));
-        // Use the UI viewport (pixel-based)
+
+        // TO CHANGE BUTTON CLICK AUDIO, CHANGE THIS
+        this.buttonClick = Gdx.audio.newSound(Gdx.files.internal("src/main/assets/audio/sounds/buttonClick-short.mp3"));
+
+        // Use the UI viewport
         this.stage = new Stage(this.game.uiViewport);
         Gdx.input.setInputProcessor(this.stage);
 
-        /*  TO CHANGE FONT OF TITLE AND BUTTONSTYLE, CHANGE THIS SKIN ONLY  */
-        this.skin = new Skin(Gdx.files.internal("src/main/assets/skins/craftacular/skin/craftacular-ui.json"));
-        /*  TO CHANGE BUTTON CLICK AUDIO, CHANGE THIS  */
-        this.buttonClick = Gdx.audio.newSound(Gdx.files.internal("src/main/assets/audio/sounds/buttonClick-short.mp3"));
+        // Create UI
+        Table table = new Table();
+        table.setFillParent(true);
+        createUI(table);
+        stage.addActor(table);
     }
 
     @Override
@@ -62,7 +73,6 @@ public class MainMenuScreen implements Screen {
     public void resize(int width, int height) {
         game.uiViewport.update(width, height, true);
     }
-
 
     @Override
     public void pause() {
@@ -99,7 +109,6 @@ public class MainMenuScreen implements Screen {
 
         // Draw UI and title
         drawTitle(this.game.uiViewport);
-        createUI(this.game.uiViewport);
     }
 
     private void input() {
@@ -110,46 +119,44 @@ public class MainMenuScreen implements Screen {
     }
 
     /**
-     * Draws the UI onto the screen
-     * Subject to change
-     * @param viewport
+     * Creates the UI for the main menu screen
+     *
+     * To add more elements:
+     * 1. Create the UI-element
+     * 2. Add a listener
+     * 3. Add the element to the table (with padding)
+     * 
+     * @param table
      */
-    private void createUI(Viewport viewport) {
-        float buttonGap = viewport.getWorldHeight() / 90f;
-        float buttonWidth = viewport.getWorldWidth() / 3;
-        float buttonHeight = viewport.getWorldHeight() / 10;
-        float buttonX = viewport.getWorldWidth() / 2f - buttonWidth / 2;
-        float buttonY = viewport.getWorldHeight() / 2f;
-        //float buttonClickVolume = 0.5f * (Float.parseFloat(this.game.settings.getSetting("volume")) / 100);
-
-        // Create buttons
+    private void createUI(Table table) {
+        // UI elements to add
         TextButton startButton = new TextButton("Start Game", skin);
-        startButton.setSize(buttonWidth, buttonHeight);
-        startButton.setPosition(buttonX, buttonY);
-
+        TextButton levelSelectButton = new TextButton("Select Level", skin);
         TextButton optionsButton = new TextButton("Options", skin);
-        optionsButton.setSize(buttonWidth, buttonHeight);
-        optionsButton.setPosition(buttonX, buttonY - buttonHeight - buttonGap);
-
         TextButton quitButton = new TextButton("Quit", skin);
-        quitButton.setSize(buttonWidth, buttonHeight);
-        quitButton.setPosition(buttonX, buttonY - 2*buttonHeight - 2*buttonGap);
 
         // Add buttons click events
         startButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //buttonClick.play(buttonClickVolume);
+                // buttonClick.play(buttonClickVolume);
                 game.setScreen(new GameScreen(game)); // Switch to GameScreen
                 dispose();
+            }
+        });
+
+        levelSelectButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                buttonClick.play(buttonClickVolume);
+                game.setScreen(new LevelSelectScreen(game));
             }
         });
 
         quitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //buttonClick.play(buttonClickVolume);
-                // just to allow the buttonclick-sound to play
+                buttonClick.play(buttonClickVolume);
                 try {
                     TimeUnit.MILLISECONDS.sleep(400);
                 } catch (InterruptedException e) {
@@ -162,20 +169,25 @@ public class MainMenuScreen implements Screen {
         optionsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //buttonClick.play(buttonClickVolume);
+                buttonClick.play(buttonClickVolume);
                 game.setScreen(new SettingsScreen(game));
             }
         });
 
-        // Add buttons to the stage
-        stage.addActor(startButton);
-        stage.addActor(optionsButton);
-        stage.addActor(quitButton);
+        // Add buttons to the table
+        table.add(startButton).fillX().uniformX();
+        table.row().pad(0, 0, 0, 0);
+        table.add(levelSelectButton).fillX().uniformX();
+        table.row().pad(0, 0, 0, 0);
+        table.add(optionsButton).fillX().uniformX();
+        table.row().pad(0, 0, 0, 0);
+        table.add(quitButton).fillX().uniformX();
     }
 
     /**
      * Draws title on menu screen
      * Separated from rest of UI in case we want to animate the screen
+     * 
      * @param viewport
      */
     private void drawTitle(Viewport viewport) {

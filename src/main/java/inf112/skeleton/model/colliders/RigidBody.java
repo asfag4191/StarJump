@@ -140,4 +140,9 @@ public class RigidBody {
         bdy.createFixture(fixtureDef);
         if (doDispose) fixtureDef.shape.dispose();
     }
+
+    public Body getBody(){
+        return this.body;
+    }
+
 }
