@@ -52,7 +52,6 @@ class DoorObjectTest {
     void setUp() {
         world = new World(new Vector2(0, -9.81f), true);
 
-        // Mock Player
         player = mock(Player.class);
         var body = world.createBody(new BodyDef());
         when(player.getBody()).thenReturn(body);
@@ -77,7 +76,6 @@ class DoorObjectTest {
         float doorCenterX = (mapObject.getRectangle().x + mapObject.getRectangle().width / 2f) / 16f;
         float doorBottomY = mapObject.getRectangle().y / 16f;
     
-        // Move player to the door center
         player.getBody().setTransform(new Vector2(doorCenterX, doorBottomY), 0);
         doorObject.checkPlayerAtMiddle();
         assertTrue(doorObject.isTriggered(), "Door should trigger when player is at middle");
