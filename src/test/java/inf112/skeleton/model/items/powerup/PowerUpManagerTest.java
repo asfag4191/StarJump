@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.ApplicationListener;
@@ -15,8 +16,8 @@ import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
@@ -73,18 +74,9 @@ void setUp() {
 
     when(screen.getMap()).thenReturn(map);
 
-    player = mock(Player.class); // Keep mocking Player
+    player = mock(Player.class); 
     powerUpManager = new PowerUpManager(screen, player);
 }
-
-    private MapObject createMockPowerUp(float x, float y) {
-    EllipseMapObject ellipseMapObject = new EllipseMapObject(x, y, 16, 16);
-    
-    ellipseMapObject.getProperties().put("type", "FLYING");
-
-    return ellipseMapObject;
-}
-    
 
 @Test
 void testNoPowerUps() {
@@ -93,7 +85,6 @@ void testNoPowerUps() {
     powerUpManager = new PowerUpManager(screen, player);
     assertTrue(powerUpManager.getPowerUps().isEmpty());
 }
-
 
 @Test
 void testPowerUpLoading() {
@@ -155,6 +146,7 @@ void testUpdateRemovesPowerUps() {
     when(powerUpMock.getSprite()).thenReturn(mockSprite);
 
     PowerUpObject powerUp = new PowerUpObject(screen, ellipseMapObject, powerUpMock, player, mockSprite);
+    powerUp.setBody(world.createBody(new com.badlogic.gdx.physics.box2d.BodyDef()));
 
     powerUpManager.getPowerUps().add(powerUp);
     assertEquals(1, powerUpManager.getPowerUps().size(), "Should contain exactly 1 power-up.");
@@ -166,5 +158,48 @@ void testUpdateRemovesPowerUps() {
 
     assertEquals(0, powerUpManager.getPowerUps().size(), "Power-ups should be removed after update.");
     assertTrue(powerUpManager.getRemovalQueue().isEmpty(), "Removal queue should be cleared after update.");
+    }
+
+@Test
+void testRender() {
+    Sprite sprite = mock(Sprite.class);
+    SpriteBatch batch = mock(SpriteBatch.class);
+    iPowerUp powerUpMock = mock(iPowerUp.class);
+
+    when(powerUpMock.getSprite()).thenReturn(sprite);
+
+    EllipseMapObject mapObject = new EllipseMapObject(100, 100, 16, 16);
+    PowerUpObject visible = new PowerUpObject(screen, mapObject, powerUpMock, player, sprite);
+    visible.setCollected(false);
+
+    PowerUpObject hidden = new PowerUpObject(screen, mapObject, powerUpMock, player, sprite);
+    hidden.setCollected(true);
+
+    powerUpManager.getPowerUps().clear();
+    powerUpManager.getPowerUps().add(visible);
+    powerUpManager.getPowerUps().add(hidden);
+
+    powerUpManager.render(batch);
+
+    verify(sprite).draw(batch); 
+    }
+
+@Test
+void testUpdateHandlesPowerUpWithoutBody() {
+    powerUpManager.getPowerUps().clear();
+    iPowerUp powerUpMock = mock(iPowerUp.class);
+    Sprite sprite = mock(Sprite.class);
+    when(powerUpMock.getSprite()).thenReturn(sprite);
+    EllipseMapObject object = new EllipseMapObject(100, 200, 16, 16);
+
+    PowerUpObject powerUp = new PowerUpObject(screen, object, powerUpMock, player, sprite);
+    powerUp.setBody(null); // <-- this will skip the destroyBody block
+
+    powerUpManager.getPowerUps().add(powerUp);
+    powerUpManager.markForRemoval(powerUp);
+    powerUpManager.update(0.016f);
+
+    assertEquals(0, powerUpManager.getPowerUps().size());
+    verify(sprite).setAlpha(0f);
     }
 }
