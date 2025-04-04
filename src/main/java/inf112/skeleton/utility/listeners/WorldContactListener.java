@@ -1,29 +1,28 @@
 package inf112.skeleton.utility.listeners;
 
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.physics.box2d.*;
 
-import inf112.skeleton.app.StarJump;
-import inf112.skeleton.model.character.controllable_characters.Player;
-import inf112.skeleton.model.items.powerup.PowerUpObject;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WorldContactListener implements ContactListener {
+    private ArrayList<CollisionHandler> collisionHandlers;
 
-    private final PowerUpCollisionHandler powerUpCollisionHandler;
-    // private final EnemyCollisionHandler enemyCollisionHandler;
-    // private final DangerCollisionHandler dangerCollisionHandler;
+    /**
+     * Constructs a {@link WorldContactListener} with a list of {@link CollisionHandler}s.
+     * @param collisionHandlers A list of {@link CollisionHandler}s to be utilized on contact.
+     */
+    public WorldContactListener(List<CollisionHandler> collisionHandlers) {
+        this.collisionHandlers = new ArrayList<>(collisionHandlers);
+    }
 
-    public WorldContactListener(
-            PowerUpCollisionHandler powerUpCollisionHandler
-            //, EnemyCollisionHandler enemyCollisionHandler
-            //, DangerCollisionHandler dangerCollisionHandler
-    ) {
-        this.powerUpCollisionHandler = powerUpCollisionHandler;
-        // this.enemyCollisionHandler = enemyCollisionHandler;
-        // this.dangerCollisionHandler = dangerCollisionHandler;
+    /**
+     * Constructs a {@link WorldContactListener} with a single {@link CollisionHandler}.
+     * @param handler A single {@link CollisionHandler} to be utilized on contact.
+     */
+    public WorldContactListener(CollisionHandler handler) {
+        this.collisionHandlers = new ArrayList<>();
+        this.collisionHandlers.add(handler);
     }
 
     @Override
@@ -31,38 +30,24 @@ public class WorldContactListener implements ContactListener {
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
 
-        if (fixA.getUserData() == null || fixB.getUserData() == null) return;
+        // saftey check
+        if (fixA.getBody().getUserData() == null || fixB.getBody().getUserData() == null) return;
 
-        Object userDataA = fixA.getUserData();
-        Object userDataB = fixB.getUserData();
-
-        if (userDataA instanceof Player && userDataB instanceof PowerUpObject) {
-            powerUpCollisionHandler.handleCollision(contact, fixA, fixB);
-        } else if (userDataB instanceof Player && userDataA instanceof PowerUpObject) {
-            powerUpCollisionHandler.handleCollision(contact, fixB, fixA);
-        } 
-
-        if (userDataA instanceof Player && fixB.getFilterData().categoryBits == StarJump.GROUND_BIT) {
-            ((Player) userDataA).landed();
-        } else if (userDataB instanceof Player && fixA.getFilterData().categoryBits == StarJump.GROUND_BIT) {
-            ((Player) userDataB).landed();
+        // loop through and run all the contact handlers.
+        for (CollisionHandler handler : collisionHandlers) {
+            handler.onContactBegin(contact, fixA, fixB);
         }
-
     }
 
     @Override public void endContact(Contact contact) {
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
 
-        if (fixA.getUserData() == null || fixB.getUserData() == null) return;
+        if (fixA.getBody().getUserData() == null || fixB.getBody().getUserData() == null) return;
 
-        Object userDataA = fixA.getUserData();
-        Object userDataB = fixB.getUserData();
-
-        if (userDataA instanceof Player && fixB.getFilterData().categoryBits == StarJump.GROUND_BIT) {
-            ((Player) userDataA).isGrounded = false;
-        } else if (userDataB instanceof Player && fixA.getFilterData().categoryBits == StarJump.GROUND_BIT) {
-            ((Player) userDataB).isGrounded = false;
+        // loop through and run all the contact handlers.
+        for (CollisionHandler handler : collisionHandlers) {
+            handler.onContactEnded(contact, fixA, fixB);
         }
     }
     @Override public void preSolve(Contact contact, Manifold oldManifold) {}

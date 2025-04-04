@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-
 import inf112.skeleton.model.GameState;
 import inf112.skeleton.model.Settings;
 import inf112.skeleton.view.screen.MainMenuScreen;

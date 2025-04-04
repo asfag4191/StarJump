@@ -8,25 +8,23 @@ import inf112.skeleton.view.Animator;
 import inf112.skeleton.view.Renderable;
 
 /**
- * This class represenst a general character in the game.
- * Examples of children classes can be: Player and different types of Enemies
+ * Represents a generic character in the game with full support for
+ * animation, movement, physics-based interactions, and state control.
  */
 public class Character extends HumanoidBody implements Renderable {
-    public final Animator animator;
     private final String name;
-    private Stats stats;
-    private float hp;
-    public final Vector2 size;
     private CharacterState state;
+    public final CharacterAttributes attributes;
+    public final Animator animator;
+    public final Vector2 size;
 
-    public Character(String name, Stats stats, Vector2 size, World world) {
+    public Character(String name, CharacterAttributes attributes, Vector2 size, World world) {
         super(world, size);
-        this.animator = new Animator();
         this.name = name;
-        this.stats = stats;
-        this.hp = stats.maxHp();
-        this.size = size;
+        this.attributes = attributes;
         this.state = CharacterState.IDLE;
+        this.animator = new Animator();
+        this.size = size;
         this.body.setUserData(this);
     }
 
@@ -40,23 +38,6 @@ public class Character extends HumanoidBody implements Renderable {
     }
 
     /**
-     * Get current health poitns of the character
-     * 
-     * @return current health points of character
-     */
-    public float getHp() {
-        return hp;
-    }
-
-    /**
-     * Gets the stats of the character.
-     * @return The {@link Stats} associated with this character.
-     */
-    public Stats getStats() {
-        return stats;
-    }
-
-    /**
      * Gets the current state of the character
      * @return the state of the character.
      */
@@ -65,34 +46,45 @@ public class Character extends HumanoidBody implements Renderable {
     }
 
     /**
-     * Sets the stats for the character.
-     * @param stats The new {@link Stats} to assign.
-     */
-    public void setStats(Stats stats) {
-        this.stats = stats;
-    }
-
-    /**
      * Sets the state of the character to the given value.
+     * If the character is dead, then this method will do nothing.
+     * If the character is freefalling, then it cannot be set to moving.
      * @param state the state of the character.
      */
     public void setState(CharacterState state) {
         if (this.state == CharacterState.DEAD) return;
+        if (this.state == CharacterState.FREEFALL && state == CharacterState.MOVING) return;
         this.state = state;
     }
 
     /**
-     * The character takes a given amount of damage. This method reduces 
-     * the number of health points the characer has by <code>damageTaken</code>.
-     * If the hp of the character gets to zero, the character state will be set
+     * Reduces the number of health points the characer has by <code>damageTaken</code>.
+     * If character's hp reaches zero, the character state will be set
      * to {@link CharacterState#DEAD} and locked.
      * @param damageTaken the amount to reduce the character's hp by
      */
     public void takeDamage(float damageTaken) {
-        hp -= damageTaken;
-        if (hp <= 0) {
-            hp = 0;
+        if (this.attributes.addHp(-damageTaken)) {
             setState(CharacterState.DEAD);
+        }
+    }
+
+    /**
+     * Changes the character's state based on the grounded status.
+     * <ul>
+     * <li>If {@code false}, the character's state is set to {@link CharacterState#FREEFALL}.</li>
+     * <li>If {@code true}, the character's state is set to {@link CharacterState#IDLE}, and
+     *     the remaining jumps are reset to the maximum allowed.</li>
+     * </ul>
+     *
+     * @param isGrounded {@code true} if the character is on the ground, {@code false} otherwise.
+     */
+    public void setGrounded(boolean isGrounded) {
+        if (isGrounded) {
+            this.attributes.setJumpsLeft(attributes.getMaxJumps());
+            setState(CharacterState.IDLE);
+        } else {
+            setState(CharacterState.FREEFALL);
         }
     }
 

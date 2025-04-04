@@ -2,6 +2,7 @@ package inf112.skeleton.model.colliders;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 
 /**
  * A wrapper class of the Box2D {@link Body}
@@ -31,6 +32,20 @@ public class RigidBody {
     }
 
     /**
+     * Sets all fixtures of this body as sensors or physical objects, depending on the argument.
+     * Sensors detect collisions, but doesn't generate a physical response.
+     *
+     * @param isSensor {@code true} to enable sensor mode for all fixtures,
+     *                 {@code false} to disable it and restore physical behavior.
+     */
+    public void setAsSensor(boolean isSensor) {
+        Array<Fixture> fixtureList= this.body.getFixtureList();
+        for (Fixture fixture : fixtureList) {
+            fixture.setSensor(isSensor);
+        }
+    }
+
+    /**
      * Applies a rotational force, a.k.a. torque to the body.
      *
      * @param torque the amount of torque to apply.
@@ -57,6 +72,15 @@ public class RigidBody {
      */
     public void applyImpulse(Vector2 direction) {
         this.body.applyLinearImpulse(direction, this.body.getWorldCenter(), true);
+    }
+
+    /**
+     * Sets the gravity scale of the body. The gravity scale is a multiplier
+     * that determines how much the gravity will affect the body.
+     * @param scale the multiplier.
+     */
+    public void setGravityScale(float scale) {
+        this.body.setGravityScale(scale);
     }
 
     /**
@@ -91,11 +115,11 @@ public class RigidBody {
     }
 
     /**
-     * Sets the position of the body while keeping its current rotation.
+     * Sets the position of the body.
      *
      * @param position The new position of the body.
      */
-    public void setTransform(Vector2 position) {
+    public void setPosition(Vector2 position) {
         this.body.setTransform(position, this.body.getAngle());
     }
 
@@ -140,9 +164,4 @@ public class RigidBody {
         bdy.createFixture(fixtureDef);
         if (doDispose) fixtureDef.shape.dispose();
     }
-
-    public Body getBody(){
-        return this.body;
-    }
-
 }

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
-
+import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.controllable_characters.Player;
 
 /**
@@ -42,16 +42,17 @@ public class FlyingPowerUp implements iPowerUp {
     }
 
     private void enableFlyingEffect() {
-        player.getBody().setGravityScale(0f);
-        player.getBody().setLinearVelocity(player.getBody().getLinearVelocity().x, 5f);
-        player.setCollisionEnabled(false); 
+        Character charac = player.character;
+        charac.setGravityScale(0f);
+        charac.setVelocity(new Vector2(charac.getVelocity().x, 5f));
+        charac.setAsSensor(true);
 
         
         Timer.schedule(new Task() {
             @Override
             public void run() {
-                player.getBody().setGravityScale(1f); 
-                player.setCollisionEnabled(true);    
+                charac.setGravityScale(1f);
+                charac.setAsSensor(false);
             }
         }, FLYING_DURATION);
     }

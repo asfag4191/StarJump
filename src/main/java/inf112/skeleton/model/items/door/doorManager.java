@@ -1,12 +1,11 @@
 package inf112.skeleton.model.items.door;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-
 import inf112.skeleton.view.screen.GameScreen;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class doorManager {
     private final List<doorObject> doors = new ArrayList<>();

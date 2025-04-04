@@ -8,9 +8,9 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import inf112.skeleton.controller.PlayerController;
 import inf112.skeleton.model.character.Character;
-import inf112.skeleton.model.character.Stats;
+import inf112.skeleton.model.character.CharacterAttributes;
+import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.model.colliders.BoxCollider;
-import inf112.skeleton.model.game_objects.Player;
 import inf112.skeleton.view.Renderable;
 
 import java.util.ArrayList;
@@ -23,24 +23,29 @@ public class WorldModel implements Renderable {
         this.world = new World(gravity, doSleep);
     }
 
+    public WorldModel(World world) {
+        this.world = world;
+    }
+
     public void onStep(float dt) {
         world.step(dt, 3, 3);
     }
 
     public Player createPlayer() {
-        Stats stats = new Stats(
+        CharacterAttributes attributes = new CharacterAttributes(
                 100,
                 10,
+                2,
                 3.5f,
-                5,
-                1
+                5
         );
 
-        Character charac = new Character("p1", stats, new Vector2(1,1), world);
+        Character charac = new Character("p1", attributes, new Vector2(1,1), world);
+        charac.setPosition(new Vector2(10, 3));
         Player plr = new Player(charac);
 
-        Texture texture1 = new Texture(Gdx.files.internal("blackhole.png"));
-        charac.animator.addAnimation("idle", texture1, 1, 7, 8);
+        Texture texture1 = new Texture(Gdx.files.internal("sprites/star.png"));
+        charac.animator.addAnimation("idle", texture1, 1,  1, 0);
         charac.animator.play("idle");
         ViewableObjects.add(charac);
 

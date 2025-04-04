@@ -32,7 +32,7 @@ public abstract class InteractiveTileObject implements iItem {
     public InteractiveTileObject(GameScreen screen, MapObject object, short categoryBit) {
         this.object = object;
         this.screen = screen;
-        this.world = screen.worldModel.world;
+        this.world = screen.getWorld();
 
         BodyDef bdef = new BodyDef();
         FixtureDef fdef = new FixtureDef();
@@ -63,10 +63,10 @@ public abstract class InteractiveTileObject implements iItem {
         }
 
         body = world.createBody(bdef);
+        body.setUserData(this);
         fdef.shape = shape;
         fdef.isSensor = true;
         fixture = body.createFixture(fdef);
-        fixture.setUserData(this); // Important for collision detection
 
         setCategoryFilter(categoryBit);
         shape.dispose();

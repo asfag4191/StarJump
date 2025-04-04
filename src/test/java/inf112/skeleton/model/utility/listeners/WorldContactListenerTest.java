@@ -1,6 +1,10 @@
 package inf112.skeleton.model.utility.listeners;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+
+import inf112.skeleton.model.character.Character;
+import inf112.skeleton.model.character.CharacterAttributes;
+import inf112.skeleton.model.character.CharacterState;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,7 +41,7 @@ class WorldContactListenerTest {
     private Fixture fixtureB;
     private Filter groundFilter;
     private World world;
-    private Player player;
+    private Character charac;
 
     @BeforeAll
     static void initLibGdx() {
@@ -48,16 +52,16 @@ class WorldContactListenerTest {
     void setUp() {
         powerUpCollisionHandler = mock(PowerUpCollisionHandler.class);
         listener = new WorldContactListener(powerUpCollisionHandler);
-    
+
         Gdx.gl = Gdx.gl20 = Mockito.mock(GL20.class);
         world = new World(new Vector2(0, -9.81f), true);
-        player = new Player(new Vector2(1, 1), world);
+        CharacterAttributes attributes = new CharacterAttributes(3, 1, 1, 5, 1);
+        charac = new Character("", attributes, new Vector2(1, 1), world);
         contact = mock(Contact.class);
         fixtureA = mock(Fixture.class);
         fixtureB = mock(Fixture.class);
         when(contact.getFixtureA()).thenReturn(fixtureA);
         when(contact.getFixtureB()).thenReturn(fixtureB);
-
 
         groundFilter = new Filter();
         groundFilter.categoryBits = StarJump.GROUND_BIT;
@@ -69,7 +73,7 @@ class WorldContactListenerTest {
     @Test
     void testPowerUpCollision_PlayerA_PowerUpB() {
         PowerUpObject powerUp = mock(PowerUpObject.class);
-        when(fixtureA.getUserData()).thenReturn(player);
+        when(fixtureA.getUserData()).thenReturn(charac);
         when(fixtureB.getUserData()).thenReturn(powerUp);
     
         // Mock filter data to avoid NullPointerException
@@ -78,14 +82,14 @@ class WorldContactListenerTest {
     
         listener.beginContact(contact);
     
-        verify(powerUpCollisionHandler).handleCollision(contact, fixtureA, fixtureB);
+        verify(powerUpCollisionHandler).onContactBegin(contact, fixtureA, fixtureB);
     }
 
     @Test
     void testPowerUpCollision_PlayerB_PowerUpA() {
         PowerUpObject powerUp = mock(PowerUpObject.class);
         when(fixtureA.getUserData()).thenReturn(powerUp);
-        when(fixtureB.getUserData()).thenReturn(player);
+        when(fixtureB.getUserData()).thenReturn(charac);
     
         // Mock filter data to avoid NullPointerException
         when(fixtureA.getFilterData()).thenReturn(new Filter());
@@ -93,12 +97,12 @@ class WorldContactListenerTest {
     
         listener.beginContact(contact);
     
-        verify(powerUpCollisionHandler).handleCollision(contact, fixtureB, fixtureA);
+        verify(powerUpCollisionHandler).onContactBegin(contact, fixtureB, fixtureA);
     }
 
     @Test
     void testPlayerLandsOnGround_A() {
-        when(fixtureA.getUserData()).thenReturn(player);
+        when(fixtureA.getUserData()).thenReturn(charac);
         when(fixtureB.getUserData()).thenReturn(new Object());
         when(fixtureB.getFilterData()).thenReturn(groundFilter);
     
@@ -107,47 +111,47 @@ class WorldContactListenerTest {
     
         listener.beginContact(contact);
     
-        assertFalse(player.isGrounded == false, "Player should be grounded after landing.");
+        assertFalse(charac.getState() == CharacterState.FREEFALL, "Player should be grounded after landing.");
     }
 
     @Test
     void testPlayerLandsOnGround_B() {
         when(fixtureA.getUserData()).thenReturn(new Object());
-        when(fixtureB.getUserData()).thenReturn(player);
+        when(fixtureB.getUserData()).thenReturn(charac);
         when(fixtureA.getFilterData()).thenReturn(groundFilter);
         when(fixtureB.getFilterData()).thenReturn(new Filter()); // Avoid null
     
         listener.beginContact(contact);
     
-        assertFalse(player.isGrounded == false, "Player should be grounded after landing.");
+        assertFalse(charac.getState() == CharacterState.FREEFALL, "Player should be grounded after landing.");
     }
 
     @Test
     void testPlayerLeavesGround_A() {
         // First, simulate that the player has landed
-        player.isGrounded = true;
+        charac.setState(CharacterState.IDLE);
     
-        when(fixtureA.getUserData()).thenReturn(player);
+        when(fixtureA.getUserData()).thenReturn(charac);
         when(fixtureB.getUserData()).thenReturn(new Object());
         when(fixtureB.getFilterData()).thenReturn(groundFilter);
         when(fixtureA.getFilterData()).thenReturn(new Filter());
     
         listener.endContact(contact);
     
-        assertFalse(player.isGrounded, "Player should not be grounded after leaving ground.");
+        assertFalse(charac.getState() != CharacterState.FREEFALL, "Player should not be grounded after leaving ground.");
     }
 
     @Test
     void testPlayerLeavesGround_B() {
-        player.isGrounded = true;
+        charac.setState(CharacterState.IDLE);
     
         when(fixtureA.getUserData()).thenReturn(new Object());
-        when(fixtureB.getUserData()).thenReturn(player);
+        when(fixtureB.getUserData()).thenReturn(charac);
         when(fixtureA.getFilterData()).thenReturn(groundFilter);
         when(fixtureB.getFilterData()).thenReturn(new Filter());
     
         listener.endContact(contact);
     
-        assertFalse(player.isGrounded, "Player should not be grounded after leaving ground.");
+        assertFalse(charac.getState() != CharacterState.FREEFALL, "Player should not be grounded after leaving ground.");
     }
 }

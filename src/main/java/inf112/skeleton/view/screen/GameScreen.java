@@ -1,7 +1,6 @@
 package inf112.skeleton.view.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -13,16 +12,19 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-
 import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.WorldModel;
 import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.model.items.door.doorManager;
 import inf112.skeleton.model.items.powerup.PowerUpManager;
 import inf112.skeleton.utility.ColliderToBox2D;
+import inf112.skeleton.utility.listeners.CharacterContactHandler;
+import inf112.skeleton.utility.listeners.CollisionHandler;
 import inf112.skeleton.utility.listeners.PowerUpCollisionHandler;
 import inf112.skeleton.utility.listeners.WorldContactListener;
 import inf112.skeleton.view.HUD;
+
+import java.util.List;
 
 public class GameScreen implements Screen {
     private final static boolean DEBUG_MODE = true;
@@ -46,11 +48,11 @@ public class GameScreen implements Screen {
         this.game = game;
 
         // SINGLE SHARED WORLD instance
-        this.world = new World(new Vector2(0, -9.81f), true);
+        this.world = new World(new Vector2(0, -9.81f*2), true);
 
         // Pass the SAME WORLD to WorldModel
         this.worldModel = new WorldModel(world);
-        this.player = worldModel.getPlayer();
+        this.player = worldModel.createPlayer();
         this.debugger = new Box2DDebugRenderer(true, true, true, true, true, true);
 
         // Use gameViewport (tile-based)
@@ -84,11 +86,8 @@ public class GameScreen implements Screen {
         doorManager = new doorManager(this);
 
         // Instantiate collision handlers
-        WorldContactListener contactListener = new WorldContactListener(
-                new PowerUpCollisionHandler()
-        // new EnemyCollisionHandler(player),
-        // new DangerCollisionHandler(player)
-        );
+        CollisionHandler[] handlers = {new PowerUpCollisionHandler(), new CharacterContactHandler()};
+        WorldContactListener contactListener = new WorldContactListener(List.of(handlers));
 
         world.setContactListener(contactListener);
 
@@ -104,33 +103,6 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-    }
-
-    public void handleInput(float dt) {
-        if (Gdx.input.isTouched())
-            gamecam.position.y += 10 * dt;
-        if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.ESCAPE)) {
-            game.setScreen(new MainMenuScreen(game));
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
-            player.jump();
-        // player.applyImpulse(new Vector2(0, 7f));
-        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) && player.getVelocity().x <= 2)
-            player.applyImpulse(new Vector2(1f, 0));
-        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT) && player.getVelocity().x >= -2)
-            player.applyImpulse(new Vector2(-1f, 0));
-    }
-
-    public void update(float dt) {
-
-        handleInput(dt);
-
-        worldModel.world.step(1 / 60f, 6, 2);
-
-        powerUpManager.update(dt);
-
-        gamecam.update();
-        adjustCamera(this.player, 3f);
     }
 
     @Override
@@ -181,7 +153,11 @@ public class GameScreen implements Screen {
     }
 
     private void logic(float dt) {
-        // worldModel.onStep(dt);
+        worldModel.onStep(dt);
+
+        powerUpManager.update(dt);
+
+        adjustCamera(this.player, 3f);
     }
 
     /**
@@ -209,28 +185,25 @@ public class GameScreen implements Screen {
     }
 
     private void input() {
+        this.player.controller.update();
     }
 
     private void draw(float dt) {
-        update(dt);
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.gameViewport.apply();
-        gamecam.update();
 
         renderer.setView(gamecam);
         renderer.render();
 
-        game.batch.setProjectionMatrix(gamecam.combined);
-
-        game.batch.begin(); // Start the SpriteBatch
+        game.batch.setProjectionMatrix(gamecam.combined); // setting up the camera for batch.
+        game.batch.begin(); // START the SpriteBatch.
         powerUpManager.render(game.batch); // draw power-ups
         powerUpManager.update(dt);
         doorManager.update(dt);
         worldModel.render(game.batch, dt);
-        player.render(game.batch, dt);
-        game.batch.end();
+        game.batch.end(); // END the SpriteBatch
 
         // Draw HUD last
         hud.update(); //
@@ -258,8 +231,9 @@ public class GameScreen implements Screen {
      * @param playerCamDelta The maximum distance the camera can be from the player
      */
     private void adjustCamera(Player player, float playerCamDelta) {
-        float playerPosX = player.getPosition().x;
-        float playerPosY = player.getPosition().y;
+        Vector2 playerPos = player.character.getTransform().getPosition();
+        float playerPosX = playerPos.x;
+        float playerPosY = playerPos.y;
 
         // Viewport height in world units
         float viewportHeight = game.gameViewport.getWorldHeight();
@@ -286,13 +260,11 @@ public class GameScreen implements Screen {
         // Clamp the camera's position
         gamecam.position.y = Math.max(minCameraY, Math.min(gamecam.position.y, maxCameraY));
         gamecam.position.x = Math.max(minCameraX, Math.min(gamecam.position.x, maxCameraX));
-
         gamecam.update();
     }
 
     public Player getPlayer() {
         return player;
-
     }
 
 }
