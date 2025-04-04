@@ -37,9 +37,9 @@ class DoorManagerTest {
     static void initGdx() {
         if (Gdx.app == null) {
             new HeadlessApplication(new ApplicationAdapter() {}, new HeadlessApplicationConfiguration());
-            Gdx.gl = mock(GL20.class);
-            Gdx.gl20 = Gdx.gl;
         }
+        Gdx.gl = mock(GL20.class);
+        Gdx.gl20 = Gdx.gl;
     }
 
     @BeforeEach
