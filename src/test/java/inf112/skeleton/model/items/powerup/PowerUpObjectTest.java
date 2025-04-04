@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -44,10 +45,6 @@ void setUp() {
 
     mapObject = new EllipseMapObject(100, 200, 16, 16);  
 
-    //player = mock(Player.class);
-   // when(player.getBody()).thenReturn(body);
-
-
     PowerUpManager powerUpManager = mock(PowerUpManager.class);
     when(screen.getPowerUpManager()).thenReturn(powerUpManager);
     when(screen.getWorld()).thenReturn(world);
@@ -61,24 +58,23 @@ void setUp() {
     @Test
     void testConstructorInitializesCorrectly() {
         assertNotNull(powerUpObject);
-        //assertEquals(player, powerUpObject.getPlayer());
         assertEquals(powerUp, powerUpObject.getPowerUp());
         assertEquals(body, powerUpObject.getBody()); 
     }
 
     @Test
     void testOnPlayerCollide() {
-        Body mockBody = mock(Body.class);
-        //when(player.getBody()).thenReturn(mockBody);
-        when(mockBody.getLinearVelocity()).thenReturn(new Vector2(0, 0));
         powerUpObject.onPlayerCollide();
-        when(mockBody.getLinearVelocity()).thenReturn(new Vector2(0, 5f));
-        
         assertTrue(powerUpObject.isCollected(), "Power-up should be marked as collected");
-        assertEquals(new Vector2(0, 5f), mockBody.getLinearVelocity(), "Player's vertical velocity should be 5 after applying FlyingPowerUp");
-        assertNotNull(powerUpObject.getBody(), "Body should still exist if not disposed yet");
-    }
     
+        verify(powerUp).applyPowerUpEffect();
+    }
+
+    @Test
+    void testOnPlayerCollideMarksForRemoval() {
+    powerUpObject.onPlayerCollide();
+    verify(screen.getPowerUpManager()).markForRemoval(powerUpObject);
+}
     @Test
     void testSetAndIsCollected() {
         assertFalse(powerUpObject.isCollected()); 
@@ -87,20 +83,35 @@ void setUp() {
     }
 
     @Test
-    void testDispose() {
+    void testDisposeDestroysBody() {
+        assertNotNull(powerUpObject.getBody(), "Body should exist before dispose");
+    
         powerUpObject.dispose();
-        assertNull(powerUpObject.getBody()); 
+    
+        assertNull(powerUpObject.getBody(), "Body should be null after dispose");
     }
-
+    
     @Test
-    void testUpdateCallsDisposeWhenCollected() {
-        powerUpObject.setCollected(true);
+    void testUpdateDoesNotDisposeWhenNotCollected() {
+        Body originalBody = powerUpObject.getBody();
+        powerUpObject.setCollected(false);
         powerUpObject.update(0.1f);
-        assertNull(powerUpObject.getBody());
+        assertEquals(originalBody, powerUpObject.getBody());
     }
-
     @Test
     void testGetSprite() {
         assertEquals(sprite, powerUpObject.getSprite());
     }
+
+    @Test
+    void testGetWorldReturnsCorrectWorld() {
+        assertEquals(world, powerUpObject.getWorld());
+    }
+
+    @Test
+    void testGetPlayerReturnsCorrectPlayer() {  
+        assertEquals(player, powerUpObject.getPlayer());
+    }
+
+
 }

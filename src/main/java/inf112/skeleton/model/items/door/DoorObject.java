@@ -10,13 +10,13 @@ import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.model.items.InteractiveTileObject;
 import inf112.skeleton.view.screen.GameScreen;
 
-public class doorObject extends InteractiveTileObject {
+public class DoorObject extends InteractiveTileObject {
 
     private final Player player;
     private final Rectangle bounds;
     private boolean triggered = false;
 
-    public doorObject(GameScreen screen, MapObject object, Player player) {
+    public DoorObject(GameScreen screen, MapObject object, Player player) {
         super(screen, object, StarJump.DOOR_BIT);
         this.player = player;
 
@@ -34,12 +34,10 @@ public class doorObject extends InteractiveTileObject {
 
     @Override
     public void update(float delta) {
-        // Not used
     }
 
     @Override
     public void dispose() {
-        // Nothing extra to dispose
     }
 
     public void checkPlayerAtMiddle() {
@@ -51,7 +49,6 @@ public class doorObject extends InteractiveTileObject {
         float doorCenterX = (bounds.x + bounds.width / 2f) / 16f;
         float doorBottomY = bounds.y / 16f;
 
-        // Adjust margins as you wish
         float marginX = 0.8f;
         float marginY = 0.8f;
 
@@ -64,5 +61,8 @@ public class doorObject extends InteractiveTileObject {
             triggered = true;
             // Optional: Trigger level complete here
         }
+    }
+    public boolean isTriggered() {
+        return triggered;
     }
 }

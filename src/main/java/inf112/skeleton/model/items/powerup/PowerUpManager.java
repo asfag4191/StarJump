@@ -129,8 +129,8 @@ public class PowerUpManager {
             if (!powerUp.isCollected()) {
                 powerUp.getSprite().draw(batch);
             }
-}
-}
+        }
+    }
 }
 
 
