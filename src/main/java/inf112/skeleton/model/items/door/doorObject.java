@@ -34,12 +34,10 @@ public class DoorObject extends InteractiveTileObject {
 
     @Override
     public void update(float delta) {
-        // Not used
     }
 
     @Override
     public void dispose() {
-        // Nothing extra to dispose
     }
 
     public void checkPlayerAtMiddle() {
