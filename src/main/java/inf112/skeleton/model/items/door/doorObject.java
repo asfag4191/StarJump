@@ -51,7 +51,6 @@ public class DoorObject extends InteractiveTileObject {
         float doorCenterX = (bounds.x + bounds.width / 2f) / 16f;
         float doorBottomY = bounds.y / 16f;
 
-        // Adjust margins as you wish
         float marginX = 0.8f;
         float marginY = 0.8f;
 
