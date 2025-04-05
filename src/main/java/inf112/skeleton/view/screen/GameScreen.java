@@ -80,7 +80,7 @@ public class GameScreen implements Screen {
         this.debugger = new Box2DDebugRenderer();
 
         // Set up power-up
-        powerUpManager = new PowerUpManager(this, player);
+        powerUpManager = new PowerUpManager(this, player.character);
 
         // Set up door
         doorManager = new doorManager(this);

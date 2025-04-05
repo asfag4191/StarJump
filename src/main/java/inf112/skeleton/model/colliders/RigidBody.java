@@ -32,7 +32,7 @@ public class RigidBody {
     }
 
     /**
-     * Sets all fixtures of this body as sensors or physical objects, depending on the argument.
+     * Sets all fixtures of this body as either sensors or physical objects, depending on the argument.
      * Sensors detect collisions, but doesn't generate a physical response.
      *
      * @param isSensor {@code true} to enable sensor mode for all fixtures,
@@ -124,6 +124,22 @@ public class RigidBody {
     }
 
     /**
+     * Wether or not the all the fixtures in the body are sensors.
+     *
+     * @return true if the entire body is a sensor, false otherwise.
+     */
+    public boolean isSensor() {
+        boolean temp = true;
+        for (Fixture fix : this.body.getFixtureList()) {
+            if (!fix.isSensor()) {
+                temp = false;
+                break;
+            }
+        }
+        return temp;
+    }
+
+    /**
      * Gets the angular velocity of the body.
      *
      * @return The angular velocity in radians per second.
@@ -131,6 +147,15 @@ public class RigidBody {
     public float getAngularVelocity() {
         return this.body.getAngularVelocity();
     }
+
+    /**
+     * Gets the gravity scale of the body. The gravity scale is a multiplier
+     * that determines how much the gravity will affect the body.
+     * @return the gravity scale.
+     */
+    public float getGravityScale() {
+        return this.body.getGravityScale();
+    };
 
     /**
      * Gets the linear velocity of the body.

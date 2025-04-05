@@ -3,6 +3,7 @@ package inf112.skeleton.model.items.powerup;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.view.screen.GameScreen;
 
@@ -21,11 +22,11 @@ public class PowerUpFactory {
      * Creates an iPowerUp instance based on given enum type.
      *
      * @param type     The PowerUpEnum type.
-     * @param player   Player who receives the power-up effect.
+     * @param character The character who receives the power-up effect.
      * @param position The position where the power-up appears.
      * @return Instance of specified AbstractPowerUp.
      */
-    public iPowerUp createPowerUp(PowerUpEnum type, Player player, Vector2 position) {
+    public iPowerUp createPowerUp(PowerUpEnum type, Character character, Vector2 position) {
         Texture texture;
         return switch (type) {
             case FLYING -> {
@@ -33,14 +34,14 @@ public class PowerUpFactory {
                 Sprite sprite = new Sprite(texture);
                 sprite.setSize(1, 1);
                 sprite.setPosition(position.x, position.y);
-                yield new FlyingPowerUp(player, position, sprite);
+                yield new FlyingPowerUp(character, position, sprite);
             }
             case DIAMOND -> {
                 texture = new Texture("map/tilemaps/tilesets/Diamond.png");
                 Sprite sprite = new Sprite(texture);
                 sprite.setSize(1, 1);
                 sprite.setPosition(position.x, position.y);
-                yield new DiamondPowerUp(player, position, sprite);
+                yield new DiamondPowerUp(character, position, sprite);
             }
         };
     }

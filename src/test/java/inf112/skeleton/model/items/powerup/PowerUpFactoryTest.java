@@ -1,5 +1,8 @@
 package inf112.skeleton.model.items.powerup;
 
+
+import inf112.skeleton.model.character.Character;
+import inf112.skeleton.model.character.CharacterAttributes;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -15,7 +18,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
-import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.view.screen.GameScreen;
 
 /**
@@ -23,7 +25,7 @@ import inf112.skeleton.view.screen.GameScreen;
  */
 class PowerUpFactoryTest {
     private PowerUpFactory factory;
-    private Player player;
+    private Character character;
     private GameScreen screen;
     private World world;
 
@@ -45,15 +47,16 @@ class PowerUpFactoryTest {
         GameScreen mockScreen = Mockito.mock(GameScreen.class);
         Mockito.when(mockScreen.getWorld()).thenReturn(world);
 
-        player = new Player(new Vector2(1, 1), world);
+        CharacterAttributes attributes = new CharacterAttributes(3, 1, 2, 1, 1);
+        character = new Character("", attributes, new Vector2(1, 1), world);
         factory = new PowerUpFactory(mockScreen);
     }
 
     @Test
     void createFlyingPowerUpTest() {
         iPowerUp powerUp = factory.createPowerUp(
-                PowerUpEnum.FLYING, 
-                player, 
+                PowerUpEnum.FLYING,
+                character,
                 new Vector2(5, 5)
         );
 
@@ -64,7 +67,7 @@ class PowerUpFactoryTest {
 
     @Test
     void createDiamondPowerUpTest() {
-        iPowerUp powerUp = factory.createPowerUp(PowerUpEnum.DIAMOND, player, new Vector2(7, 7));
+        iPowerUp powerUp = factory.createPowerUp(PowerUpEnum.DIAMOND, character, new Vector2(7, 7));
 
         assertNotNull(powerUp.getSprite());
         assertEquals(7f, powerUp.getSprite().getX());

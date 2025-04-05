@@ -1,11 +1,13 @@
 package inf112.skeleton.model.items.powerup;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import inf112.skeleton.model.character.Character;
+import inf112.skeleton.model.character.CharacterAttributes;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 import com.badlogic.gdx.Gdx;
@@ -23,7 +25,7 @@ public class FlyingPowerUpTest {
 
     private FlyingPowerUp flyingPowerUp;
     private World world;
-    private Player player;
+    private Character character;
 
     @BeforeAll
     static void initLibGdx() {
@@ -37,9 +39,10 @@ public class FlyingPowerUpTest {
     void setUp() {
         Gdx.gl = Gdx.gl20 = Mockito.mock(GL20.class);
         world = new World(new Vector2(0, -9.81f), true);
-        player = new Player(new Vector2(1, 1), world);
+        CharacterAttributes attributes = new CharacterAttributes(3, 1, 2, 1, 1);
+        character = new Character("", attributes, new Vector2(1, 1), world);
         Sprite sprite = mock(Sprite.class);
-        flyingPowerUp = new FlyingPowerUp(player, new Vector2(0, 0), sprite);
+        flyingPowerUp = new FlyingPowerUp(character, new Vector2(0, 0), sprite);
     }
 
     @Test
@@ -47,24 +50,24 @@ public class FlyingPowerUpTest {
         flyingPowerUp.applyPowerUpEffect();
 
         // Immediately after applying effect
-        assertEquals(0f, player.getBody().getGravityScale(), "Gravity should be zero immediately after applying.");
-        assertTrue(player.getBody().getLinearVelocity().y > 0f, "Player should have upward velocity immediately.");
-        assertTrue(player.getBody().getFixtureList().first().isSensor(), "Collision should be disabled immediately.");
+        assertEquals(0f, character.getGravityScale(), "Gravity should be zero immediately after applying.");
+        assertTrue(character.getVelocity().y > 0f, "Player should have upward velocity immediately.");
+        assertTrue(character.isSensor(), "Collision should be disabled immediately.");
 
         // Simulate timer expiration
         Timer.instance().clear();
         Timer.Task flyingEffectTask = new Timer.Task() {
             @Override
             public void run() {
-                player.getBody().setGravityScale(1f);
-                player.setCollisionEnabled(true);
+                character.setGravityScale(1f);
+                character.setAsSensor(false);
             }
         };
         Timer.schedule(flyingEffectTask, FlyingPowerUp.FLYING_DURATION);
 
         flyingEffectTask.run();
 
-        assertEquals(1f, player.getBody().getGravityScale(), "Gravity should revert to normal after duration.");
-        assertTrue(!player.getBody().getFixtureList().first().isSensor(), "Collision should be re-enabled after duration.");
+        assertEquals(1f, character.getGravityScale(), "Gravity should revert to normal after duration.");
+        assertFalse(character.isSensor(), "Collision should be re-enabled after duration.");
     }
 }

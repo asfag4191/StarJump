@@ -13,7 +13,7 @@ import inf112.skeleton.model.character.controllable_characters.Player;
 public class FlyingPowerUp implements iPowerUp {
 
     static final float FLYING_DURATION = 1.0f; 
-    private final Player player;
+    private final Character character;
     private final Sprite sprite;
     private final Vector2 position; 
     
@@ -21,15 +21,15 @@ public class FlyingPowerUp implements iPowerUp {
     /**
      * Constructor for FlyingPowerUp.
      * Enables the player to fly for a short duration.
-     * Sets the player's gravity scale to 0, and linear velocity to 5.
+     * Sets the character's gravity scale to 0, and linear velocity to 5.
      * Disables collision for the player.
      * 
-     * @param player   Player who receives the power-up effect.
-     * @param position The position where the power-up appears.
-     * @param sprite   The graphical representation of the power-up.
+     * @param character The character who receives the power-up effect.
+     * @param position  The position where the power-up appears.
+     * @param sprite    The graphical representation of the power-up.
      */
-    public FlyingPowerUp(Player player, Vector2 position, Sprite sprite) {
-        this.player = player;
+    public FlyingPowerUp(Character character, Vector2 position, Sprite sprite) {
+        this.character = character;
         this.position = position;
         this.sprite = sprite;
         this.sprite.setPosition(position.x, position.y);
@@ -42,17 +42,16 @@ public class FlyingPowerUp implements iPowerUp {
     }
 
     private void enableFlyingEffect() {
-        Character charac = player.character;
-        charac.setGravityScale(0f);
-        charac.setVelocity(new Vector2(charac.getVelocity().x, 5f));
-        charac.setAsSensor(true);
+        character.setGravityScale(0f);
+        character.setVelocity(new Vector2(character.getVelocity().x, 5f));
+        character.setAsSensor(true);
 
         
         Timer.schedule(new Task() {
             @Override
             public void run() {
-                charac.setGravityScale(1f);
-                charac.setAsSensor(false);
+                character.setGravityScale(1f);
+                character.setAsSensor(false);
             }
         }, FLYING_DURATION);
     }

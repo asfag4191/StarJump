@@ -1,6 +1,8 @@
 package inf112.skeleton.model.items.powerup;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import inf112.skeleton.model.character.Character;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.mock;
@@ -13,7 +15,7 @@ import inf112.skeleton.model.character.controllable_characters.Player;
 
 class DiamondPowerUpTest {
 
-    private Player mockPlayer;
+    private Character mockCharacter;
     private Sprite mockSprite;
     private DiamondPowerUp diamondPowerUp;
 
@@ -26,7 +28,7 @@ class DiamondPowerUpTest {
         DiamondPowerUpTestHelper.resetScore();
 
         Vector2 position = new Vector2(10, 20);
-        diamondPowerUp = new DiamondPowerUp(mockPlayer, position, mockSprite);
+        diamondPowerUp = new DiamondPowerUp(mockCharacter, position, mockSprite);
     }
 
     @Test
@@ -38,7 +40,7 @@ class DiamondPowerUpTest {
 
     @Test
     void testMultipleDiamondsIncreaseScore() {
-        DiamondPowerUp another = new DiamondPowerUp(mockPlayer, new Vector2(0, 0), new Sprite(mock(Texture.class)));
+        DiamondPowerUp another = new DiamondPowerUp(mockCharacter, new Vector2(0, 0), new Sprite(mock(Texture.class)));
         diamondPowerUp.applyPowerUpEffect();
         another.applyPowerUpEffect();
         assertEquals(20, DiamondPowerUp.getScore(), "Two diamonds should give 20 score");

@@ -4,6 +4,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import inf112.skeleton.model.character.Character;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,7 +42,7 @@ class PowerUpManagerTest {
     private PowerUpManager powerUpManager;
     private GameScreen screen;
     private World world;
-    private Player player;
+    private Character character;
     private TiledMap map;
     private MapLayer powerUpLayer;
     private MapObjects mapObjects;
@@ -81,7 +83,7 @@ void setUp() {
     when(powerUpLayer.getObjects()).thenReturn(mapObjects);
     when(mapObjects.iterator()).thenReturn(List.of(createMockPowerUp(100, 200)).iterator());
 
-    powerUpManager = new PowerUpManager(screen, player);
+    powerUpManager = new PowerUpManager(screen, character);
   
 }
 
@@ -97,7 +99,7 @@ void setUp() {
 @Test
 void testNoPowerUps() {
     when(mapObjects.iterator()).thenReturn(List.<MapObject>of().iterator()); // No power-ups
-    powerUpManager = new PowerUpManager(screen, player);
+    powerUpManager = new PowerUpManager(screen, character);
     assertTrue(powerUpManager.getPowerUps().isEmpty(), "Should be empty if no power-ups are defined in TiledMap");
 }
 
@@ -134,7 +136,7 @@ void testPowerUpLoading() {
     when(screen.getMap()).thenReturn(map);
 
     // Run test
-    powerUpManager = new PowerUpManager(screen, player);
+    powerUpManager = new PowerUpManager(screen, character);
 
     assertEquals(2, powerUpManager.getPowerUps().size(), "Should load both flying and diamond power-ups");
 
@@ -160,7 +162,7 @@ void testUpdateRemovesPowerUps() {
     Sprite mockSprite = new Sprite();
     when(powerUpMock.getSprite()).thenReturn(mockSprite); 
     
-    PowerUpObject realPowerUp = new PowerUpObject(screen, ellipseMapObject, powerUpMock, player, mockSprite);
+    PowerUpObject realPowerUp = new PowerUpObject(screen, ellipseMapObject, powerUpMock, character, mockSprite);
         
     powerUpManager.getPowerUps().add(realPowerUp);
     assertEquals(1, powerUpManager.getPowerUps().size(), "powerUps should contain exactly 1 power-up.");

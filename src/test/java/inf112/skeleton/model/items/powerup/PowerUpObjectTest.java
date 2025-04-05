@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import inf112.skeleton.model.character.Character;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.mock;
@@ -29,7 +31,7 @@ class PowerUpObjectTest {
     private GameScreen screen;
     private MapObject mapObject;
     private iPowerUp powerUp;
-    private Player player;
+    private Character character;
     private Sprite sprite;
     private World world;
     private Body body;
@@ -54,7 +56,7 @@ void setUp() {
 
     when(powerUp.getSprite()).thenReturn(sprite); 
 
-    powerUpObject = new PowerUpObject(screen, mapObject, powerUp, player, sprite);
+    powerUpObject = new PowerUpObject(screen, mapObject, powerUp, character, sprite);
     powerUpObject.setBody(body); 
 }
 
