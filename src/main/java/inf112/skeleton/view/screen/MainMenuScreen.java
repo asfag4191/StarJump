@@ -132,6 +132,7 @@ public class MainMenuScreen implements Screen {
         TextButton startButton = new TextButton("Start Game", skin);
         TextButton levelSelectButton = new TextButton("Select Level", skin);
         TextButton optionsButton = new TextButton("Options", skin);
+        TextButton howToPlayButton = new TextButton("How to play", skin);
         TextButton quitButton = new TextButton("Quit", skin);
 
         // Add buttons click events
@@ -173,12 +174,22 @@ public class MainMenuScreen implements Screen {
             }
         });
 
+        howToPlayButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                buttonClick.play(buttonClickVolume);
+                game.setScreen(new HelpScreen(game));
+            }
+        });
+
         // Add buttons to the table
         table.add(startButton).fillX().uniformX();
         table.row().pad(0, 0, 0, 0);
         table.add(levelSelectButton).fillX().uniformX();
         table.row().pad(0, 0, 0, 0);
         table.add(optionsButton).fillX().uniformX();
+        table.row().pad(0, 0, 0, 0);
+        table.add(howToPlayButton).fillX().uniformX(); 
         table.row().pad(0, 0, 0, 0);
         table.add(quitButton).fillX().uniformX();
     }
