@@ -16,6 +16,9 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import inf112.skeleton.app.StarJump;
 
+/**
+ * Create a help screen for the game, how to play.
+ */
 public class HelpScreen implements Screen {
 
     private final StarJump game;
