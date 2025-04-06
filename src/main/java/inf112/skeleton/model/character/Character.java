@@ -4,37 +4,33 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-
 import inf112.skeleton.view.Animator;
 import inf112.skeleton.view.Renderable;
 
 /**
- * This class represenst a general character in the game.
- * Examples of children classes can be: Player and different types of Enemies
+ * Represents a generic character in the game with full support for
+ * animation, movement, physics-based interactions, and state control.
  */
-public abstract class Character extends HumanoidBody implements Renderable {
-    public Animator animator;
-    public TextureRegion texture;
+public class Character extends HumanoidBody implements Renderable {
     private final String name;
-    private Stats stats;  // Change from private to protected
-    private float hp;
+    private CharacterState state;
+    public final CharacterAttributes attributes;
+    public final Animator animator;
     public final Vector2 size;
-    private final boolean isStatic;
 
-    public Character(String name, Stats stats, Vector2 size, World world, boolean isStatic) {
+    public Character(String name, CharacterAttributes attributes, Vector2 size, World world) {
         super(world, size);
         this.name = name;
-        this.stats = stats;
-        this.hp = stats.maxHp();
-        this.size = size;
-        this.isStatic = isStatic;
+        this.attributes = attributes;
+        this.state = CharacterState.IDLE;
         this.animator = new Animator();
-        //this.texture = new TextureRegion(new Texture(Gdx.files.internal("star.png")));
+        this.size = size;
+        this.body.setUserData(this);
     }
 
     /**
      * Get name of the character
-     *
+     * 
      * @return name of character
      */
     public String getName() {
@@ -42,48 +38,53 @@ public abstract class Character extends HumanoidBody implements Renderable {
     }
 
     /**
-     * Get current health poitns of the character
-     *
-     * @return current health points of character
+     * Gets the current state of the character
+     * @return the state of the character.
      */
-    public float getHp() {
-        return hp;
+    public CharacterState getState() {
+        return state;
     }
 
     /**
-     * Get maximum health points of the character
-     *
-     * @return maximum health points of character
+     * Sets the state of the character to the given value.
+     * If the character is dead, then this method will do nothing.
+     * If the character is freefalling, then it cannot be set to moving.
+     * @param state the state of the character.
      */
-    public float getMaxHp() {
-        return stats.maxHp();
+    public void setState(CharacterState state) {
+        if (this.state == CharacterState.DEAD) return;
+        if (this.state == CharacterState.FREEFALL && state == CharacterState.MOVING) return;
+        this.state = state;
     }
 
     /**
-     * Get strength of the character
-     *
-     * @return strength of character
-     */
-    public Stats getStats() {
-        return stats;
-    }
-
-    public void setStats(Stats stats) {
-        this.stats = stats;
-    
-    }
-
-    /**
-     * The character takes a given amount of damage. This method reduces
-     * the number of health points the characer has by <code>damageTaken</code>.
-     * It is not possible to give negative damage.
-     *
+     * Reduces the number of health points the characer has by <code>damageTaken</code>.
+     * If character's hp reaches zero, the character state will be set
+     * to {@link CharacterState#DEAD} and locked.
      * @param damageTaken the amount to reduce the character's hp by
      */
     public void takeDamage(float damageTaken) {
-        hp -= damageTaken;
-        if (hp < 0) {
-            hp = 0;
+        if (this.attributes.addHp(-damageTaken)) {
+            setState(CharacterState.DEAD);
+        }
+    }
+
+    /**
+     * Changes the character's state based on the grounded status.
+     * <ul>
+     * <li>If {@code false}, the character's state is set to {@link CharacterState#FREEFALL}.</li>
+     * <li>If {@code true}, the character's state is set to {@link CharacterState#IDLE}, and
+     *     the remaining jumps are reset to the maximum allowed.</li>
+     * </ul>
+     *
+     * @param isGrounded {@code true} if the character is on the ground, {@code false} otherwise.
+     */
+    public void setGrounded(boolean isGrounded) {
+        if (isGrounded) {
+            this.attributes.setJumpsLeft(attributes.getMaxJumps());
+            setState(CharacterState.IDLE);
+        } else {
+            setState(CharacterState.FREEFALL);
         }
     }
 
@@ -91,14 +92,9 @@ public abstract class Character extends HumanoidBody implements Renderable {
     public void render(Batch batch, float dt) {
         Vector2 bodyPos = this.getTransform().getPosition();
         float bodyDeg = this.getTransform().getRotation();
-        TextureRegion star = texture;
-        if (isStatic) {
-            batch.draw(star,
-                    bodyPos.x - size.x / 2,
-                    bodyPos.y - size.y / 2,
-                    size.x, size.y);
-        } else {
-            TextureRegion nextFrame = animator.update(dt);
+        TextureRegion nextFrame = animator.update(dt);
+
+        if (nextFrame != null) {
             batch.draw(nextFrame,
                     bodyPos.x - size.x / 2,
                     bodyPos.y - size.y / 2,
@@ -107,13 +103,5 @@ public abstract class Character extends HumanoidBody implements Renderable {
                     1f, 1f,                          // Scale (no scaling)
                     bodyDeg);
         }
-    }
-
-    public Vector2 getPosition() {
-        return this.getTransform().getPosition();
-    }
-
-    public void setPosition(Vector2 position){
-        getBody().setTransform(position, getBody().getAngle());
     }
 }

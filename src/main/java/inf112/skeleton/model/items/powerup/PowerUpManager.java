@@ -1,8 +1,5 @@
 package inf112.skeleton.model.items.powerup;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
@@ -11,23 +8,26 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-
+import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.view.screen.GameScreen;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PowerUpManager {
     private final List<PowerUpObject> powerUps = new ArrayList<>();
     private final List<PowerUpObject> removalQueue = new ArrayList<>();
 
     private final GameScreen screen;
-    private final Player player;
+    private final Character character;
     private final World world;
     private final PowerUpFactory factory;
 
 
-    public PowerUpManager(GameScreen screen, Player player) {
+    public PowerUpManager(GameScreen screen, Character character) {
         this.screen = screen;
-        this.player = player;
+        this.character = character;
         this.world = screen.getWorld();
         this.factory=new PowerUpFactory(screen);
         loadPowerUps();
@@ -65,12 +65,12 @@ public class PowerUpManager {
                 }
                 PowerUpEnum type = PowerUpEnum.valueOf(typeStr.toUpperCase());
     
-                iPowerUp powerUp = factory.createPowerUp(type, player, position);
+                iPowerUp powerUp = factory.createPowerUp(type, character, position);
     
                 Sprite sprite = powerUp.getSprite();
                 sprite.setPosition(position.x - sprite.getWidth() / 2f, position.y - sprite.getHeight() / 2f);
     
-                PowerUpObject powerUpObject = new PowerUpObject(screen, object, powerUp, player, sprite);
+                PowerUpObject powerUpObject = new PowerUpObject(screen, object, powerUp, character, sprite);
                 powerUps.add(powerUpObject);
             }
         }

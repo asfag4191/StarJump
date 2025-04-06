@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
-
 import inf112.skeleton.app.StarJump;
+import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.model.items.InteractiveTileObject;
 import inf112.skeleton.view.screen.GameScreen;
@@ -18,7 +18,7 @@ public class PowerUpObject extends InteractiveTileObject {
 
     private boolean isCollected = false;
     private final iPowerUp powerUp;
-    private final Player player;
+    private final Character character;
 
     /**
      * Constructs a PowerUpObject with the given parameters.
@@ -26,13 +26,13 @@ public class PowerUpObject extends InteractiveTileObject {
      * @param screen  the game screen where the power-up exists
      * @param object  the map object representing the power-up
      * @param powerUp the specific power-up effect to apply
-     * @param player  the player who can collect the power-up
+     * @param character the character who can collect the power-up
      * @param sprite  the sprite representing the power-up
      */
-    public PowerUpObject(GameScreen screen, MapObject object, iPowerUp powerUp, Player player, Sprite sprite) {
+    public PowerUpObject(GameScreen screen, MapObject object, iPowerUp powerUp, Character character, Sprite sprite) {
         super(screen, object, StarJump.POWERUP);
         this.powerUp = powerUp;
-        this.player = player;
+        this.character = character;
         setCollisionFilter();
     }
 
@@ -45,7 +45,7 @@ public class PowerUpObject extends InteractiveTileObject {
         filter.categoryBits = StarJump.POWERUP;
         filter.maskBits = StarJump.PLAYER_BIT;
         fixture.setFilterData(filter);
-        fixture.setUserData(this); 
+        getBody().setUserData(this);
     }
 
     /**
@@ -121,8 +121,8 @@ public class PowerUpObject extends InteractiveTileObject {
      *
      * @return the Player instance
      */
-    public Player getPlayer() {
-        return player;
+    public Character getCharacter() {
+        return character;
     }
 
     @Override

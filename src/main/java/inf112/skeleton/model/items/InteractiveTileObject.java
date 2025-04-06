@@ -6,16 +6,7 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.Filter;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.Shape;
-import com.badlogic.gdx.physics.box2d.World;
-
+import com.badlogic.gdx.physics.box2d.*;
 import inf112.skeleton.view.screen.GameScreen;
 
 /**
@@ -72,10 +63,10 @@ public abstract class InteractiveTileObject implements iItem {
         }
 
         body = world.createBody(bdef);
+        body.setUserData(this);
         fdef.shape = shape;
         fdef.isSensor = true;
         fixture = body.createFixture(fdef);
-        fixture.setUserData(this); // Important for collision detection
 
         setCategoryFilter(categoryBit);
         shape.dispose();
