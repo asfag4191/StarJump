@@ -5,18 +5,16 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 import inf112.skeleton.model.character.Character;
-import inf112.skeleton.model.character.controllable_characters.Player;
 
 /**
  * A power-up that grants the player temporary flying ability.
  */
 public class FlyingPowerUp implements iPowerUp {
 
-    static final float FLYING_DURATION = 1.0f; 
+    static final float FLYING_DURATION = 2.0f;
     private final Character character;
     private final Sprite sprite;
-    private final Vector2 position; 
-    
+    private final Vector2 position;
 
     /**
      * Constructor for FlyingPowerUp.
@@ -43,10 +41,9 @@ public class FlyingPowerUp implements iPowerUp {
 
     private void enableFlyingEffect() {
         character.setGravityScale(0f);
-        character.setVelocity(new Vector2(character.getVelocity().x, 5f));
+        character.setVelocity(new Vector2(character.getVelocity().x, character.getAttributes().getJumpPower()));
         character.setAsSensor(true);
 
-        
         Timer.schedule(new Task() {
             @Override
             public void run() {
@@ -61,5 +58,3 @@ public class FlyingPowerUp implements iPowerUp {
         return sprite;
     }
 }
-
-
