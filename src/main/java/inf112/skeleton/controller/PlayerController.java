@@ -18,8 +18,13 @@ public final class PlayerController {
         CharacterAttributes attributes = character.attributes;
 
         controller.bindKeyHold(Input.Keys.D, () -> move(character, attributes.getSpeed()));
+        controller.bindKeyHold(Input.Keys.RIGHT, () -> move(character, attributes.getSpeed()));
+
         controller.bindKeyHold(Input.Keys.A, () -> move(character, -attributes.getSpeed()));
+        controller.bindKeyHold(Input.Keys.LEFT, () -> move(character, -attributes.getSpeed()));
+
         controller.bindKeyPress(Input.Keys.SPACE, () -> jump(character, attributes.getJumpPower()));
+        controller.bindKeyPress(Input.Keys.UP, () -> jump(character, attributes.getJumpPower()));
     }
 
     private static void move(Character character, float velocity) {
@@ -27,8 +32,9 @@ public final class PlayerController {
     }
 
     private static void jump(Character character, float jumpPower) {
-        if (character.attributes.getJumpsLeft() == 0) return;
+        if (character.attributes.getJumpsLeft() == 0)
+            return;
         character.attributes.addJumps(-1);
-        character.applyImpulse(new Vector2(0, jumpPower));
+        character.setVelocity(new Vector2(character.getVelocity().x, jumpPower));
     }
 }

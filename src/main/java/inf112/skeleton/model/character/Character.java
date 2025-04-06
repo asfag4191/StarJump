@@ -39,6 +39,7 @@ public class Character extends HumanoidBody implements Renderable {
 
     /**
      * Gets the current state of the character
+     * 
      * @return the state of the character.
      */
     public CharacterState getState() {
@@ -49,18 +50,23 @@ public class Character extends HumanoidBody implements Renderable {
      * Sets the state of the character to the given value.
      * If the character is dead, then this method will do nothing.
      * If the character is freefalling, then it cannot be set to moving.
+     * 
      * @param state the state of the character.
      */
     public void setState(CharacterState state) {
-        if (this.state == CharacterState.DEAD) return;
-        if (this.state == CharacterState.FREEFALL && state == CharacterState.MOVING) return;
+        if (this.state == CharacterState.DEAD)
+            return;
+        if (this.state == CharacterState.FREEFALL && state == CharacterState.MOVING)
+            return;
         this.state = state;
     }
 
     /**
-     * Reduces the number of health points the characer has by <code>damageTaken</code>.
+     * Reduces the number of health points the characer has by
+     * <code>damageTaken</code>.
      * If character's hp reaches zero, the character state will be set
      * to {@link CharacterState#DEAD} and locked.
+     * 
      * @param damageTaken the amount to reduce the character's hp by
      */
     public void takeDamage(float damageTaken) {
@@ -72,12 +78,15 @@ public class Character extends HumanoidBody implements Renderable {
     /**
      * Changes the character's state based on the grounded status.
      * <ul>
-     * <li>If {@code false}, the character's state is set to {@link CharacterState#FREEFALL}.</li>
-     * <li>If {@code true}, the character's state is set to {@link CharacterState#IDLE}, and
-     *     the remaining jumps are reset to the maximum allowed.</li>
+     * <li>If {@code false}, the character's state is set to
+     * {@link CharacterState#FREEFALL}.</li>
+     * <li>If {@code true}, the character's state is set to
+     * {@link CharacterState#IDLE}, and
+     * the remaining jumps are reset to the maximum allowed.</li>
      * </ul>
      *
-     * @param isGrounded {@code true} if the character is on the ground, {@code false} otherwise.
+     * @param isGrounded {@code true} if the character is on the ground,
+     *                   {@code false} otherwise.
      */
     public void setGrounded(boolean isGrounded) {
         if (isGrounded) {
@@ -98,10 +107,17 @@ public class Character extends HumanoidBody implements Renderable {
             batch.draw(nextFrame,
                     bodyPos.x - size.x / 2,
                     bodyPos.y - size.y / 2,
-                    size.x / 2, size.y / 2,   // Origin
-                    size.x, size.y,                         // Width and height
-                    1f, 1f,                          // Scale (no scaling)
+                    size.x / 2, size.y / 2, // Origin
+                    size.x, size.y, // Width and height
+                    1f, 1f, // Scale (no scaling)
                     bodyDeg);
         }
+    }
+
+    /**
+     * Returns a copy of the characters attributes
+     */
+    public CharacterAttributes getAttributes() {
+        return new CharacterAttributes(attributes);
     }
 }

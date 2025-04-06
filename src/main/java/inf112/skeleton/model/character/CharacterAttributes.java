@@ -13,13 +13,12 @@ public class CharacterAttributes {
     private float hp;
     private int jumpsLeft;
 
-
     /**
      * Constructs a CharacterAttributes object with the given stats.
      *
      * @param maxHp     The maximum health of the character.
      * @param jumpPower The jumping power of the character.
-     * @param maxJumps   The maximum number of consecutive jumps.
+     * @param maxJumps  The maximum number of consecutive jumps.
      * @param speed     The movement speed of the character.
      * @param strength  The strength of the character.
      */
@@ -32,6 +31,22 @@ public class CharacterAttributes {
 
         setHp(maxHp);
         setJumpsLeft(maxJumps);
+    }
+
+    /**
+     * Constructs a CharacterAttributes object by copying another one.
+     *
+     * @param attributes The CharacterAttributes to copy.
+     */
+    public CharacterAttributes(CharacterAttributes attributes) {
+        this.maxHp = attributes.maxHp;
+        this.jumpPower = attributes.jumpPower;
+        this.maxJumps = attributes.maxJumps;
+        this.speed = attributes.speed;
+        this.strength = attributes.strength;
+
+        this.hp = attributes.hp;
+        this.jumpsLeft = attributes.jumpsLeft;
     }
 
     /**
@@ -50,7 +65,8 @@ public class CharacterAttributes {
      * @param maxHp The new max hp.
      */
     public void setMaxHp(float maxHp) {
-        if (maxHp <= 0) throw new IllegalArgumentException("maxHp cannot be non-positive");
+        if (maxHp <= 0)
+            throw new IllegalArgumentException("maxHp cannot be non-positive");
         this.maxHp = maxHp;
     }
 
@@ -70,7 +86,8 @@ public class CharacterAttributes {
      * @param jumpPower The new jump power.
      */
     public void setJumpPower(float jumpPower) {
-        if (jumpPower <= 0) throw new IllegalArgumentException("maxHp cannot be non-positive");
+        if (jumpPower <= 0)
+            throw new IllegalArgumentException("maxHp cannot be non-positive");
         this.jumpPower = jumpPower;
     }
 
@@ -90,7 +107,8 @@ public class CharacterAttributes {
      * @param maxJumps The new maximum jumps count.
      */
     public void setMaxJumps(int maxJumps) {
-        if (maxJumps < 0) throw new IllegalArgumentException("maxJump cannot be negative");
+        if (maxJumps < 0)
+            throw new IllegalArgumentException("maxJump cannot be negative");
         this.maxJumps = maxJumps;
     }
 
@@ -110,7 +128,8 @@ public class CharacterAttributes {
      * @param speed The new speed.
      */
     public void setSpeed(float speed) {
-        if (speed <= 0) throw new IllegalArgumentException("maxHp cannot be non-positive");
+        if (speed <= 0)
+            throw new IllegalArgumentException("maxHp cannot be non-positive");
         this.speed = speed;
     }
 
