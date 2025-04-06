@@ -3,9 +3,13 @@ package inf112.skeleton.model.character;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
+import inf112.skeleton.app.StarJump;
 import inf112.skeleton.view.Animator;
 import inf112.skeleton.view.Renderable;
+
+import java.util.Queue;
 
 /**
  * Represents a generic character in the game with full support for
@@ -26,6 +30,7 @@ public class Character extends HumanoidBody implements Renderable {
         this.animator = new Animator();
         this.size = size;
         this.body.setUserData(this);
+        setupGroundSensor(this.body, size);
     }
 
     /**
@@ -103,5 +108,31 @@ public class Character extends HumanoidBody implements Renderable {
                     1f, 1f,                          // Scale (no scaling)
                     bodyDeg);
         }
+    }
+
+    private static void setupGroundSensor(Body mainBody, Vector2 bodySize) {
+        // Sensor properties
+        float width = bodySize.x;
+        float widthAdjustmentScale = 0.05f; // to avoid contact from the sides.
+        float yOffset = -(bodySize.y/2);
+
+        // Sensor shape setup
+        EdgeShape sensorShape = new EdgeShape();
+        sensorShape.set(
+                new Vector2(-width * (1 - widthAdjustmentScale) / 2, yOffset),
+                new Vector2(width * (1 - widthAdjustmentScale) / 2, yOffset));
+
+        // Sensor fixture setup
+        FixtureDef fixDef = new FixtureDef();
+        fixDef.shape = sensorShape;
+        fixDef.isSensor = true;
+        fixDef.density = 0;
+        fixDef.filter.categoryBits = StarJump.GROUND_SENSOR_BIT;
+        fixDef.filter.maskBits = StarJump.GROUND_BIT;
+
+        // Add the fixture to the body
+        Fixture sensorFixture = mainBody.createFixture(fixDef);
+        sensorFixture.setUserData("sensor");
+        sensorShape.dispose();
     }
 }
