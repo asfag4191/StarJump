@@ -4,17 +4,21 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
+
 import inf112.skeleton.model.character.Character;
+import inf112.skeleton.utility.SoundManager;
 
 /**
  * A power-up that grants the player temporary flying ability.
  */
 public class FlyingPowerUp implements iPowerUp {
 
-    static final float FLYING_DURATION = 2.0f;
+    static final float FLYING_DURATION = 1.0f;
     private final Character character;
     private final Sprite sprite;
     private final Vector2 position;
+    private final SoundManager soundManager;
+
 
     /**
      * Constructor for FlyingPowerUp.
@@ -31,17 +35,21 @@ public class FlyingPowerUp implements iPowerUp {
         this.position = position;
         this.sprite = sprite;
         this.sprite.setPosition(position.x, position.y);
+        this.soundManager = new SoundManager();
+
 
     }
 
     @Override
     public void applyPowerUpEffect() {
         enableFlyingEffect();
+        soundManager.powerup_fly.play();
     }
 
     private void enableFlyingEffect() {
         character.setGravityScale(0f);
-        character.setVelocity(new Vector2(character.getVelocity().x, character.getAttributes().getJumpPower()));
+        float flyBoost = character.getAttributes().getJumpPower() * 2f; // Boost factor
+        character.setVelocity(new Vector2(character.getVelocity().x, flyBoost));
         character.setAsSensor(true);
 
         Timer.schedule(new Task() {
@@ -49,6 +57,8 @@ public class FlyingPowerUp implements iPowerUp {
             public void run() {
                 character.setGravityScale(1f);
                 character.setAsSensor(false);
+
+                character.applyForce(new Vector2(0f, -5f));
             }
         }, FLYING_DURATION);
     }
