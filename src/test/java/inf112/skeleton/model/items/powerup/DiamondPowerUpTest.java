@@ -1,8 +1,6 @@
 package inf112.skeleton.model.items.powerup;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import inf112.skeleton.model.character.Character;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.mock;
@@ -11,8 +9,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
-import inf112.skeleton.model.character.controllable_characters.Player;
+import inf112.skeleton.model.character.Character;
 
+
+/**
+ * Test for DiamondPowerUp
+ */
 class DiamondPowerUpTest {
 
     private Character mockCharacter;

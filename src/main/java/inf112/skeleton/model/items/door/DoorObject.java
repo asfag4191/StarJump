@@ -4,6 +4,7 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+
 import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.model.items.InteractiveTileObject;
@@ -40,11 +41,10 @@ public class DoorObject extends InteractiveTileObject {
     }
 
     public void checkPlayerAtMiddle() {
-        if (triggered) return; // Only trigger once
+        if (triggered) return; 
 
         Vector2 playerPos = player.character.getTransform().getPosition();
 
-        // Calculate center X and bottom Y
         float doorCenterX = (bounds.x + bounds.width / 2f) / 16f;
         float doorBottomY = bounds.y / 16f;
 
@@ -58,7 +58,6 @@ public class DoorObject extends InteractiveTileObject {
         if (inMiddle) {
             System.out.println("Player is detecting the door!");
             triggered = true;
-            // Optional: Trigger level complete here
         }
     }
     public boolean isTriggered() {
