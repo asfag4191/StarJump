@@ -6,7 +6,7 @@ public final class UnitConverter {
     }
 
     public static float pixelsToMeters(float pixels) {
-        return pixelsToMeters(pixels, Constants.PPM.value);
+        return pixelsToMeters(pixels, Constants.PPM);
     }
 
     public static float metersToPixels(float meters, float ppm) {
@@ -14,6 +14,6 @@ public final class UnitConverter {
     }
 
     public static float metersToPixels(float meters) {
-        return metersToPixels(meters, Constants.PPM.value);
+        return metersToPixels(meters, Constants.PPM);
     }
 }

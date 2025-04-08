@@ -41,6 +41,7 @@ public class RigidBody {
     public void setAsSensor(boolean isSensor) {
         Array<Fixture> fixtureList= this.body.getFixtureList();
         for (Fixture fixture : fixtureList) {
+            if (fixture.getUserData() == "sensor") continue; // continue if a fixture is a pre-defined sensor.d
             fixture.setSensor(isSensor);
         }
     }

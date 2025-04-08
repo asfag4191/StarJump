@@ -61,7 +61,7 @@ public final class ColliderToBox2D {
         fixtureDef.isSensor = false;
 
         fixtureDef.filter.categoryBits = StarJump.GROUND_BIT; // Ground objects
-        fixtureDef.filter.maskBits = StarJump.PLAYER_BIT; // Only players collide with it
+        fixtureDef.filter.maskBits = StarJump.PLAYER_BIT | StarJump.GROUND_SENSOR_BIT; // Only players collide with it
 
         body.createFixture(fixtureDef);
         body.setUserData("ground");
