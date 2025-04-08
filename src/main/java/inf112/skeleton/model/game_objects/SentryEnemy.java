@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.controllable_characters.Player;
 
-class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
+public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
     private Player player;
     public Vector2 playerDirection;
     ShapeRenderer shapeRenderer = new ShapeRenderer();
@@ -34,7 +34,8 @@ class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
         this.playerDirection = getPlayerDirection();
     }
 
-    private Vector2 getPlayerDirection() {
+    // Will be private when rest is implemented
+    public Vector2 getPlayerDirection() {
         Vector2 playerPosition = this.player.character.getPosition();
         Vector2 enemyPosition = character.getPosition();
 
