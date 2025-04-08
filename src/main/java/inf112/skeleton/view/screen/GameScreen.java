@@ -19,6 +19,7 @@ import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.WorldModel;
 import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.model.character.enemy.EnemyManager;
+import inf112.skeleton.model.character.enemy.BlackHole;
 import inf112.skeleton.model.items.door.DoorManager;
 import inf112.skeleton.model.items.door.DoorObject;
 import inf112.skeleton.model.items.powerup.PowerUpManager;
@@ -103,6 +104,7 @@ public class GameScreen implements Screen {
 
         // Initialize HUD with the game's SpriteBatch
         hud = new HUD(game.batch, player.character);
+
     }
 
     public GameScreen(StarJump game) {
@@ -233,7 +235,7 @@ public class GameScreen implements Screen {
         enemyManager.update(dt);
         enemyManager.render(game.batch, dt);
 
-  
+
         game.batch.end(); // END the SpriteBatch
 
         // Draw HUD last
