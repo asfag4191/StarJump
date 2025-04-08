@@ -1,5 +1,7 @@
 package inf112.skeleton.view.screen;
 
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -12,6 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+
 import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.WorldModel;
 import inf112.skeleton.model.character.controllable_characters.Player;
@@ -23,8 +26,6 @@ import inf112.skeleton.utility.listeners.CollisionHandler;
 import inf112.skeleton.utility.listeners.PowerUpCollisionHandler;
 import inf112.skeleton.utility.listeners.WorldContactListener;
 import inf112.skeleton.view.HUD;
-
-import java.util.List;
 
 public class GameScreen implements Screen {
     private final static boolean DEBUG_MODE = true;
