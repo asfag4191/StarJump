@@ -1,4 +1,4 @@
-package inf112.skeleton.model.game_objects;
+package inf112.skeleton.model.character.enemy;
 
 interface iRoamingEnemy {
     /**

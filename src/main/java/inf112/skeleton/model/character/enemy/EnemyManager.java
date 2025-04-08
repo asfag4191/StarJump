@@ -1,4 +1,4 @@
-package inf112.skeleton.model.game_objects;
+package inf112.skeleton.model.character.enemy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +14,19 @@ import inf112.skeleton.model.character.CharacterAttributes;
 import inf112.skeleton.model.character.Character;
 import inf112.skeleton.view.screen.GameScreen;
 
+/**
+ * This class creates <code>SimpleEnemies</code> and manages
+ * updating and rendering of them
+ */
 public class EnemyManager implements iUpdateable {
     List<SimpleEnemy> enemies = new ArrayList<>();
     private GameScreen screen;
     ShapeRenderer shapeRenderer = new ShapeRenderer();
+    private EnemyFactory enemyFactory;
 
     public EnemyManager(GameScreen screen) {
         this.screen = screen;
+        this.enemyFactory = new EnemyFactory(screen);
     }
 
     private void addEnemy(SimpleEnemy enemy) {
@@ -28,21 +34,10 @@ public class EnemyManager implements iUpdateable {
     }
 
     public void createEnemy() {
-
-        CharacterAttributes attributes = new CharacterAttributes(
-                100,
-                10,
-                2,
-                3.5f,
-                5);
-
-        SimpleEnemy enemy = new SentryEnemy(new Character("enemy", attributes, new Vector2(1, 1), screen.getWorld()),
-                screen.getPlayer());
-        addEnemy(enemy);
-        enemy.character.setPosition(new Vector2(3, 4));
-        Texture texture1 = new Texture(Gdx.files.internal("sprites/star.png"));
-        enemy.character.animator.addAnimation("idle", texture1, 1, 1, 0);
-        enemy.character.animator.play("idle");
+        SimpleEnemy sentryEnemy = enemyFactory.getNextSentryEnemy();
+        SimpleEnemy blackHole = enemyFactory.getNextBlackHole();
+        addEnemy(sentryEnemy);
+        addEnemy(blackHole);
     }
 
     @Override
@@ -54,7 +49,7 @@ public class EnemyManager implements iUpdateable {
 
     public void render(SpriteBatch batch, float dt) {
         for (SimpleEnemy enemy : enemies) {
-            enemy.character.render(batch, dt);
+            enemy.enemyCharacter.render(batch, dt);
             if (GameScreen.DEBUG_MODE) {
                 debug(batch, enemy);
             }
@@ -79,10 +74,10 @@ public class EnemyManager implements iUpdateable {
         shapeRenderer.setColor(1, 0, 0, 1); // Red color
         // Draw a line from the enemy to the player
         Vector2 playerDir = sentry.getPlayerDirection();
-        Vector2 enemyPos = sentry.character.getPosition();
+        Vector2 enemyPos = sentry.enemyCharacter.getPosition();
 
         Vector2 playerPosCalc = enemyPos.cpy().add(playerDir.scl(10));
-        shapeRenderer.line(sentry.character.getPosition(), playerPosCalc);
+        shapeRenderer.line(sentry.enemyCharacter.getPosition(), playerPosCalc);
 
         shapeRenderer.end();
     }

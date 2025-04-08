@@ -19,6 +19,7 @@ import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.WorldModel;
 import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.model.character.enemy.BlackHole;
+import inf112.skeleton.model.character.enemy.EnemyManager;
 import inf112.skeleton.model.items.door.DoorManager;
 import inf112.skeleton.model.items.powerup.PowerUpManager;
 import inf112.skeleton.utility.ColliderToBox2D;
@@ -28,7 +29,6 @@ import inf112.skeleton.utility.listeners.EnemyCollisionHandler;
 import inf112.skeleton.utility.listeners.PowerUpCollisionHandler;
 import inf112.skeleton.utility.listeners.WorldContactListener;
 import inf112.skeleton.view.HUD;
-import inf112.skeleton.model.game_objects.EnemyManager;
 
 public class GameScreen implements Screen {
     public final static boolean DEBUG_MODE = true;
@@ -49,9 +49,6 @@ public class GameScreen implements Screen {
     private HUD hud;
     private EnemyManager enemyManager;
 
-    //TODO:
-    private BlackHole enemy;
-
     public GameScreen(StarJump game, String map) {
         this.game = game;
 
@@ -67,7 +64,7 @@ public class GameScreen implements Screen {
         this.gamecam = (OrthographicCamera) game.gameViewport.getCamera();
         this.stage = new Stage(this.game.gameViewport);
         Gdx.input.setInputProcessor(this.stage);
-        shapeRenderer = new ShapeRenderer();
+        this.shapeRenderer = new ShapeRenderer();
 
         // Load TMX map
         tmxmap = new TmxMapLoader().load("src/main/assets/map/tilemaps/" + map);
@@ -92,9 +89,9 @@ public class GameScreen implements Screen {
         // Set up door
         doorManager = new DoorManager(this);
 
-        // Set up black hole enemy
-        // TODO
-        this.enemy = worldModel.createEnemy();
+        // TODO: Set up enemies
+        enemyManager = new EnemyManager(this);
+        enemyManager.createEnemy();
     
         // Instantiate collision handlers
         CollisionHandler[] handlers = {new PowerUpCollisionHandler(), new CharacterContactHandler(),
@@ -105,9 +102,6 @@ public class GameScreen implements Screen {
 
         // Initialize HUD with the game's SpriteBatch
         hud = new HUD(game.batch, player.character);
-
-        enemyManager = new EnemyManager(this);
-        enemyManager.createEnemy();
     }
 
     public GameScreen(StarJump game) {

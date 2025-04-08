@@ -10,8 +10,6 @@ import inf112.skeleton.controller.PlayerController;
 import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.CharacterAttributes;
 import inf112.skeleton.model.character.controllable_characters.Player;
-import inf112.skeleton.model.character.enemy.BlackHole;
-import inf112.skeleton.model.character.enemy.EnemyFactory;
 import inf112.skeleton.model.colliders.BoxCollider;
 import inf112.skeleton.view.Renderable;
 
@@ -53,17 +51,6 @@ public class WorldModel implements Renderable {
 
         PlayerController.setupWASD(plr);
         return plr;
-    }
-
-    public BlackHole createEnemy() {
-        EnemyFactory factory = new EnemyFactory(world);
-        BlackHole enemy = factory.getNextEnemy();
-        Texture enemyTexture = new Texture(Gdx.files.internal("sprites/simple_blackhole.png"));
-        enemy.getEnemyCharacter().animator.addAnimation("idle", enemyTexture, 1, 1, 0);
-        enemy.getEnemyCharacter().animator.play("idle");
-        ViewableObjects.add(enemy.getEnemyCharacter());
-
-        return enemy;
     }
 
     public BoxCollider createTile(Vector2 position, Vector2 size, Texture texture) {

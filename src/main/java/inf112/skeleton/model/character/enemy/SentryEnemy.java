@@ -1,4 +1,4 @@
-package inf112.skeleton.model.game_objects;
+package inf112.skeleton.model.character.enemy;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -37,7 +37,7 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
     // Will be private when rest is implemented
     public Vector2 getPlayerDirection() {
         Vector2 playerPosition = this.player.character.getPosition();
-        Vector2 enemyPosition = character.getPosition();
+        Vector2 enemyPosition = enemyCharacter.getPosition();
 
         return playerPosition.sub(enemyPosition).nor();
     }

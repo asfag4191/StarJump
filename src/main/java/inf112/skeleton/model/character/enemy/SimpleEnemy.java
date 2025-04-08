@@ -1,14 +1,14 @@
-package inf112.skeleton.model.game_objects;
+package inf112.skeleton.model.character.enemy;
 
 import com.badlogic.gdx.math.Vector2;
 import inf112.skeleton.model.character.Character;
 
 public abstract class SimpleEnemy {
-    public final Character character;
+    public final Character enemyCharacter;
     private Vector2 target;
 
-    public SimpleEnemy(Character character) {
-        this.character = character;
+    public SimpleEnemy(Character enemy) {
+        this.enemyCharacter = enemy;
     }
 
     public Vector2 getTarget() {
@@ -19,7 +19,6 @@ public abstract class SimpleEnemy {
         target = point;
     }
 
-    public void update(float dt) {
-    }
+    public void update(float dt) {}
 
 }
