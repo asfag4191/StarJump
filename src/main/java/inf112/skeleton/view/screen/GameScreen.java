@@ -15,11 +15,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.WorldModel;
 import inf112.skeleton.model.character.controllable_characters.Player;
+import inf112.skeleton.model.character.enemy.BlackHole;
 import inf112.skeleton.model.items.door.DoorManager;
 import inf112.skeleton.model.items.powerup.PowerUpManager;
 import inf112.skeleton.utility.ColliderToBox2D;
 import inf112.skeleton.utility.listeners.CharacterContactHandler;
 import inf112.skeleton.utility.listeners.CollisionHandler;
+import inf112.skeleton.utility.listeners.EnemyCollisionHandler;
 import inf112.skeleton.utility.listeners.PowerUpCollisionHandler;
 import inf112.skeleton.utility.listeners.WorldContactListener;
 import inf112.skeleton.view.HUD;
@@ -43,6 +45,9 @@ public class GameScreen implements Screen {
     private PowerUpManager powerUpManager;
     private DoorManager doorManager;
     private HUD hud;
+
+    //TODO:
+    private BlackHole enemy;
 
     public GameScreen(StarJump game, String map) {
         this.game = game;
@@ -85,14 +90,19 @@ public class GameScreen implements Screen {
         // Set up door
         doorManager = new DoorManager(this);
 
+        // Set up black hole enemy
+        // TODO
+        this.enemy = worldModel.createEnemy();
+    
         // Instantiate collision handlers
-        CollisionHandler[] handlers = {new PowerUpCollisionHandler(), new CharacterContactHandler()};
+        CollisionHandler[] handlers = {new PowerUpCollisionHandler(), new CharacterContactHandler(),
+        new EnemyCollisionHandler()};
         WorldContactListener contactListener = new WorldContactListener(List.of(handlers));
 
         world.setContactListener(contactListener);
 
         // Initialize HUD with the game's SpriteBatch
-        hud = new HUD(game.batch);
+        hud = new HUD(game.batch, player.character);
 
     }
 

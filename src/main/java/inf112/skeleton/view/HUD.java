@@ -9,6 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
+import inf112.skeleton.model.character.Character;
+import inf112.skeleton.model.character.CharacterAttributes;
+import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.model.items.powerup.DiamondPowerUp;
 
 /**
@@ -21,10 +25,11 @@ public class HUD {
     private FitViewport hudViewport;
     private OrthographicCamera hudCamera;
 
-    private Integer life;
+    private Character character;
+    private Integer hp;
     private Integer score;
 
-    Label lifeLabel;
+    Label hpLabel;
     Label scoreLabel;
 
      /**
@@ -32,8 +37,9 @@ public class HUD {
      *
      * @param batch The SpriteBatch used for rendering the HUD elements.
      */
-    public HUD(SpriteBatch batch) {
-        life = 3;    
+    public HUD(SpriteBatch batch, Character character) {
+        this.character = character;
+        hp = ((int)character.attributes.getHp());   
         score = DiamondPowerUp.getScore(); // Get initial score
 
         hudCamera = new OrthographicCamera();
@@ -47,10 +53,10 @@ public class HUD {
         BitmapFont font = new BitmapFont();
         font.getData().setScale(2f);
 
-        lifeLabel = new Label(String.format("LIFE: %d", life), new Label.LabelStyle(font, Color.WHITE));
+        hpLabel = new Label(String.format("HP: %d", hp), new Label.LabelStyle(font, Color.WHITE));
         scoreLabel = new Label(String.format("SCORE: %d", score), new Label.LabelStyle(font, Color.WHITE));
 
-        table.add(lifeLabel).expandX().padTop(50).padLeft(100).left();  
+        table.add(hpLabel).expandX().padTop(50).padLeft(100).left();  
         table.add(scoreLabel).expandX().padTop(50).padRight(100).right(); 
 
         hudStage.addActor(table);
@@ -64,9 +70,9 @@ public class HUD {
      * @param score The player's current score.
      */
     public void update() {
-        this.life = life;
+        this.hp = ((int)character.attributes.getHp());
         this.score = DiamondPowerUp.getScore(); // Update score from DiamondPowerUp
-        lifeLabel.setText(String.format("LIFE: %d", life));
+        hpLabel.setText(String.format("LIFE: %d", hp));
         scoreLabel.setText(String.format("SCORE: %d", score));
     }
 
