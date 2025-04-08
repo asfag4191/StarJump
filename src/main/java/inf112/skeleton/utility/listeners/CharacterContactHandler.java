@@ -18,19 +18,16 @@ public class CharacterContactHandler implements CollisionHandler {
     }
 
     private void groundCollision(Fixture fixA, Fixture fixB, boolean isGrounded) {
-        Object userDataA = fixA.getBody().getUserData();
-        Object userDataB = fixB.getBody().getUserData();
-
-        boolean isCharacterA = userDataA instanceof Character;
-        boolean isCharacterB = userDataB instanceof Character;
+        boolean isSensorA = fixA.getFilterData().categoryBits == StarJump.GROUND_SENSOR_BIT;
+        boolean isSensorB = fixB.getFilterData().categoryBits == StarJump.GROUND_SENSOR_BIT;
         boolean isGroundA = fixA.getFilterData().categoryBits == StarJump.GROUND_BIT;
         boolean isGroundB = fixB.getFilterData().categoryBits == StarJump.GROUND_BIT;
         Character charac = null;
 
-        if (isCharacterA && isGroundB) {
-            charac = (Character) userDataA;
-        } else if (isCharacterB && isGroundA) {
-            charac = (Character) userDataB;
+        if (isSensorA && isGroundB) {
+            charac = (Character) fixA.getBody().getUserData();
+        } else if (isSensorB && isGroundA) {
+            charac = (Character) fixB.getBody().getUserData();
         }
 
         if (charac != null) {

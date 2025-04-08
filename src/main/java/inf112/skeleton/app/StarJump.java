@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+
 import inf112.skeleton.model.GameState;
 import inf112.skeleton.model.Settings;
 import inf112.skeleton.view.screen.MainMenuScreen;
@@ -16,11 +17,10 @@ public class StarJump extends Game {
     public SpriteBatch batch;
     public BitmapFont font;
 
-    // Separate viewports for different screens
     public StretchViewport uiViewport; // For menus (in pixels)
     public FitViewport gameViewport; // For the game (in tiles)
 
-    // Feltvariabler for viewport-størrelser
+    // Field variables for viewport sizes
     private static final float UI_WIDTH = 1280;
     private static final float UI_HEIGHT = 720;
     private static final float GAME_WIDTH = 20;
@@ -32,6 +32,7 @@ public class StarJump extends Game {
     public static final short DANGEROUS_OBJECTS = 4;
     public static final short GROUND_BIT = 8;
     public static final short DOOR_BIT = 9;
+    public static final short GROUND_SENSOR_BIT = 10;
     
     private GameState gameState;
     public Settings settings;
@@ -53,7 +54,6 @@ public class StarJump extends Game {
 
         this.updateSettings();
 
-        // Set the first screen (Main Menu uses the UI viewport)
         this.setScreen(new MainMenuScreen(this));
     }
 
@@ -71,7 +71,6 @@ public class StarJump extends Game {
 
     @Override
     public void resize(int width, int height) {
-        // Update both viewports
         uiViewport.update(width, height, true);
         gameViewport.update(width, height, false);
 
@@ -82,10 +81,19 @@ public class StarJump extends Game {
         font.getData().setScale(uiViewport.getWorldHeight() / Gdx.graphics.getHeight());
     }
 
+
+    /**
+     * Gets the current game state.
+     *
+     * @return The current {@link GameState}.
+     */
     public GameState getGameState() {
         return this.gameState;
     }
 
+     /**
+     * Applies the current user settings to the game.
+     */
     public void updateSettings() {
         this.settings.applySettings();
     }
