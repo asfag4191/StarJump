@@ -13,15 +13,28 @@
 
 
 ## About the game
-*"A star has fallen from the sky! Help it to jump back to its home. But beware of black holes! They are fatal."*
+*"A star has fallen from the sky! Help it to jump back to its home. But beware of black holes! They are fatal. Use the arrow keys to move side to side, and press the spacebar to jump. Along the way you can collect power-ups (rainbows) to gain a short burstof flight. You can also grab diamonds to increase your score. 
 
 ## How to play
-**todo**
+* Compile with mvn package.
+* You can run the project with Maven using `mvn exec:java`
+* If needed you can first compile with `mvn compile` – or in a single step, `mvn compile exec:java`.
+* Requires Java 21 or later
 
-## Running
-You can run the project with Maven using `mvn exec:java`.
+## Credits
+Graphichs
+* Background: https://opengameart.org/content/dirt-platformer-tiles.
+* Tiles: https://opengameart.org/content/additions-to-32x32-fantasy-tileset.
+* Background: https://incolgames.itch.io/dungeon-platformer-tile-set-pixel-art.
+* Star/player: https://www.pikpng.com/pngvi/wmxRmb_mario-star-pixel-png-super-mario-brothers-star-sprite-clipart/.
+* Enemy: Created by Mohamad Al-Mozzen.
+* PowerUp: Created by Åse Fagerbakke.
+* Diamond: Created by Åse Fagerbakke.
 
-You may have to compile first, with `mvn compile` – or in a single step, `mvn compile exec:java`.
+Sounds
+* Sound for Powerup: Created by Åse Fagerbakke
+
+
 
 ## Testing
 Run unit tests with mvn test – unit test files should have Test in the file name, e.g., ExampleTest.java. This will also generate a JaCoCo code coverage report, which you can find in target/site/jacoco/index.html.
@@ -34,10 +47,6 @@ If you run `mvn package` you get everything bundled up into a `.jar` file + a �
 
 Run Jar files with, for example, `java -jar target/NAME-VERSION-fat.jar`.
 If you have test failures, and really need to build a jar anyway, you can skip testing with `mvn -Dmaven.test.skip=true package`.
-
-# Credits
-
-**todo**: informasjon om hvor grafikk/lyd er hentet fra (kilde/opphavsrett)
 
 
 
