@@ -1,25 +1,16 @@
 package inf112.skeleton.model.game_objects;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import inf112.skeleton.model.character.Character;
 
-public class SimpleEnemy{
+public class SimpleEnemy {
     public final Character character;
     private Vector2 target;
     private float roamingRadius;
     private boolean roaming;
-    private RayCastCallback rayCallback;
 
     public SimpleEnemy(Character character) {
         this.character = character;
-        this.rayCallback = new RayCastCallback() {
-            @Override
-            public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
-                return 0;
-            }
-        };
     }
 
     public Vector2 getTarget() {
@@ -45,7 +36,5 @@ public class SimpleEnemy{
     public void setRoaming(boolean on) {
         roaming = on;
     }
-
-
 
 }
