@@ -26,9 +26,10 @@ import inf112.skeleton.utility.listeners.CollisionHandler;
 import inf112.skeleton.utility.listeners.PowerUpCollisionHandler;
 import inf112.skeleton.utility.listeners.WorldContactListener;
 import inf112.skeleton.view.HUD;
+import inf112.skeleton.model.game_objects.EnemyManager;
 
 public class GameScreen implements Screen {
-    private final static boolean DEBUG_MODE = true;
+    public final static boolean DEBUG_MODE = true;
 
     private final StarJump game;
     private final TiledMap tmxmap;
@@ -44,12 +45,13 @@ public class GameScreen implements Screen {
     private PowerUpManager powerUpManager;
     private DoorManager doorManager;
     private HUD hud;
+    private EnemyManager enemyManager;
 
     public GameScreen(StarJump game, String map) {
         this.game = game;
 
         // SINGLE SHARED WORLD instance
-        this.world = new World(new Vector2(0, -9.81f*2), true);
+        this.world = new World(new Vector2(0, -9.81f * 2), true);
 
         // Pass the SAME WORLD to WorldModel
         this.worldModel = new WorldModel(world);
@@ -68,7 +70,6 @@ public class GameScreen implements Screen {
         // Set up renderer (assuming tiles are 16x16 pixels)
         renderer = new OrthogonalTiledMapRenderer(tmxmap, 1f / 16f);
 
-        // this.player = worldModel.getPlayer();
         // Center the camera
         float w = game.gameViewport.getWorldWidth();
         float h = game.gameViewport.getWorldHeight();
@@ -87,7 +88,7 @@ public class GameScreen implements Screen {
         doorManager = new DoorManager(this);
 
         // Instantiate collision handlers
-        CollisionHandler[] handlers = {new PowerUpCollisionHandler(), new CharacterContactHandler()};
+        CollisionHandler[] handlers = { new PowerUpCollisionHandler(), new CharacterContactHandler() };
         WorldContactListener contactListener = new WorldContactListener(List.of(handlers));
 
         world.setContactListener(contactListener);
@@ -95,6 +96,8 @@ public class GameScreen implements Screen {
         // Initialize HUD with the game's SpriteBatch
         hud = new HUD(game.batch);
 
+        enemyManager = new EnemyManager(this);
+        enemyManager.createEnemy();
     }
 
     public GameScreen(StarJump game) {
@@ -110,8 +113,8 @@ public class GameScreen implements Screen {
     public void render(float dt) {
         input();
         draw(dt);
-        debug();
         renderGrid();
+        debug();
         logic(dt);
     }
 
@@ -157,6 +160,7 @@ public class GameScreen implements Screen {
         worldModel.onStep(dt);
 
         powerUpManager.update(dt);
+        enemyManager.update(dt);
 
         adjustCamera(this.player, 3f);
     }
@@ -204,6 +208,7 @@ public class GameScreen implements Screen {
         powerUpManager.update(dt);
         doorManager.update(dt);
         worldModel.render(game.batch, dt);
+        enemyManager.render(game.batch, dt);
         game.batch.end(); // END the SpriteBatch
 
         // Draw HUD last
