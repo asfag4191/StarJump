@@ -56,8 +56,10 @@ public class Character extends HumanoidBody implements Renderable {
      * @param state the state of the character.
      */
     public void setState(CharacterState state) {
-        if (this.state == CharacterState.DEAD) return;
-        if (this.state == CharacterState.FREEFALL && state == CharacterState.MOVING) return;
+        if (this.state == CharacterState.DEAD)
+            return;
+        if (this.state == CharacterState.FREEFALL && state == CharacterState.MOVING)
+            return;
         this.state = state;
     }
 
@@ -118,7 +120,7 @@ public class Character extends HumanoidBody implements Renderable {
         // Sensor properties
         float width = bodySize.x;
         float widthAdjustmentScale = 0.05f; // to avoid contact from the sides.
-        float yOffset = -(bodySize.y/2);
+        float yOffset = -(bodySize.y / 2);
 
         // Sensor shape setup
         EdgeShape sensorShape = new EdgeShape();
@@ -145,5 +147,14 @@ public class Character extends HumanoidBody implements Renderable {
      */
     public CharacterAttributes getAttributes() {
         return new CharacterAttributes(attributes);
+    }
+
+    /**
+     * Gets the position of the character in the world.
+     *
+     * @param position of the character.
+     */
+    public Vector2 getPosition() {
+        return this.getTransform().getPosition();
     }
 }

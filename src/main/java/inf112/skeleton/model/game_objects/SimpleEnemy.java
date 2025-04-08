@@ -19,4 +19,7 @@ public abstract class SimpleEnemy {
         target = point;
     }
 
+    public void update(float dt) {
+    }
+
 }
