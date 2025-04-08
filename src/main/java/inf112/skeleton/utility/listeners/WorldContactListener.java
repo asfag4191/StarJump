@@ -31,26 +31,43 @@ public class WorldContactListener implements ContactListener {
 
     @Override
     public void beginContact(Contact contact) {
-        Fixture fixA = contact.getFixtureA();
-        Fixture fixB = contact.getFixtureB();
-
-        if (fixA.getBody().getUserData() == null || fixB.getBody().getUserData() == null) return;
-
-        for (CollisionHandler handler : collisionHandlers) {
-            handler.onContactBegin(contact, fixA, fixB);
-        }
+        onContact(contact, true);
     }
 
     @Override public void endContact(Contact contact) {
+        onContact(contact, false);
+    }
+
+    @Override public void preSolve(Contact contact, Manifold oldManifold) {}
+    @Override public void postSolve(Contact contact, ContactImpulse impulse) {}
+
+    /**
+     * Handles the contact events based on the contact type.
+     * <p>
+     * If the contact has just begun, it calls {@link CollisionHandler#onContactBegin(Contact, Fixture, Fixture)}
+     * on all the handlers.
+     * If the contact has ended, it calls {@link CollisionHandler#onContactEnded(Contact, Fixture, Fixture)}
+     * on all the handlers.
+     * </p>
+     *
+     * @param contact The contact information for the collision.
+     * @param hasBegun {@code true} if the contact has begun, {@code false} if the contact has ended.
+     */
+    private void onContact(Contact contact, boolean hasBegun) {
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
 
+        // Safety check: No need to check if the fixture has a body,
+        // as Box2D ensures fixtures can't trigger contact without an associated body.
+        // We only need to ensure the body's user data is not null.
         if (fixA.getBody().getUserData() == null || fixB.getBody().getUserData() == null) return;
 
         for (CollisionHandler handler : collisionHandlers) {
-            handler.onContactEnded(contact, fixA, fixB);
+            if (hasBegun) {
+                handler.onContactBegin(contact, fixA, fixB);
+            } else {
+                handler.onContactEnded(contact, fixA, fixB);
+            }
         }
     }
-    @Override public void preSolve(Contact contact, Manifold oldManifold) {}
-    @Override public void postSolve(Contact contact, ContactImpulse impulse) {}
 }

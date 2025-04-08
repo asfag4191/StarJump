@@ -8,9 +8,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import inf112.skeleton.model.colliders.RigidBody;
 
 public abstract class HumanoidBody extends RigidBody {
-    private static final PolygonShape SHAPE = new PolygonShape();
-    private static final BodyDef BODY_DEF = getBodyDef();
-
     /**
      * Constructs a new HumanoidBody with the given size.
      *
@@ -18,7 +15,7 @@ public abstract class HumanoidBody extends RigidBody {
      * @param size  The size of the humanoid body, used to define its fixture and shape.
      */
     public HumanoidBody(World world, Vector2 size) {
-        super(world, BODY_DEF, getFixtureDef(size), false);
+        super(world, getBodyDef(), getFixtureDef(size), true);
     }
 
     private static BodyDef getBodyDef() {
@@ -30,9 +27,11 @@ public abstract class HumanoidBody extends RigidBody {
     }
 
     private static FixtureDef getFixtureDef(Vector2 size) {
-        SHAPE.setAsBox(size.x / 2, size.y / 2); // box2d operates from the center
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(size.x / 2, size.y / 2); // box2d operates from the center
+
         FixtureDef fixDef = new FixtureDef();
-        fixDef.shape = SHAPE;
+        fixDef.shape = shape;
         fixDef.density = 1;
         fixDef.friction = 1;
         return fixDef;
