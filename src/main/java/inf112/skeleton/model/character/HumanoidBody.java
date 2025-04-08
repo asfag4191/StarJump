@@ -9,7 +9,6 @@ import inf112.skeleton.model.colliders.RigidBody;
 
 public abstract class HumanoidBody extends RigidBody {
     private static final PolygonShape SHAPE = new PolygonShape();
-    private static final BodyDef BODY_DEF = getBodyDef();
 
     /**
      * Constructs a new HumanoidBody with the given size.
@@ -18,7 +17,7 @@ public abstract class HumanoidBody extends RigidBody {
      * @param size  The size of the humanoid body, used to define its fixture and shape.
      */
     public HumanoidBody(World world, Vector2 size) {
-        super(world, BODY_DEF, getFixtureDef(size), false);
+        super(world, getBodyDef(), getFixtureDef(size), false);
     }
 
     private static BodyDef getBodyDef() {
