@@ -1,5 +1,8 @@
 package inf112.skeleton.model.items.powerup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
@@ -8,12 +11,14 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+
 import inf112.skeleton.model.character.Character;
 import inf112.skeleton.view.screen.GameScreen;
 
-import java.util.ArrayList;
-import java.util.List;
-
+ /**
+ * Manages the power-ups in the game.
+ * Loads power-ups from the Tiled map, updates their state, and handles their removal.
+ */
 public class PowerUpManager {
     private final List<PowerUpObject> powerUps = new ArrayList<>();
     private final List<PowerUpObject> removalQueue = new ArrayList<>();
@@ -21,14 +26,22 @@ public class PowerUpManager {
     private final GameScreen screen;
     private final Character character;
     private final World world;
-    private final PowerUpFactory factory;
+    private final PowerUpFactoryProvider factoryProvider;
 
+    /**
+     * Constructor for PowerUpManager.
+     *
+     * @param screen The game screen where the power-ups are managed.
+     * @param character The character that can collect power-ups.
+     */
 
     public PowerUpManager(GameScreen screen, Character character) {
         this.screen = screen;
         this.character = character;
         this.world = screen.getWorld();
-        this.factory=new PowerUpFactory(screen);
+
+        this.factoryProvider = new PowerUpFactoryProvider();
+
         loadPowerUps();
     }
 
@@ -37,22 +50,18 @@ public class PowerUpManager {
     */
     private void loadPowerUps() {
         TiledMap map = screen.getMap();
-    
         String[] layers = {"PowerUp", "Diamonds"};
     
         for (String layerName : layers) {
-            if (map.getLayers().get(layerName) == null) {
-                continue;
-            }
+            if (map.getLayers().get(layerName) == null) continue;
     
             for (MapObject object : map.getLayers().get(layerName).getObjects()) {
                 if (!(object instanceof EllipseMapObject ellipseObj)) continue;
     
                 Ellipse ellipse = ellipseObj.getEllipse();
-    
                 Vector2 position = new Vector2(
-                        (ellipse.x + ellipse.width / 2f) / 16f,
-                        (ellipse.y + ellipse.height / 2f) / 16f
+                    (ellipse.x + ellipse.width / 2f) / 16f,
+                    (ellipse.y + ellipse.height / 2f) / 16f
                 );
     
                 String typeStr = object.getProperties().get("type", String.class);
@@ -60,11 +69,14 @@ public class PowerUpManager {
                     typeStr = map.getLayers().get(layerName).getProperties().get("type", String.class);
                 }
                 if (typeStr == null) {
-                    throw new IllegalArgumentException("PowerUp object missing 'type' property in layer: " + layerName);
+                    throw new IllegalArgumentException("Missing type property in map");
                 }
+    
                 PowerUpEnum type = PowerUpEnum.valueOf(typeStr.toUpperCase());
     
-                iPowerUp powerUp = factory.createPowerUp(type, character, position);
+                // Get the factory from your clean provider
+                PowerUpFactory factory = factoryProvider.getFactory(type);
+                iPowerUp powerUp = factory.create(character, position);
     
                 Sprite sprite = powerUp.getSprite();
                 sprite.setPosition(position.x - sprite.getWidth() / 2f, position.y - sprite.getHeight() / 2f);
@@ -74,7 +86,6 @@ public class PowerUpManager {
             }
         }
     }
-    
 
     /**
     * Updates and safely removes power-ups collected by the player.
