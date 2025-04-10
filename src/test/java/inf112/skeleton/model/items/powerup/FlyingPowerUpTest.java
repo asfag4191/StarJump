@@ -1,13 +1,12 @@
 package inf112.skeleton.model.items.powerup;
 
-import inf112.skeleton.model.character.Character;
-import inf112.skeleton.model.character.CharacterAttributes;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 import com.badlogic.gdx.Gdx;
@@ -17,10 +16,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Timer;
 
-import inf112.skeleton.model.character.controllable_characters.Player;
+import inf112.skeleton.model.character.Character;
+import inf112.skeleton.model.character.CharacterAttributes;
 
+
+/**
+ * Test for FlyingPowerUp
+ */
 public class FlyingPowerUpTest {
 
     private FlyingPowerUp flyingPowerUp;
@@ -46,19 +49,20 @@ public class FlyingPowerUpTest {
     }
 
     @Test
-    public void testFlyingEffectExpiresAfterDuration() {
+    public void testFlyingEffectAppliesAndRestoresProperly() {
         flyingPowerUp.applyPowerUpEffect();
-
-        // Immediately after applying effect
-        assertEquals(0f, character.getGravityScale(), "Gravity should be zero immediately after applying.");
-        assertTrue(character.getVelocity().y > 0f, "Player should have upward velocity immediately.");
-        assertTrue(character.isSensor(), "Collision should be disabled immediately.");
-
-        // Simulate time passing — run the actual effect logic manually
+    
+        assertEquals(0f, character.getGravityScale(), 0.001f, "Gravity should be zero immediately.");
+        assertTrue(character.getVelocity().y > 0f, "Character should fly upward.");
+        assertTrue(character.isSensor(), "Character should become a sensor (no collision).");
+    
         character.setGravityScale(1f);
         character.setAsSensor(false);
-
-        assertEquals(1f, character.getGravityScale(), "Gravity should revert to normal after duration.");
-        assertFalse(character.isSensor(), "Collision should be re-enabled after duration.");
+        character.applyForce(new Vector2(0f, -5f));
+    
+        assertEquals(1f, character.getGravityScale(), 0.001f, "Gravity should be restored.");
+        assertFalse(character.isSensor(), "Collision should be re-enabled.");
+        
     }
+
 }
