@@ -71,13 +71,13 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
     public void update(float dt) {
         super.update(dt);
         if (getDistanceToPlayer() > RANGE) {
-            System.out.println("Player out of range");
+            // System.out.println("Player out of range");
             return;
         }
         if (seesTarget(getPlayerDirection(), RANGE)) {
-            System.out.println("Player in sight");
+            // System.out.println("Player in sight");
         } else {
-            System.out.println("Player not in sight");
+            // System.out.println("Player not in sight");
         }
     }
 
