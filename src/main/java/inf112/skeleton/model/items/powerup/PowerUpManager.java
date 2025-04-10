@@ -3,6 +3,7 @@ package inf112.skeleton.model.items.powerup;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
@@ -48,44 +49,52 @@ public class PowerUpManager {
     /**
     * Loads and initializes power-ups defined in the Tiled map.
     */
-    private void loadPowerUps() {
-        TiledMap map = screen.getMap();
-        String[] layers = {"PowerUp", "Diamonds"};
-    
-        for (String layerName : layers) {
-            if (map.getLayers().get(layerName) == null) continue;
-    
-            for (MapObject object : map.getLayers().get(layerName).getObjects()) {
-                if (!(object instanceof EllipseMapObject ellipseObj)) continue;
-    
-                Ellipse ellipse = ellipseObj.getEllipse();
-                Vector2 position = new Vector2(
-                    (ellipse.x + ellipse.width / 2f) / 16f,
-                    (ellipse.y + ellipse.height / 2f) / 16f
-                );
-    
-                String typeStr = object.getProperties().get("type", String.class);
-                if (typeStr == null) {
-                    typeStr = map.getLayers().get(layerName).getProperties().get("type", String.class);
-                }
-                if (typeStr == null) {
-                    throw new IllegalArgumentException("Missing type property in map");
-                }
-    
-                PowerUpEnum type = PowerUpEnum.valueOf(typeStr.toUpperCase());
-    
-                // Get the factory from your clean provider
-                PowerUpFactory factory = factoryProvider.getFactory(type);
-                iPowerUp powerUp = factory.create(character, position);
-    
-                Sprite sprite = powerUp.getSprite();
-                sprite.setPosition(position.x - sprite.getWidth() / 2f, position.y - sprite.getHeight() / 2f);
-    
-                PowerUpObject powerUpObject = new PowerUpObject(screen, object, powerUp, character, sprite);
-                powerUps.add(powerUpObject);
+private void loadPowerUps() {
+    TiledMap map = screen.getMap();
+    String[] layers = {"PowerUp", "Diamonds"};
+
+    for (String layerName : layers) {
+        if (map.getLayers().get(layerName) == null) continue;
+
+        for (MapObject object : map.getLayers().get(layerName).getObjects()) {
+            if (!(object instanceof EllipseMapObject ellipseObj)) continue;
+
+            Ellipse ellipse = ellipseObj.getEllipse();
+            Vector2 position = new Vector2(
+                (ellipse.x + ellipse.width / 2f) / 16f,
+                (ellipse.y + ellipse.height / 2f) / 16f
+            );
+
+            String typeStr = object.getProperties().get("type", String.class);
+            if (typeStr == null) {
+                typeStr = map.getLayers().get(layerName).getProperties().get("type", String.class);
             }
+
+            if (typeStr == null) {
+                Gdx.app.error("PowerUpManager", "Missing 'type' property for object in layer: " + layerName);
+                continue;
+            }
+
+            PowerUpEnum type;
+            try {
+                type = PowerUpEnum.valueOf(typeStr.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                Gdx.app.error("PowerUpManager", "Invalid power-up type: '" + typeStr + "' in layer: " + layerName, e);
+                continue;
+            }
+
+            PowerUpFactory factory = factoryProvider.getFactory(type);
+            iPowerUp powerUp = factory.create(character, position);
+
+            Sprite sprite = powerUp.getSprite();
+            sprite.setPosition(position.x - sprite.getWidth() / 2f, position.y - sprite.getHeight() / 2f);
+
+            PowerUpObject powerUpObject = new PowerUpObject(screen, object, powerUp, character, sprite);
+
+            powerUps.add(powerUpObject);
         }
     }
+}
 
     /**
     * Updates and safely removes power-ups collected by the player.

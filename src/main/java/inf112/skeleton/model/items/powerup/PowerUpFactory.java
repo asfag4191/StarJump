@@ -1,5 +1,8 @@
 package inf112.skeleton.model.items.powerup;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -14,6 +17,8 @@ import inf112.skeleton.model.character.Character;
  */
 public abstract class PowerUpFactory {
     private final String texturePath;
+
+    private static final Map<String, Texture> textureCache = new HashMap<>();
 
     /**
      * Constructs a new PowerUpFactory with the given texture path.
@@ -31,9 +36,9 @@ public abstract class PowerUpFactory {
      * @return A new {@link Sprite} instance for the power-up.
      */
     protected Sprite createSprite(Vector2 position) {
-        Texture texture = new Texture(texturePath);
+        Texture texture = textureCache.computeIfAbsent(texturePath, Texture::new);
         Sprite sprite = new Sprite(texture);
-        sprite.setSize(1,1);
+        sprite.setSize(1, 1);
         sprite.setPosition(position.x, position.y);
         return sprite;
     }
