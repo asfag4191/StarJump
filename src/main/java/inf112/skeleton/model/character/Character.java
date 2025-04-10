@@ -15,9 +15,9 @@ import inf112.skeleton.view.Renderable;
 public class Character extends HumanoidBody implements Renderable {
     private final String name;
     private CharacterState state;
-    public final CharacterAttributes attributes;
-    public final Animator animator;
-    public final Vector2 size;
+    private final CharacterAttributes attributes;
+    private final Animator animator;
+    private final Vector2 size;
 
     public Character(String name, CharacterAttributes attributes, Vector2 size, World world) {
         super(world, size);
@@ -46,6 +46,33 @@ public class Character extends HumanoidBody implements Renderable {
      */
     public CharacterState getState() {
         return state;
+    }
+
+    /**
+     * Gets the character's attributes
+     *
+     * @return the {@link CharacterAttributes} of this character.
+     */
+    public CharacterAttributes getAttributes() {
+        return attributes;
+    }
+
+    /**
+     * Gets the {@link Animator} associated with this character.
+     *
+     * @return the {@link Animator} instance for this character.
+     */
+    public Animator getAnimator() {
+        return animator;
+    }
+
+    /**
+     * Gets the size of the character in world units.
+     *
+     * @return the character's size as a {@link Vector2}.
+     */
+    public Vector2 getSize() {
+        return size;
     }
 
     /**
@@ -138,12 +165,5 @@ public class Character extends HumanoidBody implements Renderable {
         Fixture sensorFixture = mainBody.createFixture(fixDef);
         sensorFixture.setUserData("sensor");
         sensorShape.dispose();
-    }
-
-    /**
-     * Returns a copy of the characters attributes
-     */
-    public CharacterAttributes getAttributes() {
-        return new CharacterAttributes(attributes);
     }
 }

@@ -45,8 +45,8 @@ public class WorldModel implements Renderable {
         Player plr = new Player(charac);
 
         Texture texture1 = new Texture(Gdx.files.internal("sprites/star.png"));
-        charac.animator.addAnimation("idle", texture1, 1,  1, 0);
-        charac.animator.play("idle");
+        charac.getAnimator().addAnimation("idle", texture1, 1,  1, 0);
+        charac.getAnimator().play("idle");
         ViewableObjects.add(charac);
 
         PlayerController.setupWASD(plr);

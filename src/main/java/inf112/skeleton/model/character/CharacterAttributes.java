@@ -1,7 +1,7 @@
 package inf112.skeleton.model.character;
 
 /**
- * Represents the attributes of a character.
+ * A class that represents the attributes of a character.
  */
 public class CharacterAttributes {
     private float maxHp;
@@ -39,14 +39,12 @@ public class CharacterAttributes {
      * @param attributes The CharacterAttributes to copy.
      */
     public CharacterAttributes(CharacterAttributes attributes) {
-        this.maxHp = attributes.maxHp;
-        this.jumpPower = attributes.jumpPower;
-        this.maxJumps = attributes.maxJumps;
-        this.speed = attributes.speed;
-        this.strength = attributes.strength;
-
-        this.hp = attributes.hp;
-        this.jumpsLeft = attributes.jumpsLeft;
+        this(attributes.getMaxHp(),
+             attributes.getJumpPower(),
+             attributes.getMaxJumps(),
+             attributes.getSpeed(),
+             attributes.getStrength()
+        );
     }
 
     /**

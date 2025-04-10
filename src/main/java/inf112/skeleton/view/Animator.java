@@ -15,10 +15,12 @@ import java.util.HashMap;
  *
  * <p>Usage example:</p>
  * <pre>
+ *     // setup
  *     Animator animator = new Animator();
- *     animator.addAnimation("run", textureSheet, 4, 4, 10);
+ *     animator.addAnimation("run", textureSheet, 4, 4, 10); // 4x4 sheet, 10 fps.
  *     animator.play("run");
- *     animator.update(deltaTime) --> next frame
+ *     // updating
+ *     animator.update(deltaTime) // returns the next frame to be rendered
  * </pre>
  */
 public class Animator {
