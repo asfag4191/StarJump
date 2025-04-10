@@ -34,7 +34,7 @@ public class WorldModel implements Renderable {
     public Player createPlayer() {
         CharacterAttributes attributes = new CharacterAttributes(
                 100,
-                10,
+                14,
                 2,
                 3.5f,
                 5
