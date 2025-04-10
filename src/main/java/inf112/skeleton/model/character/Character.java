@@ -18,6 +18,7 @@ public class Character extends HumanoidBody implements Renderable {
     public final CharacterAttributes attributes;
     public final Animator animator;
     public final Vector2 size;
+    private boolean isPlayer = false;
 
     public Character(String name, CharacterAttributes attributes, Vector2 size, World world) {
         super(world, size);
@@ -151,10 +152,16 @@ public class Character extends HumanoidBody implements Renderable {
 
     /**
      * Gets the position of the character in the world.
-     *
-     * @param position of the character.
      */
     public Vector2 getPosition() {
         return this.getTransform().getPosition();
+    }
+
+    public void setPlayer(boolean isPlayer) {
+        this.isPlayer = isPlayer;
+    }
+
+    public boolean isPlayer() {
+        return isPlayer;
     }
 }

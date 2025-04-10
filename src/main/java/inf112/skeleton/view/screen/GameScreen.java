@@ -91,11 +91,11 @@ public class GameScreen implements Screen {
 
         // TODO: Set up enemies
         enemyManager = new EnemyManager(this);
-        enemyManager.createEnemy();
-    
+        enemyManager.createTestSentries();
+
         // Instantiate collision handlers
-        CollisionHandler[] handlers = {new PowerUpCollisionHandler(), new CharacterContactHandler(),
-        new EnemyCollisionHandler()};
+        CollisionHandler[] handlers = { new PowerUpCollisionHandler(), new CharacterContactHandler(),
+                new EnemyCollisionHandler() };
         WorldContactListener contactListener = new WorldContactListener(List.of(handlers));
 
         world.setContactListener(contactListener);

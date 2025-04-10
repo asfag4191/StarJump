@@ -10,13 +10,13 @@ public class BlackHole extends SimpleEnemy implements iMovingEnemy {
 
     private boolean isMoving;
 
-    public BlackHole(Character blackHole) {
-        super(blackHole);
+    public BlackHole(Character blackHole, World world) {
+        super(blackHole, world);
         this.isMoving = true;
     }
 
     public BlackHole(String name, CharacterAttributes attributes, Vector2 size, World world, Character target) {
-        this(new Character(name, attributes, size, world));
+        this(new Character(name, attributes, size, world), world);
     }
 
     @Override

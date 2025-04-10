@@ -33,11 +33,12 @@ public class EnemyManager implements iUpdateable {
         enemies.add(enemy);
     }
 
-    public void createEnemy() {
-        SimpleEnemy sentryEnemy = enemyFactory.getNextSentryEnemy();
-        SimpleEnemy blackHole = enemyFactory.getNextBlackHole();
-        addEnemy(sentryEnemy);
-        addEnemy(blackHole);
+    public void createTestSentries() {
+        List<Vector2> positions = List.of(new Vector2(3, 3), new Vector2(12, 10));
+        for (Vector2 pos : positions) {
+            SimpleEnemy sentryEnemy = enemyFactory.getNextSentryEnemy(pos);
+            addEnemy(sentryEnemy);
+        }
     }
 
     @Override
@@ -72,12 +73,16 @@ public class EnemyManager implements iUpdateable {
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(1, 0, 0, 1); // Red color
-        // Draw a line from the enemy to the player
-        Vector2 playerDir = sentry.getPlayerDirection();
-        Vector2 enemyPos = sentry.enemyCharacter.getPosition();
 
-        Vector2 playerPosCalc = enemyPos.cpy().add(playerDir.scl(10));
-        shapeRenderer.line(sentry.enemyCharacter.getPosition(), playerPosCalc);
+        // Create a line showing enemy target direction
+        if (sentry.rStart != null && sentry.rEnd != null) {
+            shapeRenderer.line(sentry.rStart, sentry.rEnd);
+        }
+        // Draw a circle at the hit point
+        if (sentry.hitPoint != null) {
+            shapeRenderer.setColor(0, 1, 0, 1); // Green color
+            shapeRenderer.circle(sentry.hitPoint.x, sentry.hitPoint.y, 0.2f);
+        }
 
         shapeRenderer.end();
     }

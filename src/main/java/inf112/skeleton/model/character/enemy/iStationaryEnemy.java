@@ -15,6 +15,7 @@ interface iStationaryEnemy {
      * Checks if the enemy can see the target.
      *
      * @param targetPosition The position of the target as a Vector2.
+     * @param range          The range within which the enemy can see the target.
      */
-    boolean seesTarget(Vector2 targetPosition);
+    boolean seesTarget(Vector2 targetPosition, float range);
 }

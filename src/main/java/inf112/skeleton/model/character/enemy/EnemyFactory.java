@@ -25,8 +25,8 @@ public class EnemyFactory {
      * 
      * @return next <code>BlackHole</code> enemy
      */
-    public SimpleEnemy getNextBlackHole() {
-        SimpleEnemy blackHole = createBlackHole();
+    public SimpleEnemy getNextBlackHole(Vector2 position) {
+        SimpleEnemy blackHole = createBlackHole(position);
         return blackHole;
     }
 
@@ -34,21 +34,21 @@ public class EnemyFactory {
      * 
      * @return next <code>SentryEnemy</code>
      */
-    public SimpleEnemy getNextSentryEnemy() {
-        SimpleEnemy sentryEnemy = createSentryEnemy();
+    public SimpleEnemy getNextSentryEnemy(Vector2 position) {
+        SimpleEnemy sentryEnemy = createSentryEnemy(position);
         return sentryEnemy;
     }
 
     // TODO: positions for BlackHole!
     // possible solution: have list of possible positions, choose one pos at random
     // possible solution: have Queue of possible positions, take next pos from queue
-    private SimpleEnemy createBlackHole() {
+    private SimpleEnemy createBlackHole(Vector2 position) {
         CharacterAttributes attributes = weakEnemyAttributes();
-        Character character = new Character("black hole", attributes, new Vector2(1,1), screen.getWorld());
+        Character character = new Character("black hole", attributes, new Vector2(1, 1), screen.getWorld());
 
-        character.setPosition(new Vector2(15, 3)); // TODO
+        character.setPosition(position); // TODO
 
-        SimpleEnemy blackHole = new BlackHole(character);
+        SimpleEnemy blackHole = new BlackHole(character, screen.getWorld());
 
         blackHole.enemyCharacter.animator.addAnimation("idle", blackHoleTexture, 1, 1, 0);
         blackHole.enemyCharacter.animator.play("idle");
@@ -59,13 +59,13 @@ public class EnemyFactory {
     // TODO: positions for SentryEnemy!
     // possible solution: have list of possible positions, choose one pos at random
     // possible solution: have Queue of possible positions, take next pos from queue
-    private SimpleEnemy createSentryEnemy() {
+    private SimpleEnemy createSentryEnemy(Vector2 position) {
         CharacterAttributes attributes = strongEnemyAttributes();
 
         Character character = new Character("enemy", attributes, new Vector2(1, 1), screen.getWorld());
-        character.setPosition(new Vector2(3, 4)); // TODO
+        character.setPosition(position); // TODO
 
-        SimpleEnemy sentryEnemy = new SentryEnemy(character, screen.getPlayer());
+        SimpleEnemy sentryEnemy = new SentryEnemy(character, screen.getPlayer(), screen.getWorld());
         sentryEnemy.enemyCharacter.animator.addAnimation("idle", sentryEnemyTexture, 1, 1, 0);
         sentryEnemy.enemyCharacter.animator.play("idle");
 
@@ -74,20 +74,19 @@ public class EnemyFactory {
 
     private CharacterAttributes weakEnemyAttributes() {
         return new CharacterAttributes(
-            1,
-            1,
-            0,
-            3.5f,
-            1
-        );
+                1,
+                1,
+                0,
+                3.5f,
+                1);
     }
 
     private CharacterAttributes strongEnemyAttributes() {
         return new CharacterAttributes(
-            6,
-            1,
-            0,
-            3.5f,
-            5);
+                6,
+                1,
+                0,
+                3.5f,
+                5);
     }
 }
