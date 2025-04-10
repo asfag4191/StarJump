@@ -48,7 +48,7 @@ public class FlyingPowerUp implements iPowerUp {
 
     private void enableFlyingEffect() {
         character.setGravityScale(0f);
-        float flyBoost = character.getAttributes().getJumpPower() * 2f; // Boost factor
+        float flyBoost = character.getAttributes().getJumpPower() * 1.4f; // Boost factor
         character.setVelocity(new Vector2(character.getVelocity().x, flyBoost));
         character.setAsSensor(true);
 
