@@ -153,4 +153,45 @@ class PowerUpManagerTest {
 
         verify(sprite, times(1)).draw(batch);
     }
+
+    @Test
+    void testInvalidPowerUpType() {
+        TiledMap map = new TiledMap();
+        MapLayer layer = new MapLayer();
+        layer.setName("PowerUp");
+        
+        EllipseMapObject invalidObj = new EllipseMapObject(100, 200, 16, 16);
+        invalidObj.getProperties().put("type", "INVALID_TYPE");
+        layer.getObjects().add(invalidObj);
+        map.getLayers().add(layer);
+        
+        when(screen.getMap()).thenReturn(map);
+        
+        powerUpManager = new PowerUpManager(screen, character);
+        assertEquals(0, powerUpManager.getPowerUps().size());
+    }
+
+    @Test
+    void testMultiplePowerUpsInDifferentLayers() {
+        TiledMap map = new TiledMap();
+    
+        MapLayer layer1 = new MapLayer();
+        layer1.setName("PowerUp");
+        EllipseMapObject obj1 = new EllipseMapObject(100, 200, 16, 16);
+        obj1.getProperties().put("type", "FLYING");
+        layer1.getObjects().add(obj1);
+        map.getLayers().add(layer1);
+    
+        MapLayer layer2 = new MapLayer();
+        layer2.setName("Diamonds");
+        EllipseMapObject obj2 = new EllipseMapObject(300, 400, 16, 16);
+        obj2.getProperties().put("type", "DIAMOND");
+        layer2.getObjects().add(obj2);
+        map.getLayers().add(layer2);
+    
+        when(screen.getMap()).thenReturn(map);
+        powerUpManager = new PowerUpManager(screen, character);
+    
+        assertEquals(2, powerUpManager.getPowerUps().size(), "Expected two power-ups loaded from two layers");
+    }
 }

@@ -1,47 +1,56 @@
 package inf112.skeleton.model.items.powerup;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+
 import inf112.skeleton.model.character.Character;
-import inf112.skeleton.view.screen.GameScreen;
 
 /**
- * Factory for creating specific power-up objects.
- * Simplifies the process of adding new power-ups in the future.
+ * Abstract base class representing a generic factory responsible for creating power-up objects.
+ *
+ * Concrete subclasses specify how to create specific power-ups by implementing the 
+ * abstract {@link #create} method.
  */
-public class PowerUpFactory {
-    private final GameScreen screen;
+public abstract class PowerUpFactory {
+    private final String texturePath;
 
-    public PowerUpFactory(GameScreen screen) {
-        this.screen = screen;
+    private static final Map<String, Texture> textureCache = new HashMap<>();
+
+    /**
+     * Constructs a new PowerUpFactory with the given texture path.
+     *
+     * @param texturePath Path to the graphical texture asset used for creating power-up sprites.
+     */
+    protected PowerUpFactory(String texturePath) {
+        this.texturePath = texturePath;
     }
 
     /**
-     * Creates an iPowerUp instance based on given enum type.
+     * Creates and positions a sprite for the power-up at the given world coordinates.
      *
-     * @param type     The PowerUpEnum type.
-     * @param character The character who receives the power-up effect.
-     * @param position The position where the power-up appears.
-     * @return Instance of specified AbstractPowerUp.
+     * @param position The exact position to place the sprite in the game world.
+     * @return A new {@link Sprite} instance for the power-up.
      */
-    public iPowerUp createPowerUp(PowerUpEnum type, Character character, Vector2 position) {
-        Texture texture;
-        return switch (type) {
-            case FLYING -> {
-                texture = new Texture("map/tilemaps/tilesets/rainbow16.png");
-                Sprite sprite = new Sprite(texture);
-                sprite.setSize(1, 1);
-                sprite.setPosition(position.x, position.y);
-                yield new FlyingPowerUp(character, position, sprite);
-            }
-            case DIAMOND -> {
-                texture = new Texture("map/tilemaps/tilesets/Diamond.png");
-                Sprite sprite = new Sprite(texture);
-                sprite.setSize(1, 1);
-                sprite.setPosition(position.x, position.y);
-                yield new DiamondPowerUp(character, position, sprite);
-            }
-        };
+    protected Sprite createSprite(Vector2 position) {
+        Texture texture = textureCache.computeIfAbsent(texturePath, Texture::new);
+        Sprite sprite = new Sprite(texture);
+        sprite.setSize(1, 1);
+        sprite.setPosition(position.x, position.y);
+        return sprite;
     }
+
+     /**
+     * Abstract method defining the creation of a power-up instance.
+     *
+     * @param character The character who can interact with the power-up.
+     * @param position  The position in the game world to spawn the power-up.
+     * @return A concrete implementation of {@link iPowerUp}.
+     */
+    public abstract iPowerUp create(Character character, Vector2 position);
+
+    
 }

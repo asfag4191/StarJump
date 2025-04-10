@@ -33,19 +33,18 @@ public class WorldModel implements Renderable {
 
     public Player createPlayer() {
         CharacterAttributes attributes = new CharacterAttributes(
-                3,
-                10,
+                100,
+                14,
                 2,
                 3.5f,
-                5
-        );
+                5);
 
-        Character charac = new Character("p1", attributes, new Vector2(1,1), world);
+        Character charac = new Character("p1", attributes, new Vector2(1, 1), world);
         charac.setPosition(new Vector2(10, 3));
         Player plr = new Player(charac);
 
         Texture texture1 = new Texture(Gdx.files.internal("sprites/star.png"));
-        charac.animator.addAnimation("idle", texture1, 1,  1, 0);
+        charac.animator.addAnimation("idle", texture1, 1, 1, 0);
         charac.animator.play("idle");
         ViewableObjects.add(charac);
 
@@ -65,12 +64,12 @@ public class WorldModel implements Renderable {
     }
 
     public BoxCollider createTile(Vector2 size, Texture texture) {
-        return createTile(new Vector2(0,0), size, texture);
+        return createTile(new Vector2(0, 0), size, texture);
     }
 
     @Override
     public void render(Batch batch, float dt) {
-        for (Renderable obj: ViewableObjects) {
+        for (Renderable obj : ViewableObjects) {
             obj.render(batch, dt);
         }
     }
