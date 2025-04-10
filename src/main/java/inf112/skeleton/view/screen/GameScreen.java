@@ -18,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.WorldModel;
 import inf112.skeleton.model.character.controllable_characters.Player;
-import inf112.skeleton.model.character.enemy.BlackHole;
 import inf112.skeleton.model.character.enemy.EnemyManager;
 import inf112.skeleton.model.items.door.DoorManager;
 import inf112.skeleton.model.items.powerup.PowerUpManager;
@@ -212,7 +211,10 @@ public class GameScreen implements Screen {
         powerUpManager.update(dt);
         doorManager.update(dt);
         worldModel.render(game.batch, dt);
+        enemyManager.update(dt);
         enemyManager.render(game.batch, dt);
+
+  
         game.batch.end(); // END the SpriteBatch
 
         // Draw HUD last

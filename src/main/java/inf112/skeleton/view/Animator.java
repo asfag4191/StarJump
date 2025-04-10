@@ -1,12 +1,12 @@
 package inf112.skeleton.view;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
-
-import java.util.HashMap;
 
 /**
  * A class for managing 2D animations using {@link Animation}.
@@ -145,5 +145,17 @@ public class Animator {
      */
     public boolean isPaused() {
         return isPaused;
+    }
+
+
+     /**
+     * Clears all stored animations and resets the current animation.
+     */
+    public void clearAnimations() {
+        animations.clear();
+        currentAnimation = null;
+        currentKey = null;
+        currentTime = 0f;
+        isPaused = false;
     }
 }

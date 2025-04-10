@@ -43,7 +43,7 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
         RayCastCallback callback = new RayCastCallback() {
             @Override
             public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
-                System.out.println("Ray hit: " + fixture.getBody().getUserData());
+               // System.out.println("Ray hit: " + fixture.getBody().getUserData());
                 if ("ground".equals(fixture.getBody().getUserData())) {
                     hitPoint[0] = point.cpy();
                     seesPlayer[0] = false;

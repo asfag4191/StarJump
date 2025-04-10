@@ -2,6 +2,7 @@ package inf112.skeleton.controller;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
+
 import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.CharacterAttributes;
 import inf112.skeleton.model.character.controllable_characters.Player;

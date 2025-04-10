@@ -3,15 +3,13 @@ package inf112.skeleton.model.character.enemy;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 
 import inf112.skeleton.model.iUpdateable;
-import inf112.skeleton.model.character.CharacterAttributes;
-import inf112.skeleton.model.character.Character;
 import inf112.skeleton.view.screen.GameScreen;
 
 /**
@@ -27,6 +25,7 @@ public class EnemyManager implements iUpdateable {
     public EnemyManager(GameScreen screen) {
         this.screen = screen;
         this.enemyFactory = new EnemyFactory(screen);
+        loadEnemiesFromMap();
     }
 
     private void addEnemy(SimpleEnemy enemy) {
@@ -41,6 +40,45 @@ public class EnemyManager implements iUpdateable {
         }
     }
 
+    public void loadEnemiesFromMap() {
+        TiledMap map = screen.getMap();
+    
+        var enemyLayer = map.getLayers().get("Enemy");
+        if (enemyLayer == null) {
+            System.err.println("No 'Enemies' layer found in Tiled map!");
+            return;
+        }
+    
+        List<Vector2> spawnPositions = new ArrayList<>();
+    
+        for (MapObject object : enemyLayer.getObjects()) {
+            Float x = object.getProperties().get("x", Float.class);
+            Float y = object.getProperties().get("y", Float.class);
+    
+            if (x != null && y != null) {
+                Vector2 pos = new Vector2((x + 8f) / 16f, (y + 8f) / 16f);
+                spawnPositions.add(pos);
+            }
+        }
+         // Shuffle the enemies
+    
+        java.util.Collections.shuffle(spawnPositions);
+        int enemiesToSpawn = Math.min(spawnPositions.size(), 3 + (int)(Math.random() * (spawnPositions.size() - 2)));
+    
+        for (int i = 0; i < enemiesToSpawn; i++) {
+            Vector2 position = spawnPositions.get(i);
+            SimpleEnemy enemy;
+    
+            // Randomly choose enemy type
+            if (Math.random() < 0.5) {
+                enemy = enemyFactory.getNextBlackHole(position);
+            } else {
+                enemy = enemyFactory.getNextSentryEnemy(position);
+            }
+    
+            addEnemy(enemy);
+        }
+    }
     @Override
     public void update(float dt) {
         for (SimpleEnemy enemy : enemies) {
@@ -54,6 +92,7 @@ public class EnemyManager implements iUpdateable {
             if (GameScreen.DEBUG_MODE) {
                 debug(batch, enemy);
             }
+
         }
     }
 

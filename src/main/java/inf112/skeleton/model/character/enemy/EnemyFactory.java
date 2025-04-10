@@ -1,11 +1,8 @@
 package inf112.skeleton.model.character.enemy;
 
-import java.util.Random;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 
 import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.CharacterAttributes;
@@ -39,20 +36,21 @@ public class EnemyFactory {
         return sentryEnemy;
     }
 
-    // TODO: positions for BlackHole!
+    // TODO: positions for BlackHole! DONE
     // possible solution: have list of possible positions, choose one pos at random
     // possible solution: have Queue of possible positions, take next pos from queue
     private SimpleEnemy createBlackHole(Vector2 position) {
         CharacterAttributes attributes = weakEnemyAttributes();
         Character character = new Character("black hole", attributes, new Vector2(1, 1), screen.getWorld());
-
-        character.setPosition(position); // TODO
-
+        character.setPosition(position);
+    
         SimpleEnemy blackHole = new BlackHole(character, screen.getWorld());
-
+    
+        blackHole.enemyCharacter.animator.clearAnimations(); //need to clear animations before adding new ones
         blackHole.enemyCharacter.animator.addAnimation("idle", blackHoleTexture, 1, 1, 0);
         blackHole.enemyCharacter.animator.play("idle");
-
+    
+        System.out.println("Spawned Black Hole at: " + position);
         return blackHole;
     }
 
@@ -63,11 +61,15 @@ public class EnemyFactory {
         CharacterAttributes attributes = strongEnemyAttributes();
 
         Character character = new Character("enemy", attributes, new Vector2(1, 1), screen.getWorld());
-        character.setPosition(position); // TODO
+        character.setPosition(position); 
 
         SimpleEnemy sentryEnemy = new SentryEnemy(character, screen.getPlayer(), screen.getWorld());
+        // Ensure animations are cleared if necessary
+        sentryEnemy.enemyCharacter.animator.clearAnimations();
         sentryEnemy.enemyCharacter.animator.addAnimation("idle", sentryEnemyTexture, 1, 1, 0);
         sentryEnemy.enemyCharacter.animator.play("idle");
+
+        System.out.println("Spawned shooter enemy at: " + position);
 
         return sentryEnemy;
     }
@@ -89,4 +91,6 @@ public class EnemyFactory {
                 3.5f,
                 5);
     }
+
+
 }
