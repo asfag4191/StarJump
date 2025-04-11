@@ -43,9 +43,9 @@ public class EnemyFactory {
         CharacterAttributes attributes = weakEnemyAttributes();
         Character character = new Character("black hole", attributes, new Vector2(1, 1), screen.getWorld());
         character.setPosition(position);
-    
+
         return new BlackHole(character, screen.getWorld()); // 👌 no more animation setup here
-    }    
+    }
 
     // TODO: positions for SentryEnemy!
     // possible solution: have list of possible positions, choose one pos at random
@@ -54,15 +54,8 @@ public class EnemyFactory {
         CharacterAttributes attributes = strongEnemyAttributes();
 
         Character character = new Character("enemy", attributes, new Vector2(1, 1), screen.getWorld());
-        character.setPosition(position); 
-
+        character.setPosition(position);
         SimpleEnemy sentryEnemy = new SentryEnemy(character, screen.getPlayer(), screen.getWorld());
-        // Ensure animations are cleared if necessary
-        sentryEnemy.enemyCharacter.animator.clearAnimations();
-        sentryEnemy.enemyCharacter.animator.addAnimation("idle", sentryEnemyTexture, 1, 1, 0);
-        sentryEnemy.enemyCharacter.animator.play("idle");
-
-        System.out.println("Spawned shooter enemy at: " + position);
 
         return sentryEnemy;
     }
@@ -84,6 +77,5 @@ public class EnemyFactory {
                 3.5f,
                 5);
     }
-
 
 }
