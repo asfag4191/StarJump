@@ -106,8 +106,8 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
     protected void setupAnimation() {
         enemyCharacter.animator.clearAnimations();
         Texture tex = new Texture(Gdx.files.internal("sprites/star.png"));
-        enemyCharacter.animator.addAnimation("idle_sentry", tex, 1, 1, 0);
-        enemyCharacter.animator.play("idle_sentry");
+        enemyCharacter.animator.addAnimation("idle", tex, 1, 1, 0);
+        enemyCharacter.animator.play("idle");
     }
 
 }

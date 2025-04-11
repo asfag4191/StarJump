@@ -64,8 +64,9 @@ public class BlackHole extends SimpleEnemy implements iMovingEnemy {
     protected void setupAnimation() {
         enemyCharacter.animator.clearAnimations();
         Texture tex = new Texture(Gdx.files.internal("sprites/simple_blackhole.png"));
-        enemyCharacter.animator.addAnimation("idle_blackhole", tex, 1, 1, 0);
-        enemyCharacter.animator.play("idle_blackhole");
+        enemyCharacter.animator.addAnimation("idle", tex, 1, 1, 0);
+        enemyCharacter.animator.play("idle");
+        
     }
 
     //added a sensor on top of the black hole, so when the player jumps on it, it will be removed

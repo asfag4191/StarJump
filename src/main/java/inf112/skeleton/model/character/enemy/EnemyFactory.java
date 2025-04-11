@@ -37,28 +37,33 @@ public class EnemyFactory {
     }
 
     // TODO: positions for BlackHole! DONE
-    //Moved the creation of loading the animations/texture to the SentryEnemyclass
+    // possible solution: have list of possible positions, choose one pos at random
+    // possible solution: have Queue of possible positions, take next pos from queue
     private SimpleEnemy createBlackHole(Vector2 position) {
         CharacterAttributes attributes = weakEnemyAttributes();
         Character character = new Character("black hole", attributes, new Vector2(1, 1), screen.getWorld());
         character.setPosition(position);
     
-        return new BlackHole(character, screen.getWorld()); // no more animation setup here
+        return new BlackHole(character, screen.getWorld()); // 👌 no more animation setup here
     }    
 
-    // TODO: positions for SentryEnemy! DONE
+    // TODO: positions for SentryEnemy!
     // possible solution: have list of possible positions, choose one pos at random
     // possible solution: have Queue of possible positions, take next pos from queue
-
-    //Moved the creation of loading the animations/texture to the SentryEnemyclass
     private SimpleEnemy createSentryEnemy(Vector2 position) {
         CharacterAttributes attributes = strongEnemyAttributes();
+
         Character character = new Character("enemy", attributes, new Vector2(1, 1), screen.getWorld());
         character.setPosition(position); 
-    
+
         SimpleEnemy sentryEnemy = new SentryEnemy(character, screen.getPlayer(), screen.getWorld());
-    
+        // Ensure animations are cleared if necessary
+        sentryEnemy.enemyCharacter.animator.clearAnimations();
+        sentryEnemy.enemyCharacter.animator.addAnimation("idle", sentryEnemyTexture, 1, 1, 0);
+        sentryEnemy.enemyCharacter.animator.play("idle");
+
         System.out.println("Spawned shooter enemy at: " + position);
+
         return sentryEnemy;
     }
 
