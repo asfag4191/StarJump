@@ -31,7 +31,6 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
     @Override
     public void shoot(Vector2 direction, float bulletSpeed) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'shoot'");
     }
 
     @Override
@@ -46,7 +45,7 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
         RayCastCallback callback = new RayCastCallback() {
             @Override
             public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
-               // System.out.println("Ray hit: " + fixture.getBody().getUserData());
+                // System.out.println("Ray hit: " + fixture.getBody().getUserData());
                 if ("ground".equals(fixture.getBody().getUserData())) {
                     hitPoint[0] = point.cpy();
                     seesPlayer[0] = false;
@@ -73,14 +72,13 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
 
     public void update(float dt) {
         super.update(dt);
-        if (getDistanceToPlayer() > RANGE) {
+        if (getDistanceToPlayer() < RANGE) {
+            var playerDirection = getPlayerDirection();
             // System.out.println("Player out of range");
+            if (seesTarget(playerDirection, RANGE)) {
+                shoot(playerDirection, 2);
+            }
             return;
-        }
-        if (seesTarget(getPlayerDirection(), RANGE)) {
-            // System.out.println("Player in sight");
-        } else {
-            // System.out.println("Player not in sight");
         }
     }
 
