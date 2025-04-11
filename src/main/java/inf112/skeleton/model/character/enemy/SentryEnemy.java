@@ -73,10 +73,12 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
     public void update(float dt) {
         super.update(dt);
         if (getDistanceToPlayer() < RANGE) {
-            var playerDirection = getPlayerDirection();
+            Vector2 playerDirection = getPlayerDirection();
             // System.out.println("Player out of range");
             if (seesTarget(playerDirection, RANGE)) {
+                this.enemyCharacter.setTransform(this.enemyCharacter.getPosition(), playerDirection.angleRad());
                 shoot(playerDirection, 2);
+
             }
             return;
         }
@@ -103,9 +105,13 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
     @Override
     protected void setupAnimation() {
         enemyCharacter.animator.clearAnimations();
-        Texture tex = new Texture(Gdx.files.internal("sprites/star.png"));
+        Texture tex = new Texture(Gdx.files.internal("sprites/cannon/cannon_barrel.png"));
         enemyCharacter.animator.addAnimation("idle", tex, 1, 1, 0);
         enemyCharacter.animator.play("idle");
+    }
+
+    private void setupCannon() {
+        // Create a cannon body
     }
 
 }
