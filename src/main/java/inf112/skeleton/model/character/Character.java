@@ -15,9 +15,10 @@ import inf112.skeleton.view.Renderable;
 public class Character extends HumanoidBody implements Renderable {
     private final String name;
     private CharacterState state;
-    private final CharacterAttributes attributes;
-    private final Animator animator;
-    private final Vector2 size;
+    public final CharacterAttributes attributes;
+    public final Animator animator;
+    public final Vector2 size;
+    private boolean isPlayer = false;
 
     public Character(String name, CharacterAttributes attributes, Vector2 size, World world) {
         super(world, size);
@@ -83,8 +84,10 @@ public class Character extends HumanoidBody implements Renderable {
      * @param state the state of the character.
      */
     public void setState(CharacterState state) {
-        if (this.state == CharacterState.DEAD) return;
-        if (this.state == CharacterState.FREEFALL && state == CharacterState.MOVING) return;
+        if (this.state == CharacterState.DEAD)
+            return;
+        if (this.state == CharacterState.FREEFALL && state == CharacterState.MOVING)
+            return;
         this.state = state;
     }
 
@@ -145,7 +148,7 @@ public class Character extends HumanoidBody implements Renderable {
         // Sensor properties
         float width = bodySize.x;
         float widthAdjustmentScale = 0.05f; // to avoid contact from the sides.
-        float yOffset = -(bodySize.y/2);
+        float yOffset = -(bodySize.y / 2);
 
         // Sensor shape setup
         EdgeShape sensorShape = new EdgeShape();
@@ -165,5 +168,20 @@ public class Character extends HumanoidBody implements Renderable {
         Fixture sensorFixture = mainBody.createFixture(fixDef);
         sensorFixture.setUserData("sensor");
         sensorShape.dispose();
+    }
+
+    /**
+     * Gets the position of the character in the world.
+     */
+    public Vector2 getPosition() {
+        return this.getTransform().getPosition();
+    }
+
+    public void setPlayer(boolean isPlayer) {
+        this.isPlayer = isPlayer;
+    }
+
+    public boolean isPlayer() {
+        return isPlayer;
     }
 }

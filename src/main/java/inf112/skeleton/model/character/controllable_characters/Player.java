@@ -6,12 +6,13 @@ import inf112.skeleton.controller.InputBinder;
 import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.CharacterAttributes;
 
-public class Player{
+public class Player {
     public final Character character;
     public final InputBinder controller = new InputBinder();
 
     public Player(Character character) {
         this.character = character;
+        this.character.setPlayer(true);
     }
 
     public Player(String name, CharacterAttributes attributes, Vector2 size, World world) {
