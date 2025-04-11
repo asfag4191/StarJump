@@ -76,7 +76,8 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
             Vector2 playerDirection = getPlayerDirection();
             // System.out.println("Player out of range");
             if (seesTarget(playerDirection, RANGE)) {
-                this.enemyCharacter.setTransform(this.enemyCharacter.getPosition(), playerDirection.angleRad());
+                this.enemyCharacter.setTransform(this.enemyCharacter.getPosition(),
+                        (float) (playerDirection.angleRad() - Math.PI / 2));
                 shoot(playerDirection, 2);
 
             }
