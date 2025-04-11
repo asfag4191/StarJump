@@ -2,6 +2,160 @@
 
 Lag korte referat fra team-møtene (ha med dato, hvem som var tilstede, hva dere diskuterte, hvilke avgjørelser dere tok, og hva dere ble enige om å gjøre til neste gang)
 
+## 11. April
+
+Til stede: Åse, Jonas og Thora
+
+- Hva ble diskutert:
+  - gikk gjennom innleveringen og så på hvordan vi skal jobbe frem mot 2. mai.
+  - Ferdigstilte innleveringen.
+- Til neste gang:
+  - lage oversikt over hva som skal gjøres fremover
+  - lage en oversikt på hva vi mangler tester på
+  - gå gjennom hvilke krav vi må oppfylle for at oppgaven skal være ferdig.
+
+## 8.April
+
+Til stede: Åse, Maren, Anna og Thora
+
+- Hva ble diskutert/gjort:
+  - Skal gå gjennom hvem som skal skrive rapport, hvem fikser testene til fredag, og at fienden skal være i boks. Samt at det skal være javadocs på alle public metoder.
+  - De som lager testene kan gjøre som anya, slik de view metoder ikke blir tatt med.
+  - Fikse player, at den beveger seg bedre, nå er den veldig lagete til neste gang. Tenker vi kan implementere at den hopper litt høyere generelt.
+  - Fikk ikke implementert tester som ønsket ettersom det ble endringer i player klassen, noe som gjorde at testene ikke fungerte som de skulle, dette må rettes opp i.
+  - Mohamad har arbeidet med implementasjon av character.
+  - Jonas og Maren har arbeidet på fienden.
+  - Fikset sound manager siden sist(Åse),, og en hjelpeside (Åse).
+- Til neste gang:
+  - Se på hoppingen til player.(Integrere Thora sin controller med Mohamad)
+  - Fikse tester (ALLE, lag tester til de kodene du lager) (Mohamad )
+  - Switch i Powerup, endre?? (Åse)
+  - Fikser fienden og fikser (objektfabrikk/abstrak)t fabrikk for disse (Jonas og Maren)
+  - Fikser testene for fienden (Jonas og Maren)
+  - Rapport Thora, Åse hjelper til
+  - Kart over klasser osv lages i intellij
+- Bli klar til innleveringen på fredag.
+- rapport skriv opp hva vi har rettet siden sist.
+- Få med at “start game” kartet, banen er midlertidig, men at vi har det med for å sjekke funksjoner, det skal fjernes til opprinnelig innlevering.
+
+## 4.April
+
+Til stedet: Åse, Thora, Anna og Jonas
+
+- Hva ble diskutert/gjort:
+  - Maren og jonas fortsetter med fienden og factory
+  - Win screen, allerede implementert at player integere med døren så må bare legge til en screen som dukker opp.
+  - Tester
+  - Sound Manager- implementere en lyd
+  - Hjelpeside (Åse), fikser slik tester til powerup får 100% coverage.
+  - Thora må comitte koden sin, ligger bak flere merges.
+- Til neste gang:
+  - Starte prosjektrapporten som skal inn 11. april.
+
+## 1.April
+
+Tilstede: Jonas, Åse, Maren
+
+- Hva ble diskutert/gjort:
+  - hvordan vi ønsker at fiendene skal funke
+    - fordeling av oppgaver her:
+      - Jonas: fiende som skyter
+      - Maren: fiende som går fram og tilbake.
+      - Åse: legge til det som trengs på kartet, og fikse en hjelpeskjerm
+- Minimumskrav til spillet, hva gjenstår
+  - Lage hjelpeside inne på spillet, Åse
+  - Flytte Anna til annen arbeidsoppgave
+
+## 28.Mars
+
+Tilstede: Jonas, Åse, Maren
+
+- Hva ble diskutert/gjort:
+  - Tidsplan frem til neste innlevering, og gitt tidsfrist på de som har oppgaver.
+  - Hvordan fienden skal fungere
+
+## 25.Mars
+
+Til stede: Anna Jonas, Åse.
+
+- Hva ble diskutert/ gjort:
+  - Hva vi mangler, fikse skjerm og arbeid med fienden fortsetter, jonas tar skjerm anna og maren fortsetter med fienden.
+  - Lage tester
+
+## 21. Mars
+
+Til stede: Jonas, Anna, Åse, Maren, Mohamad.
+
+- Hva ble diskutert/gjort
+  - Fikset litt på powerup
+  - Anna og Maren tar fienden
+  - Jonas fikser screens
+  - Mohamad fikser character
+  - Åse fikser tester på powerup og dangerous objects.
+  - Få de mest grunnleggende og kritiske kategoriene i boks, altså fienden.
+
+## 18.mars
+
+Til stede: Jonas, Anna, Maren, Åse, Thora og Mohamad.
+
+- Hva ble diskutert/gjort:
+  - gikk gjennom kodelogikk, forklart hvordan vi har laget de ulike metodene slik at alle forstår spiolet i de delene de andre har jobbet med
+  - hvem gjør hva, hvordan ligger det an
+  - Går fint med spilleren
+  - Trenger fienden, liv, heads up screen.
+  - Kodet sammen
+- Til neste gang:
+  - jobbe videre med koden
+  - få oversikt over hele kodestrukturen
+  - lese over brukerhistorier
+  - spiller intereagerer med spikes og gress (Maren)
+  - Lage tester til kontroller (Thora)
+  - Fikse på PowerUp (Åse)
+  - se på at spiller kan miste liv og ordne GameOver (Anna)
+
+## 14. mars
+
+Tilstede: Jonas, Anna, Åse og Thora.
+
+- Gå gjennom:
+  - Åse, i gruppetimen. (Høre om oppsettet med powerup, kanskje eventuelt endre slik man får en skikkelig objekt fabrikk)
+- Oppgaver til neste uke, tenker vi kan fordele eventuelle:
+  - At player interegere med dangerous objects
+  - At player får en You Won screen når interegere med døren
+  - (Åse) Forsetter med powerup, kan og lage nytt kart som har kanter, ettersom jeg har det eksisterende kartet lagret hos meg.
+  - (Anna) En som fokuserer på at bevegelsene til player er smooth
+  - (Mohammed) En som fikser fienden, kanskje legge til en “hatt” at player kan hoppe på den slik den dør, og da kommer det ny (kan fikses senere men bare en tanke??)
+  - (Thora) Fikser controller slik den fungerer
+- Når disse er ferdige^
+  - Lage en heads up screen
+  - Samle poeng og hvor den holder på livene til spiller (dette vises i heads up displayet som ligger på toppen av screen)
+  - Fikse animasjoner, skal stjernen ha en animasjon når den går, endre stjernen til en annen farge når den får powerups?
+  - FIkse lyd
+
+## 11. mars
+
+Tilstede: Jonas, Anna, Thora, Maren, Mohamad og Åse
+
+- Plan:
+  - Refaktorisere koden sammen
+  - Lage en plan for de neste ukene og legge inn i timeplan
+  - Gå over koden sammen og se hva vi har gjort som enkeltindivider
+  - Gå gjennom hva som må forbedres for at alle filene skal jobbe sammen
+- Hva ble diskutert:
+  - hvordan ny mappestruktur skal se ut
+  - hvordan vi skal jobbe fremover
+  - lage brukerhistorier på forhånd som vi følger i oppgaveoppsett
+  - lage tester kontinuerlig
+- Hva ble gjort:
+  - Gikk gjennom updates på spillet
+  - Lagt en ish plan fremover
+  - Presenterte deler av koden
+  - Slette ubrukte mapper
+  - Refaktorisert koden sammen for å få bedre mappestruktur
+- Til neste gang:
+  - ferdigstille planen
+  - lag mapper og klasser til fremtidige oppgaver
+
 ## 7. mars
 
 Tilstede: Åse, Anna, Mohamad, Jonas og Thora
@@ -40,10 +194,11 @@ Tilstede: Åse, Maren, Thora, Jonas, Mohamad
 
 ## 28. februar
 
-- Tilstede: Mohamad, Jonas, Thora, Åse, Maren, Anna
-  - Hva ble diskutert:
-    - Fikse hva som er feil med merge og det med main
-    - Delegering av oppgaver slik man kan få spillet til å fungere bedre frem til neste møte over helgen.
+Tilstede: Mohamad, Jonas, Thora, Åse, Maren, Anna
+
+- Hva ble diskutert:
+  - Fikse hva som er feil med merge og det med main
+  - Delegering av oppgaver slik man kan få spillet til å fungere bedre frem til neste møte over helgen.
   - Hvem får hovedpersonen til å bevege seg? Thora
   - Hvem fokuserer på fienden? Anna
   - Hvem lager banen ferdig? Åse

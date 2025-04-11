@@ -130,7 +130,7 @@ public class Character extends HumanoidBody implements Renderable {
     @Override
     public void render(Batch batch, float dt) {
         Vector2 bodyPos = this.getTransform().getPosition();
-        float bodyDeg = this.getTransform().getRotation();
+        float bodyRad = this.getTransform().getRotation();
         TextureRegion nextFrame = animator.update(dt);
 
         if (nextFrame != null) {
@@ -140,7 +140,7 @@ public class Character extends HumanoidBody implements Renderable {
                     size.x / 2, size.y / 2, // Origin
                     size.x, size.y, // Width and height
                     1f, 1f, // Scale (no scaling)
-                    bodyDeg);
+                    (float) Math.toDegrees(bodyRad));
         }
     }
 
