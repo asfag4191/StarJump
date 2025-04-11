@@ -1,5 +1,7 @@
 package inf112.skeleton.model.character.enemy;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -23,6 +25,7 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
     public SentryEnemy(Character character, Player player, World world) {
         super(character, world);
         this.player = player;
+        setupAnimation();
     }
 
     @Override
@@ -97,6 +100,14 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
         Vector2 enemyPosition = enemyCharacter.getPosition();
 
         return playerPosition.dst(enemyPosition);
+    }
+
+    @Override
+    protected void setupAnimation() {
+        enemyCharacter.animator.clearAnimations();
+        Texture tex = new Texture(Gdx.files.internal("sprites/star.png"));
+        enemyCharacter.animator.addAnimation("idle_sentry", tex, 1, 1, 0);
+        enemyCharacter.animator.play("idle_sentry");
     }
 
 }

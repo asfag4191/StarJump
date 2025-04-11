@@ -9,10 +9,12 @@ public abstract class SimpleEnemy {
     public final Character enemyCharacter;
     public World world;
     private Vector2 target;
+    
 
     public SimpleEnemy(Character enemy, World world) {
         this.enemyCharacter = enemy;
         this.world = world;
+        setupAnimation();
     }
 
     public Vector2 getTarget() {
@@ -26,4 +28,9 @@ public abstract class SimpleEnemy {
     public void update(float dt) {
     }
 
+    // This forces subclasses to define animation setup
+    //every enemy need this as a override method
+    protected abstract void setupAnimation();
+   
 }
+

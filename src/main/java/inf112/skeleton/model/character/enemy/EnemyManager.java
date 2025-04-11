@@ -81,11 +81,18 @@ public class EnemyManager implements iUpdateable {
     }
     @Override
     public void update(float dt) {
-        for (SimpleEnemy enemy : enemies) {
+        for (int i = 0; i < enemies.size(); i++) {
+            SimpleEnemy enemy = enemies.get(i);
             enemy.update(dt);
+    
+            //removed the enemy if jumped on
+            if (enemy instanceof BlackHole blackHole && blackHole.shouldBeRemoved()) {
+                blackHole.getEnemyCharacter().getBody().getWorld().destroyBody(blackHole.getEnemyCharacter().getBody());
+                enemies.remove(i);
+                i--;
+            }
         }
     }
-
     public void render(SpriteBatch batch, float dt) {
         for (SimpleEnemy enemy : enemies) {
             enemy.enemyCharacter.render(batch, dt);
