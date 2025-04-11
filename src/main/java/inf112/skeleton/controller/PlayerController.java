@@ -16,26 +16,34 @@ public final class PlayerController {
     public static void setupWASD(Player player) {
         InputBinder controller = player.controller;
         Character character = player.character;
-        CharacterAttributes attributes = character.attributes;
 
-        controller.bindKeyHold(Input.Keys.D, () -> move(character, attributes.getSpeed()));
-        controller.bindKeyHold(Input.Keys.RIGHT, () -> move(character, attributes.getSpeed()));
+        controller.bindKeyHold(Input.Keys.D, () -> move(character, 1));
+        controller.bindKeyHold(Input.Keys.RIGHT, () -> move(character, 1));
 
-        controller.bindKeyHold(Input.Keys.A, () -> move(character, -attributes.getSpeed()));
-        controller.bindKeyHold(Input.Keys.LEFT, () -> move(character, -attributes.getSpeed()));
+        controller.bindKeyHold(Input.Keys.A, () -> move(character, -1));
+        controller.bindKeyHold(Input.Keys.LEFT, () -> move(character, -1));
 
-        controller.bindKeyPress(Input.Keys.SPACE, () -> jump(character, attributes.getJumpPower()));
-        controller.bindKeyPress(Input.Keys.UP, () -> jump(character, attributes.getJumpPower()));
+        controller.bindKeyPress(Input.Keys.SPACE, () -> jump(character));
+        controller.bindKeyPress(Input.Keys.UP, () -> jump(character));
     }
 
-    private static void move(Character character, float velocity) {
-        character.setVelocity(new Vector2(velocity, character.getVelocity().y));
+    private static void move(Character character, int velocityMultiplier) {
+        CharacterAttributes attributes = character.getAttributes();
+        float xVelocity = attributes.getSpeed() * velocityMultiplier;
+        float yVelocity = character.getVelocity().y;
+
+        character.setVelocity(new Vector2(xVelocity, yVelocity));
     }
 
-    private static void jump(Character character, float jumpPower) {
-        if (character.attributes.getJumpsLeft() == 0)
-            return;
-        character.attributes.addJumps(-1);
-        character.setVelocity(new Vector2(character.getVelocity().x, jumpPower));
+    private static void jump(Character character) {
+        CharacterAttributes attributes = character.getAttributes();
+
+        if (attributes.getJumpsLeft() == 0) return;
+
+        float xVelocity = character.getVelocity().x;
+        float yVelocity = attributes.getJumpPower();
+
+        character.setVelocity(new Vector2(xVelocity, yVelocity));
+        attributes.addJumps(-1);
     }
 }

@@ -50,6 +50,33 @@ public class Character extends HumanoidBody implements Renderable {
     }
 
     /**
+     * Gets the character's attributes
+     *
+     * @return the {@link CharacterAttributes} of this character.
+     */
+    public CharacterAttributes getAttributes() {
+        return attributes;
+    }
+
+    /**
+     * Gets the {@link Animator} associated with this character.
+     *
+     * @return the {@link Animator} instance for this character.
+     */
+    public Animator getAnimator() {
+        return animator;
+    }
+
+    /**
+     * Gets the size of the character in world units.
+     *
+     * @return the character's size as a {@link Vector2}.
+     */
+    public Vector2 getSize() {
+        return size;
+    }
+
+    /**
      * Sets the state of the character to the given value.
      * If the character is dead, then this method will do nothing.
      * If the character is freefalling, then it cannot be set to moving.
@@ -141,13 +168,6 @@ public class Character extends HumanoidBody implements Renderable {
         Fixture sensorFixture = mainBody.createFixture(fixDef);
         sensorFixture.setUserData("sensor");
         sensorShape.dispose();
-    }
-
-    /**
-     * Returns a copy of the characters attributes
-     */
-    public CharacterAttributes getAttributes() {
-        return new CharacterAttributes(attributes);
     }
 
     /**
