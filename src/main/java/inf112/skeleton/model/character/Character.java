@@ -18,6 +18,7 @@ public class Character extends HumanoidBody implements Renderable {
     public final CharacterAttributes attributes;
     public final Animator animator;
     public final Vector2 size;
+    private boolean isPlayer = false;
 
     public Character(String name, CharacterAttributes attributes, Vector2 size, World world) {
         super(world, size);
@@ -46,6 +47,33 @@ public class Character extends HumanoidBody implements Renderable {
      */
     public CharacterState getState() {
         return state;
+    }
+
+    /**
+     * Gets the character's attributes
+     *
+     * @return the {@link CharacterAttributes} of this character.
+     */
+    public CharacterAttributes getAttributes() {
+        return attributes;
+    }
+
+    /**
+     * Gets the {@link Animator} associated with this character.
+     *
+     * @return the {@link Animator} instance for this character.
+     */
+    public Animator getAnimator() {
+        return animator;
+    }
+
+    /**
+     * Gets the size of the character in world units.
+     *
+     * @return the character's size as a {@link Vector2}.
+     */
+    public Vector2 getSize() {
+        return size;
     }
 
     /**
@@ -102,7 +130,7 @@ public class Character extends HumanoidBody implements Renderable {
     @Override
     public void render(Batch batch, float dt) {
         Vector2 bodyPos = this.getTransform().getPosition();
-        float bodyDeg = this.getTransform().getRotation();
+        float bodyRad = this.getTransform().getRotation();
         TextureRegion nextFrame = animator.update(dt);
 
         if (nextFrame != null) {
@@ -112,7 +140,7 @@ public class Character extends HumanoidBody implements Renderable {
                     size.x / 2, size.y / 2, // Origin
                     size.x, size.y, // Width and height
                     1f, 1f, // Scale (no scaling)
-                    bodyDeg);
+                    (float) Math.toDegrees(bodyRad));
         }
     }
 
@@ -143,18 +171,17 @@ public class Character extends HumanoidBody implements Renderable {
     }
 
     /**
-     * Returns a copy of the characters attributes
-     */
-    public CharacterAttributes getAttributes() {
-        return new CharacterAttributes(attributes);
-    }
-
-    /**
      * Gets the position of the character in the world.
-     *
-     * @param position of the character.
      */
     public Vector2 getPosition() {
         return this.getTransform().getPosition();
+    }
+
+    public void setPlayer(boolean isPlayer) {
+        this.isPlayer = isPlayer;
+    }
+
+    public boolean isPlayer() {
+        return isPlayer;
     }
 }

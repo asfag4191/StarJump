@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="left-up" width="40" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="204">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="left-up" width="40" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="228">
  <tileset firstgid="1" source="tilesets/Background.tsx"/>
  <tileset firstgid="97" source="tilesets/tiles.tsx"/>
  <tileset firstgid="1377" source="tilesets/ground.tsx"/>
@@ -15,7 +15,7 @@
  </layer>
  <layer id="3" name="Colliders" width="40" height="100">
   <data encoding="base64" compression="zlib">
-   eJztmVsKwjAQRUs2ozvRpQi6Dz900VZEKFKTTDKTuUnugdKPlmbmziOPLgshJMU1LMstxN+5JJ5b8ljHfirYp+3DPdhdhHiAnKeodYFcs61tk+SGp2bSXGZ/tkFT19i30GOH0F8tKfHFQove+lKKlutyjRhqxNOzVvb0romBth+j95GZYAz1qdHUs7a249T6QPqjZI5puTa48JxLzOz+jwrzvH9ivdPzX8jWhu+Vk2/a+xZt9vyYhVK/c99tpelMfU9zH2ENehz+5U2tRrlrTuk6dfTcRqW33oI+576ZqWfnoqVBra6xNR5pB2skDXqv4/mTnN716SHGXvZJaoE1I6elTlZ9jXH/oK2vp6Y1Y8+SAy3y3vK7sTOLHJ/2zl9QegFyDtK2Mma0LbU3ytk7WeoW+7eUM27p/ILUa0YGUVvpHFU7P82Wax7nMd5nQN7j/4JmT4zDausx4N5P63UGvr8AAa7OCg==
+   eJztmVEOwjAIhpdeRm+iN3GJ3sMHPbRbjMliNmgLFFr4ksYHlxV+KKXdNAVBgHFP0/RI8DMz8r8kr2XuN4N93D48k9wIAg0s56nVdWF5zba2rSQ3NDUrzeWozzJw6gq9y3rsLNRXSWp8kdCit7qE0bIv54ghRzw118qe3pQYcPsxeh3xRMSQH4qmmmtrOw/Vh6A/avaYlr3BHPdcxXj3f1Qiz/sHqp2a30K2NvxGTr5xn1u42fPDC7V+5z7bSlNPdY/zHCGNdhxuyPxHeUPVKLfnLO1TR89tq/RWW6zvuSueanYuXBpQdYV6vKAtoT+M9Vondf+E9TbarPYdDYze87yHtaplX8laiNpXTkudpHq4iPsXbn01NaXM7SUHWuQ99F5KT4HdWeT4tHf/YqUWWM7BsK0Oj7ZhZ6Ocs5OkbtC3pZx5a/cXS7VmZCxqW7pHUfcnb7mmcR+jfQekPf8/1uyBOC22npPd38syroZ/P+Zs0Zs=
   </data>
  </layer>
  <objectgroup id="4" name="Tiles">
@@ -50,7 +50,7 @@
   <object id="64" x="112" y="1152" width="80" height="16"/>
   <object id="65" x="128" y="1104" width="16" height="16"/>
   <object id="66" x="176" y="1072" width="96" height="16"/>
-  <object id="67" x="288" y="1024" width="80" height="16"/>
+  <object id="67" x="304" y="1024" width="64" height="16"/>
   <object id="71" x="384" y="976" width="64" height="16"/>
   <object id="72" x="272" y="944" width="80" height="16"/>
   <object id="73" x="48" y="992" width="64" height="16"/>
@@ -122,8 +122,6 @@
   <object id="178" x="112" y="720" width="16" height="16"/>
   <object id="179" x="112" y="736" width="48" height="16"/>
   <object id="181" x="224" y="720" width="16" height="16"/>
-  <object id="182" x="368" y="736" width="16" height="16"/>
-  <object id="183" x="128" y="720" width="16" height="16"/>
   <object id="187" x="176" y="80" width="16" height="32"/>
   <object id="188" x="320" y="96" width="16" height="16"/>
   <object id="189" x="528" y="368" width="16" height="16"/>
@@ -135,6 +133,12 @@
   <object id="201" x="256" y="928" width="16" height="16"/>
   <object id="202" x="512" y="576" width="16" height="16"/>
   <object id="203" x="304" y="576" width="16" height="16"/>
+  <object id="208" x="80" y="416" width="16" height="16"/>
+  <object id="218" x="96" y="1296" width="16" height="16"/>
+  <object id="219" x="528" y="1072" width="16" height="32"/>
+  <object id="220" x="544" y="1088" width="96" height="16"/>
+  <object id="224" x="416" y="848" width="16" height="16"/>
+  <object id="225" x="432" y="1296" width="64" height="16"/>
  </objectgroup>
  <objectgroup id="9" name="Enemy">
   <object id="172" x="352" y="1392" width="16" height="16"/>
@@ -144,11 +148,19 @@
   <object id="186" x="240" y="96" width="16" height="16"/>
   <object id="190" x="576" y="368" width="16" height="16"/>
   <object id="199" x="320" y="928" width="16" height="16"/>
+  <object id="204" x="128" y="720" width="16" height="16"/>
+  <object id="205" x="560" y="832" width="16" height="16"/>
+  <object id="206" x="480" y="576" width="16" height="16"/>
+  <object id="207" x="144" y="416" width="16" height="16"/>
+  <object id="216" x="16" y="1520" width="16" height="16"/>
+  <object id="217" x="528" y="1552" width="16" height="16"/>
+  <object id="221" x="624" y="1072" width="16" height="16"/>
+  <object id="223" x="368" y="736" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="8" name="Door">
   <object id="162" x="32" y="80" width="32" height="32"/>
  </objectgroup>
- <objectgroup id="6" name="PowerUp">
+ <objectgroup id="6" name="PowerUp" visible="0">
   <properties>
    <property name="type" value="FLYING"/>
   </properties>
@@ -158,19 +170,16 @@
   <object id="127" x="176" y="1216" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="128" x="256" y="1104" width="16" height="16">
-   <ellipse/>
-  </object>
-  <object id="129" x="192" y="896" width="16" height="16">
-   <ellipse/>
-  </object>
-  <object id="130" x="48" y="976" width="16" height="16">
-   <ellipse/>
-  </object>
-  <object id="131" x="256" y="608" width="16" height="16">
-   <ellipse/>
-  </object>
   <object id="132" x="320" y="368" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object id="210" x="0" y="336" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object id="226" x="512" y="800" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object id="227" x="32" y="768" width="16" height="16">
    <ellipse/>
   </object>
  </objectgroup>
@@ -190,9 +199,6 @@
   <object id="138" x="544" y="1344" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="139" x="272" y="1392" width="16" height="16">
-   <ellipse/>
-  </object>
   <object id="140" x="32" y="1296" width="16" height="16">
    <ellipse/>
   </object>
@@ -208,13 +214,7 @@
   <object id="144" x="304" y="848" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="145" x="320" y="576" width="16" height="16">
-   <ellipse/>
-  </object>
   <object id="146" x="176" y="512" width="16" height="16">
-   <ellipse/>
-  </object>
-  <object id="148" x="208" y="720" width="16" height="16">
    <ellipse/>
   </object>
   <object id="149" x="112" y="416" width="16" height="16">
@@ -235,7 +235,19 @@
   <object id="154" x="512" y="160" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="192" x="624" y="368" width="16" height="16">
+  <object id="211" x="464" y="512" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object id="212" x="304" y="560" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object id="213" x="416" y="768" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object id="214" x="240" y="1376" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object id="215" x="256" y="1264" width="16" height="16">
    <ellipse/>
   </object>
  </objectgroup>
