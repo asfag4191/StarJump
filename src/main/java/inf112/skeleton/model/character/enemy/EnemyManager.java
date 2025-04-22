@@ -3,15 +3,11 @@ package inf112.skeleton.model.character.enemy;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
 import inf112.skeleton.model.iUpdateable;
-import inf112.skeleton.model.character.CharacterAttributes;
-import inf112.skeleton.model.character.Character;
 import inf112.skeleton.view.screen.GameScreen;
 
 /**
