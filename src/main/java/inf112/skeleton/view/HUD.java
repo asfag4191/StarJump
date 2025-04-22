@@ -32,14 +32,14 @@ public class HUD {
     Label hpLabel;
     Label scoreLabel;
 
-     /**
+    /**
      * Creates a new HUD instance.
      *
      * @param batch The SpriteBatch used for rendering the HUD elements.
      */
     public HUD(SpriteBatch batch, Character character) {
         this.character = character;
-        hp = ((int)character.attributes.getHp());   
+        hp = ((int) character.attributes.getHp());
         score = DiamondPowerUp.getScore(); // Get initial score
 
         hudCamera = new OrthographicCamera();
@@ -56,24 +56,24 @@ public class HUD {
         hpLabel = new Label(String.format("HP: %d", hp), new Label.LabelStyle(font, Color.WHITE));
         scoreLabel = new Label(String.format("SCORE: %d", score), new Label.LabelStyle(font, Color.WHITE));
 
-        table.add(hpLabel).expandX().padTop(50).padLeft(100).left();  
-        table.add(scoreLabel).expandX().padTop(50).padRight(100).right(); 
+        table.add(hpLabel).expandX().padTop(50).padLeft(100).left();
+        table.add(scoreLabel).expandX().padTop(50).padRight(100).right();
 
         hudStage.addActor(table);
     }
 
-
-     /**
+    /**
      * Updates the HUD with new life and score values.
      *
-     * @param life The player's current life.
+     * @param life  The player's current life.
      * @param score The player's current score.
      */
-    public void update() {
-        this.hp = ((int)character.attributes.getHp());
+    public void update(float dt) {
+        this.hp = ((int) character.attributes.getHp());
         this.score = DiamondPowerUp.getScore(); // Update score from DiamondPowerUp
         hpLabel.setText(String.format("LIFE: %d", hp));
         scoreLabel.setText(String.format("SCORE: %d", score));
+        this.hudStage.act(dt);
     }
 
     /**
@@ -82,7 +82,7 @@ public class HUD {
     public void dispose() {
         hudStage.dispose();
     }
-        
+
     /**
      * Gets the viewport used by the HUD.
      *

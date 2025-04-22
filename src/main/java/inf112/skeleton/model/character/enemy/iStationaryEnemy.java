@@ -9,7 +9,7 @@ interface iStationaryEnemy {
      *
      * @param point The target position as a Vector2.
      */
-    void shoot(Vector2 direction, float bulletSpeed);
+    void shoot(Vector2 target, float bulletSpeed);
 
     /**
      * Checks if the enemy can see the target.

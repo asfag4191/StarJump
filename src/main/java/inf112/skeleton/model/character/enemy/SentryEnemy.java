@@ -2,25 +2,33 @@ package inf112.skeleton.model.character.enemy;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 
 import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.controllable_characters.Player;
 
 public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
     private Player player;
-    public Vector2 playerDirection;
     private float RANGE = 10f;
-    ShapeRenderer shapeRenderer = new ShapeRenderer();
+    private ShapeRenderer shapeRenderer = new ShapeRenderer();
     final boolean hitPlayer = false;
     // FOR DEBUGGING
     public Vector2 rStart;
     public Vector2 rEnd;
     public Vector2 hitPoint;
+    public Vector2 target;
+    private static final float SHOOTING_DELAY = 5;
+    private float shootingState = 0;
+    private float shootTimeLeft = 0;
+    private Vector2 laserTarget;
 
     public SentryEnemy(Character character, Player player, World world) {
         super(character, world);
@@ -29,8 +37,65 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
     }
 
     @Override
-    public void shoot(Vector2 direction, float bulletSpeed) {
-        // TODO Auto-generated method stub
+    public void shoot(Vector2 target, float bulletSpeed) {
+        System.out.println("shooting");
+        shootingState = 0f;
+        this.laserTarget = target;
+
+        Timer.schedule(new Task() {
+            @Override
+            public void run() {
+                System.out.println("Shooting at target: " + target);
+                // Implement shooting logic here
+                shootingState = -1f;
+
+                if (seesTarget(target.nor(), RANGE)) {
+                    player.character.takeDamage(10);
+                    System.out.println("Hit player");
+                } else {
+                    System.out.println("Missed player");
+                }
+                shootTimeLeft = 0.5f;
+            }
+        }, SHOOTING_DELAY);
+    }
+
+    protected void fire(Vector2 target2, float dt) {
+        if (target2 == null) {
+            System.out.println("Target is null");
+            this.shootTimeLeft = 0;
+        }
+
+        this.shootTimeLeft -= dt;
+
+        if (this.shootTimeLeft <= 0) {
+            this.shootTimeLeft = 0;
+            this.shootingState = 0;
+        }
+    }
+
+    protected void createShootingLine(Batch batch, Vector2 hit) {
+        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(1, 0, 0, 1);
+        shapeRenderer.line(this.enemyCharacter.getPosition(), hit);
+        shapeRenderer.end();
+    }
+
+    private void aiming(Vector2 target) {
+        this.enemyCharacter.setTransform(this.enemyCharacter.getPosition(),
+                (float) (target.angleRad() - Math.PI / 2));
+        if (shootingState > 1) {
+            shoot(target, 0);
+        }
+    }
+
+    private void createAimingLine(Batch batch, Vector2 from, Vector2 to) {
+        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(1, 1, 1, 1);
+        shapeRenderer.line(from, to);
+        shapeRenderer.end();
     }
 
     @Override
@@ -67,6 +132,7 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
         this.rStart = rayStart;
         this.rEnd = rayEnd;
         this.hitPoint = hitPoint[0];
+        // System.out.println("Sees player: " + seesPlayer[0]);
         return seesPlayer[0];
     }
 
@@ -75,13 +141,21 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
         if (getDistanceToPlayer() < RANGE) {
             Vector2 playerDirection = getPlayerDirection();
             // System.out.println("Player out of range");
-            if (seesTarget(playerDirection, RANGE)) {
-                this.enemyCharacter.setTransform(this.enemyCharacter.getPosition(),
-                        (float) (playerDirection.angleRad() - Math.PI / 2));
-                shoot(playerDirection, 2);
-
+            if (playerDirection == null) {
+                System.out.println("Player direction is null");
+                return;
             }
-            return;
+            if (this.shootingState >= 0 && seesTarget(playerDirection, RANGE)) {
+                aiming(this.hitPoint);
+                this.shootingState += dt;
+            } else if (shootingState > 0) {
+                System.out.println("Resetting shooting timer");
+                this.shootingState = 0;
+            }
+
+            if (this.shootingState == -1f) {
+                fire(laserTarget, dt);
+            }
         }
     }
 
@@ -111,8 +185,28 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
         enemyCharacter.animator.play("idle");
     }
 
-    private void setupCannon() {
-        // Create a cannon body
+    private void setupCannonStand() {
+        // Create a cannon stand
+        Texture cannonStandTexture = new Texture(Gdx.files.internal("sprites/cannon/cannon_stand.png"));
+
+        Body body = enemyCharacter.getBody();
+
+    }
+
+    @Override
+    public void render(Batch batch, float dt) {
+        super.render(batch, dt);
+        // System.out.println("SentryEnemy render");
+        if (rStart == null || rEnd == null) {
+            return;
+        }
+        if (this.shootingState > 0 && hitPoint != null) {
+            // createAimingLine(batch, rStart, hitPoint);
+        }
+        if (this.shootingState == -1f && hitPoint != null) {
+            createShootingLine(batch, hitPoint);
+        }
+
     }
 
 }

@@ -1,5 +1,6 @@
 package inf112.skeleton.model.character.enemy;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -9,7 +10,6 @@ public abstract class SimpleEnemy {
     public final Character enemyCharacter;
     public World world;
     private Vector2 target;
-    
 
     public SimpleEnemy(Character enemy, World world) {
         this.enemyCharacter = enemy;
@@ -28,9 +28,12 @@ public abstract class SimpleEnemy {
     public void update(float dt) {
     }
 
-    // This forces subclasses to define animation setup
-    //every enemy need this as a override method
-    protected abstract void setupAnimation();
-   
-}
+    public void render(Batch batch, float dt) {
+        enemyCharacter.render(batch, dt);
+    }
 
+    // This forces subclasses to define animation setup
+    // every enemy need this as a override method
+    protected abstract void setupAnimation();
+
+}

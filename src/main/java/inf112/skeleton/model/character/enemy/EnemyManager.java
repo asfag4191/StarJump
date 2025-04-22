@@ -42,50 +42,51 @@ public class EnemyManager implements iUpdateable {
 
     public void loadEnemiesFromMap() {
         TiledMap map = screen.getMap();
-    
+
         var enemyLayer = map.getLayers().get("Enemy");
         if (enemyLayer == null) {
             System.err.println("No 'Enemies' layer found in Tiled map!");
             return;
         }
-    
+
         List<Vector2> spawnPositions = new ArrayList<>();
-    
+
         for (MapObject object : enemyLayer.getObjects()) {
             Float x = object.getProperties().get("x", Float.class);
             Float y = object.getProperties().get("y", Float.class);
-    
+
             if (x != null && y != null) {
                 Vector2 pos = new Vector2((x + 8f) / 16f, (y + 8f) / 16f);
                 spawnPositions.add(pos);
             }
         }
-         // Shuffle the enemies
-    
+        // Shuffle the enemies
+
         java.util.Collections.shuffle(spawnPositions);
-        int enemiesToSpawn = Math.min(spawnPositions.size(), 3 + (int)(Math.random() * (spawnPositions.size() - 2)));
-    
+        int enemiesToSpawn = Math.min(spawnPositions.size(), 3 + (int) (Math.random() * (spawnPositions.size() - 2)));
+
         for (int i = 0; i < enemiesToSpawn; i++) {
             Vector2 position = spawnPositions.get(i);
             SimpleEnemy enemy;
-    
+
             // Randomly choose enemy type
             if (Math.random() < 0.5) {
                 enemy = enemyFactory.getNextBlackHole(position);
             } else {
                 enemy = enemyFactory.getNextSentryEnemy(position);
             }
-    
+
             addEnemy(enemy);
         }
     }
+
     @Override
     public void update(float dt) {
         for (int i = 0; i < enemies.size(); i++) {
             SimpleEnemy enemy = enemies.get(i);
             enemy.update(dt);
-    
-            //removed the enemy if jumped on
+
+            // removed the enemy if jumped on
             if (enemy instanceof BlackHole blackHole && blackHole.shouldBeRemoved()) {
                 blackHole.getEnemyCharacter().getBody().getWorld().destroyBody(blackHole.getEnemyCharacter().getBody());
                 enemies.remove(i);
@@ -93,9 +94,10 @@ public class EnemyManager implements iUpdateable {
             }
         }
     }
+
     public void render(SpriteBatch batch, float dt) {
         for (SimpleEnemy enemy : enemies) {
-            enemy.enemyCharacter.render(batch, dt);
+            enemy.render(batch, dt);
             if (GameScreen.DEBUG_MODE) {
                 debug(batch, enemy);
             }
