@@ -32,14 +32,6 @@ public class EnemyManager implements iUpdateable {
         enemies.add(enemy);
     }
 
-    public void createTestSentries() {
-        List<Vector2> positions = List.of(new Vector2(3, 3), new Vector2(12, 10));
-        for (Vector2 pos : positions) {
-            SimpleEnemy sentryEnemy = enemyFactory.getNextSentryEnemy(pos);
-            addEnemy(sentryEnemy);
-        }
-    }
-
     public void loadEnemiesFromMap() {
         TiledMap map = screen.getMap();
 

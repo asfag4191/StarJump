@@ -21,14 +21,15 @@ public class Projectile extends RigidBody implements Disposable, iUpdateable, Re
     private static final PolygonShape SHAPE = new PolygonShape();
 
     public final ProjectileAttributes attributes;
-    public final Animator animator = new Animator();
+    public final Animator animator;
     private Texture bulletTex = new Texture(Gdx.files.internal("sprites/star.png"));
 
     private Vector2 size;
 
     private WorldModel worldModel;
 
-    public Projectile(WorldModel worldModel, Vector2 startPos, ProjectileAttributes attributes, Vector2 size) {
+    public Projectile(WorldModel worldModel, Vector2 startPos, ProjectileAttributes attributes, Vector2 size,
+            Animator animator) {
         super(worldModel.world, getBodyDef(attributes.gravity()), getFixtureDef(size), false);
         this.attributes = attributes;
         this.setVelocity(attributes.velocity());
@@ -36,8 +37,7 @@ public class Projectile extends RigidBody implements Disposable, iUpdateable, Re
         this.setPosition(startPos);
         this.body.setUserData(this);
         this.worldModel = worldModel;
-
-        this.animator.addAnimation("projectile", this.bulletTex, 1, 1, 0);
+        this.animator = animator;
         this.animator.play("projectile");
 
     }
@@ -68,6 +68,7 @@ public class Projectile extends RigidBody implements Disposable, iUpdateable, Re
             // this.body.getWorld().destroyBody(this.body);
             this.worldModel.setBodyForRemove(this.body);
         }
+        this.animator.clearAnimations();
         this.bulletTex.dispose();
 
         System.out.println("Projectile disposed");
@@ -94,7 +95,6 @@ public class Projectile extends RigidBody implements Disposable, iUpdateable, Re
         TextureRegion nextFrame = this.animator.update(dt);
 
         if (nextFrame != null) {
-            System.out.println(nextFrame);
             batch.draw(nextFrame,
                     bodyPos.x - size.x / 2,
                     bodyPos.y - size.y / 2,

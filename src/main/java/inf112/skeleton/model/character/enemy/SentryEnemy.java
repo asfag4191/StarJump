@@ -13,6 +13,7 @@ import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.model.character.enemy.projectile.Projectile;
 import inf112.skeleton.model.character.enemy.projectile.ProjectileAttributes;
+import inf112.skeleton.view.Animator;
 
 public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
     private Player player;
@@ -29,6 +30,8 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
     private float shootingDelay = 0;
     private Texture bulletTex;
     private WorldModel worldModel;
+    private Animator bulletAnim;
+    private Texture cannonStandTex;
 
     public SentryEnemy(Character character, Player player, WorldModel worldModel) {
         super(character, worldModel.world);
@@ -36,25 +39,24 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
         setupAnimation();
         this.bulletTex = new Texture(Gdx.files.internal("sprites/star.png"));
         this.worldModel = worldModel;
+        this.cannonStandTex = new Texture(Gdx.files.internal("sprites/cannon/cannon_stand.png"));
+        this.bulletAnim = new Animator();
+        this.bulletAnim.addAnimation("projectile", this.bulletTex, 1, 1, 0);
     }
 
     @Override
     public void shoot(Vector2 target, float bulletSpeed) {
-        System.out.println("shooting");
         this.shootingState = -1f;
+        this.shootingDelay = 1f;
 
-        System.out.println("Shooting at target: " + target);
-        // Implement shooting logic here
-        this.shootingState = -1f;
         Projectile proj = new Projectile(worldModel, enemyCharacter.getPosition(),
                 new ProjectileAttributes(target.nor().scl(bulletSpeed), 1f, 1f, false),
-                new Vector2(0.5f, 0.5f));
+                new Vector2(0.5f, 0.5f), bulletAnim);
 
         proj.animator.addAnimation("projectile", bulletTex, 1, 1, 0);
         proj.animator.play("projectile");
         this.worldModel.addViewableObject(proj);
 
-        this.shootingDelay = 1f;
     }
 
     @Override
@@ -89,20 +91,27 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
 
     public void update(float dt) {
         super.update(dt);
+
+        // No need to do the calculations if player is not in range
         if (getDistanceToPlayer() < RANGE) {
             Vector2 playerDirection = getPlayerDirection();
             this.enemyCharacter.setTransform(this.enemyCharacter.getPosition(),
                     playerDirection.angleRad() - 3.14f / 2f);
         }
+
         if (this.shootingState >= SHOOTING_DELAY) {
             this.shoot(getPlayerDirection(), BULLET_SPEED);
         }
+
+        // If player is in range we want to start the timer for shooting
         if (this.shootingState >= 0 && seesTarget(player.character.getPosition())) {
             this.shootingState += dt;
         } else if (shootingState > 0) {
-            System.out.println("Resetting shooting timer");
+            // If player is not in range we want to reset the timer
             this.shootingState = 0;
         }
+
+        // If we have shot, we want to wait a bit before we can shoot again
         if (this.shootingState == -1f) {
             shootingDelay -= dt;
             if (shootingDelay <= 0) {
@@ -137,17 +146,15 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
         enemyCharacter.animator.play("idle");
     }
 
-    private void setupCannonStand() {
-        // Create a cannon stand
-        Texture cannonStandTexture = new Texture(Gdx.files.internal("sprites/cannon/cannon_stand.png"));
-
-        Body body = enemyCharacter.getBody();
-
+    private void renderCannonStand(Batch batch) {
+        batch.draw(cannonStandTex, enemyCharacter.getPosition().x - 0.5f, enemyCharacter.getPosition().y - 0.5f,
+                1.5f, 1.5f);
     }
 
     @Override
     public void render(Batch batch, float dt) {
         super.render(batch, dt);
+        renderCannonStand(batch);
         // System.out.println("SentryEnemy render");
         if (rStart == null || rEnd == null) {
             return;

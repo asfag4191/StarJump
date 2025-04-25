@@ -90,9 +90,7 @@ public class GameScreen implements Screen {
         // Set up door
         doorManager = new DoorManager(this);
 
-        // TODO: Set up enemies
         enemyManager = new EnemyManager(this);
-        enemyManager.createTestSentries();
 
         // Instantiate collision handlers
         CollisionHandler[] handlers = { new PowerUpCollisionHandler(), new CharacterContactHandler(),
