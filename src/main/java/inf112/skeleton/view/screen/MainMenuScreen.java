@@ -141,7 +141,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // buttonClick.play(buttonClickVolume);
-                game.setScreen(new GameScreen(game)); // Switch to GameScreen
+                game.setScreen(new GameScreen(game, "map_level1.tmx")); // Switch to GameScreen
                 dispose();
             }
         });
