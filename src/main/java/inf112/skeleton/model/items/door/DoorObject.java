@@ -14,7 +14,7 @@ public class DoorObject extends InteractiveTileObject {
 
     private final Player player;
     private final Rectangle bounds;
-    private boolean triggered = false;
+    private static boolean triggered = false;
 
     public DoorObject(GameScreen screen, MapObject object, Player player) {
         super(screen, object, StarJump.DOOR_BIT);
@@ -58,9 +58,12 @@ public class DoorObject extends InteractiveTileObject {
         if (inMiddle) {
             System.out.println("Player is detecting the door!");
             triggered = true;
+            System.out.println("Trigger is: " + triggered);
         }
     }
-    public boolean isTriggered() {
+    public static boolean isTriggered() {
         return triggered;
     }
+
+    public static void resetTrigger() { triggered = false; }
 }
