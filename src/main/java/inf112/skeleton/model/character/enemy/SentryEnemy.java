@@ -14,6 +14,8 @@ import com.badlogic.gdx.utils.Timer.Task;
 
 import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.controllable_characters.Player;
+import inf112.skeleton.model.character.enemy.projectile.Projectile;
+import inf112.skeleton.model.character.enemy.projectile.ProjectileAttributes;
 
 public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
     private Player player;
@@ -40,7 +42,6 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
     public void shoot(Vector2 target, float bulletSpeed) {
         System.out.println("shooting");
         shootingState = 0f;
-        this.laserTarget = target;
 
         Timer.schedule(new Task() {
             @Override
@@ -48,13 +49,8 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
                 System.out.println("Shooting at target: " + target);
                 // Implement shooting logic here
                 shootingState = -1f;
+                new Projectile(world, new ProjectileAttributes(target.nor(), 1f, 1f, false), new Vector2(0.5f, 0.5f));
 
-                if (seesTarget(target.nor(), RANGE)) {
-                    player.character.takeDamage(10);
-                    System.out.println("Hit player");
-                } else {
-                    System.out.println("Missed player");
-                }
                 shootTimeLeft = 0.5f;
             }
         }, SHOOTING_DELAY);
@@ -90,23 +86,15 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
         }
     }
 
-    private void createAimingLine(Batch batch, Vector2 from, Vector2 to) {
-        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(1, 1, 1, 1);
-        shapeRenderer.line(from, to);
-        shapeRenderer.end();
-    }
-
     @Override
-    public boolean seesTarget(Vector2 direction, float range) {
+    public boolean seesTarget(Vector2 playerPos) {
         Vector2 thisPos = enemyCharacter.getPosition();
         Vector2 rayStart = thisPos.cpy(); // start of the ray
-        Vector2 rayEnd = thisPos.cpy().add(direction.scl(range)); // end of the ray
+        Vector2 rayEnd = playerPos.cpy(); // end of the ray
 
         final Vector2[] hitPoint = new Vector2[1];
         final Boolean[] seesPlayer = new Boolean[1];
-        seesPlayer[0] = false;
+        seesPlayer[0] = true;
         RayCastCallback callback = new RayCastCallback() {
             @Override
             public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
@@ -115,14 +103,6 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
                     hitPoint[0] = point.cpy();
                     seesPlayer[0] = false;
                     return -1;
-                } else if (fixture.getBody().getUserData() instanceof Character) {
-                    Character character = (Character) fixture.getBody().getUserData();
-                    if (character.isPlayer()) {
-                        hitPoint[0] = point.cpy();
-                        seesPlayer[0] = true;
-                        return -1;
-                    }
-                    return 1;
                 }
                 return 1;
             };
@@ -145,8 +125,12 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
                 System.out.println("Player direction is null");
                 return;
             }
-            if (this.shootingState >= 0 && seesTarget(playerDirection, RANGE)) {
-                aiming(this.hitPoint);
+            if (this.shootingState >= 0 && seesTarget(player.character.getPosition())) {
+                if (this.hitPoint != null) {
+                    aiming(this.hitPoint);
+                } else {
+                    aiming(this.player.character.getPosition());
+                }
                 this.shootingState += dt;
             } else if (shootingState > 0) {
                 System.out.println("Resetting shooting timer");
@@ -200,13 +184,6 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
         if (rStart == null || rEnd == null) {
             return;
         }
-        if (this.shootingState > 0 && hitPoint != null) {
-            // createAimingLine(batch, rStart, hitPoint);
-        }
-        if (this.shootingState == -1f && hitPoint != null) {
-            createShootingLine(batch, hitPoint);
-        }
-
     }
 
 }
