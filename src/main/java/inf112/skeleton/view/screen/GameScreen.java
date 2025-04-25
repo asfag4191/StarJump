@@ -20,6 +20,7 @@ import inf112.skeleton.model.WorldModel;
 import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.model.character.enemy.EnemyManager;
 import inf112.skeleton.model.items.door.DoorManager;
+import inf112.skeleton.model.items.door.DoorObject;
 import inf112.skeleton.model.items.powerup.PowerUpManager;
 import inf112.skeleton.utility.ColliderToBox2D;
 import inf112.skeleton.utility.listeners.CharacterContactHandler;
@@ -166,6 +167,23 @@ public class GameScreen implements Screen {
         enemyManager.update(dt);
 
         adjustCamera(this.player, 3f);
+        doorManager.update(dt);
+
+        checkLevelCompletion();
+    }
+
+    private void checkLevelCompletion() {
+        if (DoorObject.isTriggered()) {
+            System.out.println("Level complete, transitioning to the next level");
+            transitionToNextLevel();
+        }
+    }
+
+    private void transitionToNextLevel() {
+        game.setScreen(new GameOverScreen(game));
+        DoorObject.resetTrigger();
+        dispose();
+
     }
 
     /**

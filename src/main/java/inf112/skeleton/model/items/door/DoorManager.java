@@ -37,4 +37,9 @@ public class DoorManager {
             door.checkPlayerAtMiddle();
         }
     }
+
+    public DoorObject getDoor() {
+        return doors.isEmpty() ? null : doors.get(0);
+    }
+
 }

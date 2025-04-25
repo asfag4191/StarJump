@@ -52,6 +52,7 @@ public class WorldModel implements Renderable {
         return plr;
     }
 
+
     public BoxCollider createTile(Vector2 position, Vector2 size, Texture texture) {
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.StaticBody;
