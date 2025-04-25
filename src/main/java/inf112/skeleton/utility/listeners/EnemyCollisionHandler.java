@@ -3,6 +3,7 @@ package inf112.skeleton.utility.listeners;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 
+import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.enemy.BlackHole;
 
@@ -11,11 +12,30 @@ public class EnemyCollisionHandler implements CollisionHandler {
     @Override
     public void onContactBegin(Contact contact, Fixture fixA, Fixture fixB) {
         targetCollision(fixA, fixB);
+        platformCollision(fixA, fixB);
     }
 
     @Override
     public void onContactEnded(Contact contact, Fixture fixA, Fixture fixB) {
         // Not needed for now
+    }
+
+    private void platformCollision(Fixture fixA, Fixture fixB) {
+        boolean isGroundA = fixA.getFilterData().categoryBits == StarJump.GROUND_BIT;
+        boolean isGroundB = fixB.getFilterData().categoryBits == StarJump.GROUND_BIT;
+
+        boolean isBlackHoleA = fixA.getUserData() instanceof BlackHole;
+        boolean isBlackHoleB = fixB.getUserData() instanceof BlackHole;
+
+        if (isGroundA && isBlackHoleB) {
+            BlackHole blackHole = (BlackHole) fixB.getUserData();
+            blackHole.changeDirection();
+        }
+
+        if (isGroundB && isBlackHoleA) {
+            BlackHole blackHole = (BlackHole) fixB.getUserData();
+            blackHole.changeDirection();
+        }
     }
 
     /**

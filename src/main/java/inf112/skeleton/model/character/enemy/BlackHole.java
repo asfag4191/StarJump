@@ -15,12 +15,14 @@ import inf112.skeleton.model.character.CharacterAttributes;
 public class BlackHole extends SimpleEnemy implements iMovingEnemy {
 
     private boolean isMoving;
+    private int direction;
     private boolean markedForRemoval = false;
 
 
     public BlackHole(Character blackHole, World world) {
         super(blackHole, world);
         this.isMoving = true;
+        this.direction = 1;
         enemyCharacter.getBody().setUserData(this); // sets userData to BlackHole instance
         //added a getbody in rigidbody, because did not now how to else. 
         createTopSensor();
@@ -48,6 +50,30 @@ public class BlackHole extends SimpleEnemy implements iMovingEnemy {
     @Override
     public boolean isMoving() {
         return isMoving;
+    }
+
+    @Override
+    public void move() {
+        CharacterAttributes attributes = enemyCharacter.getAttributes();
+        float xVelocity = attributes.getSpeed() * direction;
+        float yVelocity = enemyCharacter.getVelocity().y;
+
+        enemyCharacter.setVelocity(new Vector2(xVelocity, yVelocity));
+    }
+
+    @Override
+    public void update(float dt) {
+        // TODO
+        move();
+    }
+
+    public void changeDirection() {
+        if (direction == 1) {
+            direction = -1;
+        }
+        else if (direction == -1) {
+            direction = 1;
+        }
     }
 
     public void markForRemoval() {
