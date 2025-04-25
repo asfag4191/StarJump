@@ -45,7 +45,7 @@ public class EnemyFactory {
 
         Character character = new Character("enemy", attributes, new Vector2(1, 1), screen.getWorld());
         character.setPosition(position);
-        SimpleEnemy sentryEnemy = new SentryEnemy(character, screen.getPlayer(), screen.getWorld());
+        SimpleEnemy sentryEnemy = new SentryEnemy(character, screen.getPlayer(), screen.getWorldModel());
 
         return sentryEnemy;
     }

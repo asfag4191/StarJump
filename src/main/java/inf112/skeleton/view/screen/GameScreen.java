@@ -27,11 +27,12 @@ import inf112.skeleton.utility.listeners.CharacterContactHandler;
 import inf112.skeleton.utility.listeners.CollisionHandler;
 import inf112.skeleton.utility.listeners.EnemyCollisionHandler;
 import inf112.skeleton.utility.listeners.PowerUpCollisionHandler;
+import inf112.skeleton.utility.listeners.ProjectileCollisionHandler;
 import inf112.skeleton.utility.listeners.WorldContactListener;
 import inf112.skeleton.view.HUD;
 
 public class GameScreen implements Screen {
-    public final static boolean DEBUG_MODE = true;
+    public final static boolean DEBUG_MODE = false;
 
     private final StarJump game;
     private final TiledMap tmxmap;
@@ -89,13 +90,11 @@ public class GameScreen implements Screen {
         // Set up door
         doorManager = new DoorManager(this);
 
-        // TODO: Set up enemies
         enemyManager = new EnemyManager(this);
-        enemyManager.createTestSentries();
 
         // Instantiate collision handlers
         CollisionHandler[] handlers = { new PowerUpCollisionHandler(), new CharacterContactHandler(),
-                new EnemyCollisionHandler() };
+                new EnemyCollisionHandler(), new ProjectileCollisionHandler() };
         WorldContactListener contactListener = new WorldContactListener(List.of(handlers));
 
         world.setContactListener(contactListener);
@@ -165,6 +164,10 @@ public class GameScreen implements Screen {
 
         powerUpManager.update(dt);
         enemyManager.update(dt);
+        powerUpManager.update(dt);
+        doorManager.update(dt);
+        enemyManager.update(dt);
+        hud.update(dt); //
 
         adjustCamera(this.player, 3f);
         doorManager.update(dt);
@@ -226,18 +229,12 @@ public class GameScreen implements Screen {
         game.batch.setProjectionMatrix(gamecam.combined); // setting up the camera for batch.
         game.batch.begin(); // START the SpriteBatch.
         powerUpManager.render(game.batch); // draw power-ups
-        powerUpManager.update(dt);
-        doorManager.update(dt);
         worldModel.render(game.batch, dt);
-        enemyManager.update(dt);
         enemyManager.render(game.batch, dt);
 
-  
         game.batch.end(); // END the SpriteBatch
 
         // Draw HUD last
-        hud.update(); //
-        hud.hudStage.act(dt);
         hud.hudStage.draw();
 
     }
@@ -261,7 +258,7 @@ public class GameScreen implements Screen {
      * @param playerCamDelta The maximum distance the camera can be from the player
      */
     private void adjustCamera(Player player, float playerCamDelta) {
-        Vector2 playerPos = player.character.getTransform().getPosition();
+        Vector2 playerPos = player.character.getPosition();
         float playerPosX = playerPos.x;
         float playerPosY = playerPos.y;
 
@@ -295,6 +292,10 @@ public class GameScreen implements Screen {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public WorldModel getWorldModel() {
+        return worldModel;
     }
 
 }

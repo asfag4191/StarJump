@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import inf112.skeleton.controller.PlayerController;
@@ -14,10 +15,12 @@ import inf112.skeleton.model.colliders.BoxCollider;
 import inf112.skeleton.view.Renderable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class WorldModel implements Renderable {
     public final World world;
     private final ArrayList<Renderable> ViewableObjects = new ArrayList<>();
+    private List<Body> bodiesToRemove = new ArrayList<>();
 
     public WorldModel(Vector2 gravity, boolean doSleep) {
         this.world = new World(gravity, doSleep);
@@ -29,6 +32,7 @@ public class WorldModel implements Renderable {
 
     public void onStep(float dt) {
         world.step(dt, 3, 3);
+        removeBodies();
     }
 
     public Player createPlayer() {
@@ -66,6 +70,24 @@ public class WorldModel implements Renderable {
 
     public BoxCollider createTile(Vector2 size, Texture texture) {
         return createTile(new Vector2(0, 0), size, texture);
+    }
+
+    public void addViewableObject(Renderable obj) {
+        ViewableObjects.add(obj);
+    }
+
+    public void setBodyForRemove(Body body) {
+        this.bodiesToRemove.add(body);
+    }
+
+    private void removeBodies() {
+        if (bodiesToRemove.isEmpty()) {
+            return;
+        }
+        for (Body body : bodiesToRemove) {
+            world.destroyBody(body);
+        }
+        bodiesToRemove.clear();
     }
 
     @Override
