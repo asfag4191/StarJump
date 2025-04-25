@@ -19,7 +19,6 @@ import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.WorldModel;
 import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.model.character.enemy.EnemyManager;
-import inf112.skeleton.model.character.enemy.BlackHole;
 import inf112.skeleton.model.items.door.DoorManager;
 import inf112.skeleton.model.items.door.DoorObject;
 import inf112.skeleton.model.items.powerup.PowerUpManager;
@@ -49,7 +48,6 @@ public class GameScreen implements Screen {
     private DoorManager doorManager;
     private HUD hud;
     private EnemyManager enemyManager;
-    private DoorObject doorObject;
 
     public GameScreen(StarJump game, String map) {
         this.game = game;
@@ -104,7 +102,6 @@ public class GameScreen implements Screen {
 
         // Initialize HUD with the game's SpriteBatch
         hud = new HUD(game.batch, player.character);
-
     }
 
     public GameScreen(StarJump game) {
@@ -176,7 +173,7 @@ public class GameScreen implements Screen {
     }
 
     private void checkLevelCompletion() {
-        if (doorObject.isTriggered()) {
+        if (DoorObject.isTriggered()) {
             System.out.println("Level complete, transitioning to the next level");
             transitionToNextLevel();
         }
@@ -184,7 +181,7 @@ public class GameScreen implements Screen {
 
     private void transitionToNextLevel() {
         game.setScreen(new GameOverScreen(game));
-        doorObject.resetTriggered();
+        DoorObject.resetTrigger();
         dispose();
 
     }
@@ -235,7 +232,7 @@ public class GameScreen implements Screen {
         enemyManager.update(dt);
         enemyManager.render(game.batch, dt);
 
-
+  
         game.batch.end(); // END the SpriteBatch
 
         // Draw HUD last
