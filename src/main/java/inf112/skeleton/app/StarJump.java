@@ -10,7 +10,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import inf112.skeleton.model.GameState;
-import inf112.skeleton.model.Settings;
 import inf112.skeleton.view.screen.MainMenuScreen;
 
 public class StarJump extends Game {
@@ -35,7 +34,6 @@ public class StarJump extends Game {
     public static final short GROUND_SENSOR_BIT = 10;
     
     private GameState gameState;
-    public Settings settings;
 
     @Override
     public void create() {
@@ -47,12 +45,9 @@ public class StarJump extends Game {
         this.gameViewport = new FitViewport(GAME_WIDTH, GAME_HEIGHT);
 
         this.gameState = GameState.HOME_SCREEN;
-        this.settings = new Settings();
 
         font.setUseIntegerPositions(false);
         font.getData().setScale(uiViewport.getWorldHeight() / Gdx.graphics.getHeight());
-
-        this.updateSettings();
 
         this.setScreen(new MainMenuScreen(this));
     }
@@ -89,12 +84,5 @@ public class StarJump extends Game {
      */
     public GameState getGameState() {
         return this.gameState;
-    }
-
-     /**
-     * Applies the current user settings to the game.
-     */
-    public void updateSettings() {
-        this.settings.applySettings();
     }
 }

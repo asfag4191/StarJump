@@ -1,5 +1,7 @@
 package inf112.skeleton.view.screen;
 
+import java.util.concurrent.TimeUnit;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
@@ -12,9 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import inf112.skeleton.app.StarJump;
 
-import java.util.concurrent.TimeUnit;
+import inf112.skeleton.app.StarJump;
 
 public class MainMenuScreen implements Screen {
     final StarJump game;
@@ -131,7 +132,7 @@ public class MainMenuScreen implements Screen {
         // UI elements to add
         TextButton startButton = new TextButton("Start Game", skin);
         TextButton levelSelectButton = new TextButton("Select Level", skin);
-        TextButton optionsButton = new TextButton("Options", skin);
+        //TextButton optionsButton = new TextButton("Options", skin);
         TextButton howToPlayButton = new TextButton("How to play", skin);
         TextButton quitButton = new TextButton("Quit", skin);
 
@@ -166,13 +167,13 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        optionsButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                buttonClick.play(buttonClickVolume);
-                game.setScreen(new SettingsScreen(game));
-            }
-        });
+        //optionsButton.addListener(new ClickListener() {
+          //  @Override
+           // public void clicked(InputEvent event, float x, float y) {
+            //    buttonClick.play(buttonClickVolume);
+             //   game.setScreen(new SettingsScreen(game));
+            //}
+       // });
 
         howToPlayButton.addListener(new ClickListener() {
             @Override
@@ -187,7 +188,7 @@ public class MainMenuScreen implements Screen {
         table.row().pad(0, 0, 0, 0);
         table.add(levelSelectButton).fillX().uniformX();
         table.row().pad(0, 0, 0, 0);
-        table.add(optionsButton).fillX().uniformX();
+        //table.add(optionsButton).fillX().uniformX();
         table.row().pad(0, 0, 0, 0);
         table.add(howToPlayButton).fillX().uniformX(); 
         table.row().pad(0, 0, 0, 0);
