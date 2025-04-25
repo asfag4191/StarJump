@@ -3,15 +3,12 @@ package inf112.skeleton.model.character.enemy;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
-import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.Timer.Task;
 
+import inf112.skeleton.model.WorldModel;
 import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.model.character.enemy.projectile.Projectile;
@@ -20,7 +17,6 @@ import inf112.skeleton.model.character.enemy.projectile.ProjectileAttributes;
 public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
     private Player player;
     private float RANGE = 10f;
-    private ShapeRenderer shapeRenderer = new ShapeRenderer();
     final boolean hitPlayer = false;
     // FOR DEBUGGING
     public Vector2 rStart;
@@ -29,61 +25,33 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
     public Vector2 target;
     private static final float SHOOTING_DELAY = 5;
     private float shootingState = 0;
-    private float shootTimeLeft = 0;
-    private Vector2 laserTarget;
+    private float shootingDelay = 0;
+    private Texture bulletTex;
+    private WorldModel worldModel;
 
-    public SentryEnemy(Character character, Player player, World world) {
-        super(character, world);
+    public SentryEnemy(Character character, Player player, WorldModel worldModel) {
+        super(character, worldModel.world);
         this.player = player;
         setupAnimation();
+        this.bulletTex = new Texture(Gdx.files.internal("sprites/star.png"));
+        this.worldModel = worldModel;
     }
 
     @Override
     public void shoot(Vector2 target, float bulletSpeed) {
         System.out.println("shooting");
-        shootingState = 0f;
+        this.shootingState = -1f;
 
-        Timer.schedule(new Task() {
-            @Override
-            public void run() {
-                System.out.println("Shooting at target: " + target);
-                // Implement shooting logic here
-                shootingState = -1f;
-                new Projectile(world, new ProjectileAttributes(target.nor(), 1f, 1f, false), new Vector2(0.5f, 0.5f));
+        System.out.println("Shooting at target: " + target);
+        // Implement shooting logic here
+        this.shootingState = -1f;
+        Projectile proj = new Projectile(world, enemyCharacter.getPosition(),
+                new ProjectileAttributes(target.nor(), 1f, 1f, false),
+                new Vector2(0.5f, 0.5f));
+        proj.animator.addAnimation("projectile", bulletTex, 1, 1, 0);
+        this.worldModel.addViewableObject(proj);
 
-                shootTimeLeft = 0.5f;
-            }
-        }, SHOOTING_DELAY);
-    }
-
-    protected void fire(Vector2 target2, float dt) {
-        if (target2 == null) {
-            System.out.println("Target is null");
-            this.shootTimeLeft = 0;
-        }
-
-        this.shootTimeLeft -= dt;
-
-        if (this.shootTimeLeft <= 0) {
-            this.shootTimeLeft = 0;
-            this.shootingState = 0;
-        }
-    }
-
-    protected void createShootingLine(Batch batch, Vector2 hit) {
-        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(1, 0, 0, 1);
-        shapeRenderer.line(this.enemyCharacter.getPosition(), hit);
-        shapeRenderer.end();
-    }
-
-    private void aiming(Vector2 target) {
-        this.enemyCharacter.setTransform(this.enemyCharacter.getPosition(),
-                (float) (target.angleRad() - Math.PI / 2));
-        if (shootingState > 1) {
-            shoot(target, 0);
-        }
+        this.shootingDelay = 1f;
     }
 
     @Override
@@ -112,6 +80,10 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
         this.rStart = rayStart;
         this.rEnd = rayEnd;
         this.hitPoint = hitPoint[0];
+        System.out.println("Ray start: " + rayStart + " Ray end: " + rayEnd);
+        System.out
+                .println("Hit point: " + hitPoint[0] + " Sees player: " + seesPlayer[0] + " Player pos: " + playerPos);
+
         // System.out.println("Sees player: " + seesPlayer[0]);
         return seesPlayer[0];
     }
@@ -120,25 +92,22 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
         super.update(dt);
         if (getDistanceToPlayer() < RANGE) {
             Vector2 playerDirection = getPlayerDirection();
-            // System.out.println("Player out of range");
-            if (playerDirection == null) {
-                System.out.println("Player direction is null");
-                return;
-            }
-            if (this.shootingState >= 0 && seesTarget(player.character.getPosition())) {
-                if (this.hitPoint != null) {
-                    aiming(this.hitPoint);
-                } else {
-                    aiming(this.player.character.getPosition());
-                }
-                this.shootingState += dt;
-            } else if (shootingState > 0) {
-                System.out.println("Resetting shooting timer");
-                this.shootingState = 0;
-            }
-
-            if (this.shootingState == -1f) {
-                fire(laserTarget, dt);
+            this.enemyCharacter.setTransform(this.enemyCharacter.getPosition(),
+                    playerDirection.angleRad() - 3.14f / 2f);
+        }
+        if (this.shootingState >= SHOOTING_DELAY) {
+            this.shoot(getPlayerDirection(), 0);
+        }
+        if (this.shootingState >= 0 && seesTarget(player.character.getPosition())) {
+            this.shootingState += dt;
+        } else if (shootingState > 0) {
+            System.out.println("Resetting shooting timer");
+            this.shootingState = 0;
+        }
+        if (this.shootingState == -1f) {
+            shootingDelay -= dt;
+            if (shootingDelay <= 0) {
+                shootingState = 0;
             }
         }
     }
@@ -146,7 +115,7 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
     // Will be private when rest is implemented
     public Vector2 getPlayerDirection() {
         Vector2 playerPosition = this.player.character.getPosition();
-        Vector2 enemyPosition = enemyCharacter.getPosition();
+        Vector2 enemyPosition = this.enemyCharacter.getPosition();
 
         return playerPosition.sub(enemyPosition).nor();
     }

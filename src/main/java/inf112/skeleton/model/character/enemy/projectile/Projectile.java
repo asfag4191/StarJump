@@ -2,6 +2,8 @@ package inf112.skeleton.model.character.enemy.projectile;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -11,19 +13,22 @@ import com.badlogic.gdx.utils.Disposable;
 import inf112.skeleton.model.iUpdateable;
 import inf112.skeleton.model.colliders.RigidBody;
 import inf112.skeleton.view.Animator;
+import inf112.skeleton.view.Renderable;
 
-public class Projectile extends RigidBody implements Disposable, iUpdateable {
+public class Projectile extends RigidBody implements Disposable, iUpdateable, Renderable {
     private static final PolygonShape SHAPE = new PolygonShape();
 
     public final ProjectileAttributes attributes;
     public final Animator animator = new Animator();
 
-    public Projectile(World world, ProjectileAttributes attributes, Vector2 size) {
+    private Vector2 size;
+
+    public Projectile(World world, Vector2 startPos, ProjectileAttributes attributes, Vector2 size) {
         super(world, getBodyDef(attributes.gravity()), getFixtureDef(size), false);
         this.attributes = attributes;
         this.setVelocity(attributes.velocity());
-        Texture tex = new Texture(Gdx.files.internal("sprites/star.png"));
-        this.animator.addAnimation("projectile", tex, 1, 1, 0);
+        this.size = size;
+        this.setPosition(startPos);
     }
 
     private static BodyDef getBodyDef(boolean gravity) {
@@ -56,6 +61,7 @@ public class Projectile extends RigidBody implements Disposable, iUpdateable {
     @Override
     public void update(float dt) {
         // move
+
         move(dt);
         // detect if hit anything
         // self destruct
@@ -63,6 +69,23 @@ public class Projectile extends RigidBody implements Disposable, iUpdateable {
     }
 
     private void move(float dt) {
-        this.setPosition(this.getBody().getPosition().add(this.attributes.velocity().scl(dt * 10)));
+        this.setPosition(this.getBody().getPosition().add(this.attributes.velocity().scl(dt)));
+    }
+
+    @Override
+    public void render(Batch batch, float dt) {
+        Vector2 bodyPos = this.getTransform().getPosition();
+        float bodyRad = this.getTransform().getRotation();
+        TextureRegion nextFrame = animator.update(dt);
+
+        if (nextFrame != null) {
+            batch.draw(nextFrame,
+                    bodyPos.x - size.x / 2,
+                    bodyPos.y - size.y / 2,
+                    size.x / 2, size.y / 2, // Origin
+                    size.x, size.y, // Width and height
+                    1f, 1f, // Scale (no scaling)
+                    (float) Math.toDegrees(bodyRad));
+        }
     }
 }

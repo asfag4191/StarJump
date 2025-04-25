@@ -67,6 +67,10 @@ public class WorldModel implements Renderable {
         return createTile(new Vector2(0, 0), size, texture);
     }
 
+    public void addViewableObject(Renderable obj) {
+        ViewableObjects.add(obj);
+    }
+
     @Override
     public void render(Batch batch, float dt) {
         for (Renderable obj : ViewableObjects) {

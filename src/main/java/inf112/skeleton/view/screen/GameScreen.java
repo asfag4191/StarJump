@@ -26,11 +26,12 @@ import inf112.skeleton.utility.listeners.CharacterContactHandler;
 import inf112.skeleton.utility.listeners.CollisionHandler;
 import inf112.skeleton.utility.listeners.EnemyCollisionHandler;
 import inf112.skeleton.utility.listeners.PowerUpCollisionHandler;
+import inf112.skeleton.utility.listeners.ProjectileCollisionHandler;
 import inf112.skeleton.utility.listeners.WorldContactListener;
 import inf112.skeleton.view.HUD;
 
 public class GameScreen implements Screen {
-    public final static boolean DEBUG_MODE = false;
+    public final static boolean DEBUG_MODE = true;
 
     private final StarJump game;
     private final TiledMap tmxmap;
@@ -94,7 +95,7 @@ public class GameScreen implements Screen {
 
         // Instantiate collision handlers
         CollisionHandler[] handlers = { new PowerUpCollisionHandler(), new CharacterContactHandler(),
-                new EnemyCollisionHandler() };
+                new EnemyCollisionHandler(), new ProjectileCollisionHandler() };
         WorldContactListener contactListener = new WorldContactListener(List.of(handlers));
 
         world.setContactListener(contactListener);
@@ -275,6 +276,10 @@ public class GameScreen implements Screen {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public WorldModel getWorldModel() {
+        return worldModel;
     }
 
 }

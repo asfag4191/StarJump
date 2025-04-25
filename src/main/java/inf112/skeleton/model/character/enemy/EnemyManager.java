@@ -111,7 +111,6 @@ public class EnemyManager implements iUpdateable {
     private void debug(SpriteBatch batch, SimpleEnemy enemy) {
         if (enemy instanceof SentryEnemy) {
             SentryEnemy sentry = (SentryEnemy) enemy;
-            renderAim(batch, sentry);
         }
     }
 
