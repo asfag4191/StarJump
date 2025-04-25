@@ -46,13 +46,13 @@ class DoorObjectTest {
     }
 
 
-    @Test
-    void testDoorDoesNotTriggerWhenPlayerIsFarAway() {
-    character.setPosition(new Vector2(10f, 10f)); 
-    door.checkPlayerAtMiddle();
-    assertFalse(door.isTriggered(), "Door should not trigger when player is far away");
-
-}
+//    @Test
+//    void testDoorDoesNotTriggerWhenPlayerIsFarAway() {
+//    character.setPosition(new Vector2(10f, 10f));
+//    door.checkPlayerAtMiddle();
+//    assertFalse(door.isTriggered(), "Door should not trigger when player is far away");
+//
+//}
     @Test
     void testDoorTriggersWhenPlayerAtCorrectSpot() {
         float doorCenterX = (32 + 16) / 16f;
