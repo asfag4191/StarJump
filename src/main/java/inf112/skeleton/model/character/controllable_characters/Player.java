@@ -8,7 +8,7 @@ import inf112.skeleton.model.character.CharacterAttributes;
 
 public class Player {
     public final Character character;
-    public InputBinder controller = new InputBinder(); // final
+    public InputBinder controller = new InputBinder();
 
     public Player(Character character) {
         this.character = character;
