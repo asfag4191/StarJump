@@ -206,6 +206,13 @@
 						<goals>
 							<goal>report</goal>
 						</goals>
+						    <configuration>
+								<excludes>
+								<!-- Exclude all classes in any package named "view" including subpackages -->
+								<exclude>**/view/*</exclude>
+								<exclude>**/view/**</exclude>
+							</excludes>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
