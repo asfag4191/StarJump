@@ -10,6 +10,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
+
+import inf112.skeleton.model.WorldModel;
 import inf112.skeleton.model.iUpdateable;
 import inf112.skeleton.model.colliders.RigidBody;
 import inf112.skeleton.view.Animator;
@@ -23,12 +25,16 @@ public class Projectile extends RigidBody implements Disposable, iUpdateable, Re
 
     private Vector2 size;
 
-    public Projectile(World world, Vector2 startPos, ProjectileAttributes attributes, Vector2 size) {
-        super(world, getBodyDef(attributes.gravity()), getFixtureDef(size), false);
+    private WorldModel worldModel;
+
+    public Projectile(WorldModel worldModel, Vector2 startPos, ProjectileAttributes attributes, Vector2 size) {
+        super(worldModel.world, getBodyDef(attributes.gravity()), getFixtureDef(size), false);
         this.attributes = attributes;
         this.setVelocity(attributes.velocity());
         this.size = size;
         this.setPosition(startPos);
+        this.body.setUserData(this);
+        this.worldModel = worldModel;
     }
 
     private static BodyDef getBodyDef(boolean gravity) {
@@ -54,8 +60,11 @@ public class Projectile extends RigidBody implements Disposable, iUpdateable, Re
     @Override
     public void dispose() {
         if (this.body != null) {
-            this.body.getWorld().destroyBody(this.body);
+            // this.body.getWorld().destroyBody(this.body);
+            this.worldModel.setBodyForRemove(this.body);
         }
+
+        System.out.println("Projectile disposed");
     }
 
     @Override

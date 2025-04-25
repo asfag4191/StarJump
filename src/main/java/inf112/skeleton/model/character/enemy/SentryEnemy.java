@@ -24,6 +24,7 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
     public Vector2 hitPoint;
     public Vector2 target;
     private static final float SHOOTING_DELAY = 5;
+    private static final float BULLET_SPEED = 2f;
     private float shootingState = 0;
     private float shootingDelay = 0;
     private Texture bulletTex;
@@ -45,8 +46,8 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
         System.out.println("Shooting at target: " + target);
         // Implement shooting logic here
         this.shootingState = -1f;
-        Projectile proj = new Projectile(world, enemyCharacter.getPosition(),
-                new ProjectileAttributes(target.nor(), 1f, 1f, false),
+        Projectile proj = new Projectile(worldModel, enemyCharacter.getPosition(),
+                new ProjectileAttributes(target.nor().scl(bulletSpeed), 1f, 1f, false),
                 new Vector2(0.5f, 0.5f));
         proj.animator.addAnimation("projectile", bulletTex, 1, 1, 0);
         this.worldModel.addViewableObject(proj);
@@ -80,10 +81,6 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
         this.rStart = rayStart;
         this.rEnd = rayEnd;
         this.hitPoint = hitPoint[0];
-        System.out.println("Ray start: " + rayStart + " Ray end: " + rayEnd);
-        System.out
-                .println("Hit point: " + hitPoint[0] + " Sees player: " + seesPlayer[0] + " Player pos: " + playerPos);
-
         // System.out.println("Sees player: " + seesPlayer[0]);
         return seesPlayer[0];
     }
@@ -96,7 +93,7 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
                     playerDirection.angleRad() - 3.14f / 2f);
         }
         if (this.shootingState >= SHOOTING_DELAY) {
-            this.shoot(getPlayerDirection(), 0);
+            this.shoot(getPlayerDirection(), BULLET_SPEED);
         }
         if (this.shootingState >= 0 && seesTarget(player.character.getPosition())) {
             this.shootingState += dt;

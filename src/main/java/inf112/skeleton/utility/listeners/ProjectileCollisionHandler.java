@@ -39,13 +39,17 @@ public class ProjectileCollisionHandler implements CollisionHandler {
         if (userDataA instanceof Character && userDataB instanceof Projectile) {
             Character character = (Character) userDataA;
             Projectile projectile = (Projectile) userDataB;
-            character.takeDamage(projectile.attributes.damage());
-            projectile.dispose();
+            if (character.isPlayer()) {
+                character.takeDamage(projectile.attributes.damage());
+                projectile.dispose();
+            }
         } else if (userDataA instanceof Projectile && userDataB instanceof Character) {
             Character character = (Character) userDataB;
             Projectile projectile = (Projectile) userDataA;
-            character.takeDamage(projectile.attributes.damage());
-            projectile.dispose();
+            if (character.isPlayer()) {
+                character.takeDamage(projectile.attributes.damage());
+                projectile.dispose();
+            }
         }
 
     }
