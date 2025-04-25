@@ -49,7 +49,9 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
         Projectile proj = new Projectile(worldModel, enemyCharacter.getPosition(),
                 new ProjectileAttributes(target.nor().scl(bulletSpeed), 1f, 1f, false),
                 new Vector2(0.5f, 0.5f));
+
         proj.animator.addAnimation("projectile", bulletTex, 1, 1, 0);
+        proj.animator.play("projectile");
         this.worldModel.addViewableObject(proj);
 
         this.shootingDelay = 1f;

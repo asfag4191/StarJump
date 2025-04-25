@@ -31,7 +31,7 @@ import inf112.skeleton.utility.listeners.WorldContactListener;
 import inf112.skeleton.view.HUD;
 
 public class GameScreen implements Screen {
-    public final static boolean DEBUG_MODE = true;
+    public final static boolean DEBUG_MODE = false;
 
     private final StarJump game;
     private final TiledMap tmxmap;
