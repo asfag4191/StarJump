@@ -211,6 +211,9 @@
 								<!-- Exclude all classes in any package named "view" including subpackages -->
 								<exclude>**/view/*</exclude>
 								<exclude>**/view/**</exclude>
+								<!-- add this: exclude all classes in the app package -->
+								<exclude>**/app/*</exclude>
+								<exclude>**/app/**</exclude>
 							</excludes>
 						</configuration>
 					</execution>
