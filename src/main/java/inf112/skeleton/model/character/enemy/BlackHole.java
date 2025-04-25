@@ -15,15 +15,17 @@ import inf112.skeleton.model.character.CharacterAttributes;
 public class BlackHole extends SimpleEnemy implements iMovingEnemy {
 
     private boolean isMoving;
+    private int direction;
     private boolean markedForRemoval = false;
 
 
     public BlackHole(Character blackHole, World world) {
         super(blackHole, world);
         this.isMoving = true;
+        this.direction = 1;
         enemyCharacter.getBody().setUserData(this); // sets userData to BlackHole instance
-        //added a getbody in rigidbody, because did not now how to else. 
         createTopSensor();
+        createLeftAndRightSensors();
         setupAnimation();
     }
 
@@ -50,6 +52,24 @@ public class BlackHole extends SimpleEnemy implements iMovingEnemy {
         return isMoving;
     }
 
+    @Override
+    public void move() {
+        CharacterAttributes attributes = enemyCharacter.getAttributes();
+        float xVelocity = attributes.getSpeed() * direction;
+        float yVelocity = enemyCharacter.getVelocity().y;
+
+        enemyCharacter.setVelocity(new Vector2(xVelocity, yVelocity));
+    }
+
+    @Override
+    public void update(float dt) {
+        move();
+    }
+
+    public void changeDirection() {
+        direction *= -1;
+    }
+
     public void markForRemoval() {
         this.markedForRemoval = true;
     }
@@ -69,7 +89,44 @@ public class BlackHole extends SimpleEnemy implements iMovingEnemy {
         
     }
 
-    //added a sensor on top of the black hole, so when the player jumps on it, it will be removed
+    /**
+     * Sensors on the left and right side of the BlackHole,
+     * so that collisions with platform walls can be detected.
+     */
+    private void createLeftAndRightSensors() {
+        Body body = enemyCharacter.getBody();
+
+        // left sensor
+        PolygonShape leftShape = new PolygonShape();
+        leftShape.setAsBox(0.05f, 0.3f, new Vector2(-0.6f, 0), 0);
+
+        FixtureDef leftSensorDef = new FixtureDef();
+        leftSensorDef.isSensor = true;
+        leftSensorDef.shape = leftShape;
+
+        Fixture leftSensor = body.createFixture(leftSensorDef);
+        leftSensor.setUserData("leftSensor");
+
+        leftShape.dispose();
+
+        // right sensor
+        PolygonShape rightShape = new PolygonShape();
+        rightShape.setAsBox(0.05f, 0.3f, new Vector2(0.6f, 0), 0);
+     
+        FixtureDef rightSensorDef = new FixtureDef();
+        rightSensorDef.isSensor = true;
+        rightSensorDef.shape = leftShape;
+
+        Fixture rightSensor = body.createFixture(rightSensorDef);
+        rightSensor.setUserData("rightSensor");
+
+        rightShape.dispose();
+    }
+
+    /**
+     * A sensor on top of the BlackHole, 
+     * so that the Player can jump on the BlackHole to kill it
+     */
     private void createTopSensor() {
         Body body = enemyCharacter.getBody();
 

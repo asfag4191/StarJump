@@ -1,7 +1,5 @@
 package inf112.skeleton.model.character.enemy;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 import inf112.skeleton.model.character.Character;
@@ -11,8 +9,6 @@ import inf112.skeleton.view.screen.GameScreen;
 public class EnemyFactory {
 
     private GameScreen screen;
-    private static final Texture sentryEnemyTexture = new Texture(Gdx.files.internal("sprites/star.png"));
-    private static final Texture blackHoleTexture = new Texture(Gdx.files.internal("sprites/simple_blackhole.png"));
 
     public EnemyFactory(GameScreen screen) {
         this.screen = screen;
@@ -36,20 +32,14 @@ public class EnemyFactory {
         return sentryEnemy;
     }
 
-    // TODO: positions for BlackHole! DONE
-    // possible solution: have list of possible positions, choose one pos at random
-    // possible solution: have Queue of possible positions, take next pos from queue
     private SimpleEnemy createBlackHole(Vector2 position) {
         CharacterAttributes attributes = weakEnemyAttributes();
         Character character = new Character("black hole", attributes, new Vector2(1, 1), screen.getWorld());
         character.setPosition(position);
 
-        return new BlackHole(character, screen.getWorld()); // 👌 no more animation setup here
+        return new BlackHole(character, screen.getWorld());
     }
 
-    // TODO: positions for SentryEnemy!
-    // possible solution: have list of possible positions, choose one pos at random
-    // possible solution: have Queue of possible positions, take next pos from queue
     private SimpleEnemy createSentryEnemy(Vector2 position) {
         CharacterAttributes attributes = strongEnemyAttributes();
 

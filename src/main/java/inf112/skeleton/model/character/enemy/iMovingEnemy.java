@@ -22,4 +22,9 @@ interface iMovingEnemy {
      * @return A boolean indicating whether the enemy is moving.
      */
     boolean isMoving();
+
+    /**
+     * Moves the enemy in <code>this<\code> enemy's direction, if possible.
+     */
+    public void move();
 }

@@ -1,8 +1,10 @@
 package inf112.skeleton.utility.listeners;
 
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 
+import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.enemy.BlackHole;
 
@@ -11,11 +13,43 @@ public class EnemyCollisionHandler implements CollisionHandler {
     @Override
     public void onContactBegin(Contact contact, Fixture fixA, Fixture fixB) {
         targetCollision(fixA, fixB);
+        platformCollision(fixA, fixB);
     }
 
     @Override
     public void onContactEnded(Contact contact, Fixture fixA, Fixture fixB) {
         // Not needed for now
+    }
+
+    private void platformCollision(Fixture fixA, Fixture fixB) {
+        Fixture sensorFix = null;
+
+        // Checking left sensor
+        if (fixA.getUserData() != null && fixA.getUserData().equals("leftSensor") &&
+            fixB.getFilterData().categoryBits == StarJump.GROUND_BIT) {
+            sensorFix = fixA;
+        } else if (fixB.getUserData() != null && fixB.getUserData().equals("leftSensor") &&
+                fixA.getFilterData().categoryBits == StarJump.GROUND_BIT) {
+            sensorFix = fixB;
+        }
+
+        // Checking right sensor (only if left sensor hasn't been detected)
+        if (sensorFix == null) {
+            if (fixA.getUserData() != null && fixA.getUserData().equals("rightSensor") &&
+                fixB.getFilterData().categoryBits == StarJump.GROUND_BIT) {
+                sensorFix = fixA;
+            } else if (fixB.getUserData() != null && fixB.getUserData().equals("rightSensor") &&
+                    fixA.getFilterData().categoryBits == StarJump.GROUND_BIT) {
+                sensorFix = fixB;
+            }
+    }
+
+        // change direction if collision happened
+        if (sensorFix != null) {
+            Body blackHoleBody = sensorFix.getBody();
+            BlackHole blackHole = (BlackHole) blackHoleBody.getUserData();
+            blackHole.changeDirection();
+        }
     }
 
     /**
