@@ -60,4 +60,6 @@ public class DiamondPowerUp implements iPowerUp {
     public Sprite getSprite() {
         return sprite;
     }
+
+    public static void disposeScore() { score = 0; }
 }

@@ -26,7 +26,7 @@ public class HUD {
     private OrthographicCamera hudCamera;
 
     private Character character;
-    private Integer hp;
+    private static Integer hp;
     private Integer score;
 
     Label hpLabel;
@@ -91,4 +91,12 @@ public class HUD {
     public Viewport getHudViewport() {
         return hudViewport;
     }
+
+
+    /**
+     * Gets the current HP total
+     *
+     * @return the current HP total as shown in HUD
+     */
+    public static int getHp() {return hp;}
 }
