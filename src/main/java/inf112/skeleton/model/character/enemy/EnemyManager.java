@@ -3,6 +3,7 @@ package inf112.skeleton.model.character.enemy;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
@@ -10,13 +11,14 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 
 import inf112.skeleton.model.iUpdateable;
+import inf112.skeleton.view.Renderable;
 import inf112.skeleton.view.screen.GameScreen;
 
 /**
  * This class creates <code>SimpleEnemies</code> and manages
  * updating and rendering of them
  */
-public class EnemyManager implements iUpdateable {
+public class EnemyManager implements iUpdateable, Renderable {
     List<SimpleEnemy> enemies = new ArrayList<>();
     private GameScreen screen;
     ShapeRenderer shapeRenderer = new ShapeRenderer();
@@ -87,20 +89,10 @@ public class EnemyManager implements iUpdateable {
         }
     }
 
-    public void render(SpriteBatch batch, float dt) {
-        for (SimpleEnemy enemy : enemies) {
-            enemy.render(batch, dt);
-            if (GameScreen.DEBUG_MODE) {
-                debug(batch, enemy);
-            }
-
-        }
-    }
-
     /*
      * DEBUG FOR ENEMIES
      */
-    private void debug(SpriteBatch batch, SimpleEnemy enemy) {
+    private void debug(Batch batch, SimpleEnemy enemy) {
         if (enemy instanceof SentryEnemy) {
             SentryEnemy sentry = (SentryEnemy) enemy;
         }
@@ -126,4 +118,14 @@ public class EnemyManager implements iUpdateable {
         shapeRenderer.end();
     }
 
+    @Override
+    public void render(Batch batch, float dt) {
+        for (SimpleEnemy enemy : enemies) {
+            enemy.render(batch, dt);
+            if (GameScreen.DEBUG_MODE) {
+                debug(batch, enemy);
+            }
+
+        }
+    }
 }
