@@ -49,6 +49,7 @@ public class GameScreen implements Screen {
     private DoorManager doorManager;
     private HUD hud;
     private EnemyManager enemyManager;
+    private String currentGame;
 
     public GameScreen(StarJump game, String map) {
         this.game = game;
@@ -102,6 +103,7 @@ public class GameScreen implements Screen {
 
         // Initialize HUD with the game's SpriteBatch
         hud = new HUD(game.batch, player.character);
+        this.currentGame = map;
     }
 
     public GameScreen(StarJump game) {
@@ -166,7 +168,7 @@ public class GameScreen implements Screen {
         powerUpManager.update(dt);
         enemyManager.update(dt);
         powerUpManager.update(dt);
-        doorManager.update(dt);
+        //doorManager.update(dt);
         enemyManager.update(dt);
         hud.update(dt); //
 
@@ -178,16 +180,21 @@ public class GameScreen implements Screen {
 
     private void checkLevelCompletion() {
         if (DoorObject.isTriggered()) {
-            System.out.println("Level complete, transitioning to the next level");
-            transitionToNextLevel();
+            transitionScreen();
+        } else if (HUD.getHp() <= 0) {
+            game.setScreen(new GameOverScreen(game, false));
+            dispose();
         }
     }
 
-    private void transitionToNextLevel() {
-        game.setScreen(new GameOverScreen(game));
+    private void transitionScreen() {
+        if (currentGame.equals("map_level_1.tmx")) {
+            game.setScreen(new GameScreen(game, "map_level_2.tmx"));
+        } else {
+            game.setScreen(new GameOverScreen(game, true));
+        }
         DoorObject.resetTrigger();
         dispose();
-
     }
 
     /**
