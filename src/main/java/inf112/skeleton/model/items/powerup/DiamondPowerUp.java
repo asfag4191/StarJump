@@ -2,6 +2,7 @@ package inf112.skeleton.model.items.powerup;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+
 import inf112.skeleton.model.character.Character;
 
 /**
@@ -32,6 +33,7 @@ public class DiamondPowerUp implements iPowerUp {
         this.sprite.setPosition(position.x, position.y);
         this.score=score;
     }
+    
     /**
      * Increases the global score by the specified value.
      *

@@ -1,17 +1,21 @@
 package inf112.skeleton.utility;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.objects.PolygonMapObject;
-import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
-import inf112.skeleton.app.StarJump;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.physics.box2d.World;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import inf112.skeleton.app.StarJump;
 
 public final class ColliderToBox2D {
 
@@ -31,41 +35,36 @@ public final class ColliderToBox2D {
             Shape shape;
             BodyDef def = new BodyDef();
             def.type = BodyDef.BodyType.StaticBody;
-
-            // Checks object for type and gets corresponding shape
-            if (obj instanceof PolylineMapObject) {
+    
+            if (obj instanceof RectangleMapObject) {
+                shape = getRectangle((RectangleMapObject) obj, ppt);
+    
+            // Comment out the old types for now
+            /*
+            } else if (obj instanceof PolylineMapObject) {
                 shape = getPolyline((PolylineMapObject) obj, ppt);
-
+    
             } else if (obj instanceof PolygonMapObject) {
                 shape = getPolygon((PolygonMapObject) obj, ppt);
-
-            }  else if (obj instanceof RectangleMapObject) {
-                shape = getRectangle((RectangleMapObject) obj, ppt);
-
+            */
             } else {
                 String errorMessage = "Error: Unknown map object type: " + obj.getClass().getSimpleName();
                 logger.log(Level.WARNING, errorMessage);
                 continue;
             }
-
-            /*
-            Adds body with shape and position to world as static object
-            Then disposes the
-            */
-        // Create the body
-        Body body = world.createBody(def);
-
-        // ✅ Assign collision filtering
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = shape;
-        fixtureDef.isSensor = false;
-
-        fixtureDef.filter.categoryBits = StarJump.GROUND_BIT; // Ground objects
-        fixtureDef.filter.maskBits = StarJump.PLAYER_BIT | StarJump.GROUND_SENSOR_BIT; // Only players collide with it
-
-        body.createFixture(fixtureDef);
-        body.setUserData("ground");
-        shape.dispose();
+    
+            Body body = world.createBody(def);
+    
+            FixtureDef fixtureDef = new FixtureDef();
+            fixtureDef.shape = shape;
+            fixtureDef.isSensor = false;
+    
+            fixtureDef.filter.categoryBits = StarJump.GROUND_BIT; 
+            fixtureDef.filter.maskBits = StarJump.PLAYER_BIT | StarJump.GROUND_SENSOR_BIT; 
+    
+            body.createFixture(fixtureDef);
+            body.setUserData("ground");
+            shape.dispose();
         }
     }
 
@@ -81,32 +80,32 @@ public final class ColliderToBox2D {
         return polygon;
     }
 
-    private static PolygonShape getPolygon(PolygonMapObject polygonObject, int ppt) {
-        PolygonShape polygon = new PolygonShape();
-        float[] vertices = polygonObject.getPolygon().getTransformedVertices();
+    // private static PolygonShape getPolygon(PolygonMapObject polygonObject, int ppt) {
+    //     PolygonShape polygon = new PolygonShape();
+    //     float[] vertices = polygonObject.getPolygon().getTransformedVertices();
 
-        float[] worldVertices = new float[vertices.length];
+    //     float[] worldVertices = new float[vertices.length];
 
-        for (int i = 0; i < vertices.length; ++i) {
-            worldVertices[i] = vertices[i] / ppt;
-        }
+    //     for (int i = 0; i < vertices.length; ++i) {
+    //         worldVertices[i] = vertices[i] / ppt;
+    //     }
 
-        polygon.set(worldVertices);
-        return polygon;
-    }
+    //     polygon.set(worldVertices);
+    //     return polygon;
+    // }
 
-    private static ChainShape getPolyline(PolylineMapObject polylineObject, int ppt) {
-        float[] vertices = polylineObject.getPolyline().getTransformedVertices();
-        Vector2[] worldVertices = new Vector2[vertices.length / 2];
+    // private static ChainShape getPolyline(PolylineMapObject polylineObject, int ppt) {
+    //     float[] vertices = polylineObject.getPolyline().getTransformedVertices();
+    //     Vector2[] worldVertices = new Vector2[vertices.length / 2];
 
-        for (int i = 0; i < vertices.length / 2; ++i) {
-            worldVertices[i] = new Vector2();
-            worldVertices[i].x = vertices[i * 2] / ppt;
-            worldVertices[i].y = vertices[i * 2 + 1] / ppt;
-        }
+    //     for (int i = 0; i < vertices.length / 2; ++i) {
+    //         worldVertices[i] = new Vector2();
+    //         worldVertices[i].x = vertices[i * 2] / ppt;
+    //         worldVertices[i].y = vertices[i * 2 + 1] / ppt;
+    //     }
 
-        ChainShape chain = new ChainShape();
-        chain.createChain(worldVertices);
-        return chain;
-    }
+    //     ChainShape chain = new ChainShape();
+    //     chain.createChain(worldVertices);
+    //     return chain;
+    // }
 }

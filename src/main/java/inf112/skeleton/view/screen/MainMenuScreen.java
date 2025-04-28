@@ -102,12 +102,10 @@ public class MainMenuScreen implements Screen {
         float width = game.uiViewport.getWorldWidth();
         float height = game.uiViewport.getWorldHeight();
 
-        // draw background
         game.batch.begin();
         game.batch.draw(background, 0, 0, width, height);
         game.batch.end();
 
-        // Draw UI and title
         drawTitle(this.game.uiViewport);
     }
 
@@ -132,16 +130,13 @@ public class MainMenuScreen implements Screen {
         // UI elements to add
         TextButton startButton = new TextButton("Start Game", skin);
         TextButton levelSelectButton = new TextButton("Select Level", skin);
-        //TextButton optionsButton = new TextButton("Options", skin);
         TextButton howToPlayButton = new TextButton("How to play", skin);
         TextButton quitButton = new TextButton("Quit", skin);
 
-        // Add buttons click events
         startButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // buttonClick.play(buttonClickVolume);
-                game.setScreen(new GameScreen(game, "map_level1.tmx")); // Switch to GameScreen
+                game.setScreen(new GameScreen(game, "map_level_1.tmx")); 
                 dispose();
             }
         });
@@ -167,14 +162,6 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        //optionsButton.addListener(new ClickListener() {
-          //  @Override
-           // public void clicked(InputEvent event, float x, float y) {
-            //    buttonClick.play(buttonClickVolume);
-             //   game.setScreen(new SettingsScreen(game));
-            //}
-       // });
-
         howToPlayButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -188,7 +175,6 @@ public class MainMenuScreen implements Screen {
         table.row().pad(0, 0, 0, 0);
         table.add(levelSelectButton).fillX().uniformX();
         table.row().pad(0, 0, 0, 0);
-        //table.add(optionsButton).fillX().uniformX();
         table.row().pad(0, 0, 0, 0);
         table.add(howToPlayButton).fillX().uniformX(); 
         table.row().pad(0, 0, 0, 0);
