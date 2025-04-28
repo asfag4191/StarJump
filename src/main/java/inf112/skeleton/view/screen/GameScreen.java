@@ -109,7 +109,7 @@ public class GameScreen implements Screen {
     }
 
     public GameScreen(StarJump game) {
-        this(game, "map_level1.tmx");
+        this(game, "map_level_1.tmx");
     }
 
     @Override
@@ -170,7 +170,7 @@ public class GameScreen implements Screen {
         powerUpManager.update(dt);
         enemyManager.update(dt);
         powerUpManager.update(dt);
-        doorManager.update(dt);
+        //doorManager.update(dt);
         enemyManager.update(dt);
         hud.update(dt); //
 
@@ -181,20 +181,19 @@ public class GameScreen implements Screen {
     }
 
     private void checkLevelCompletion() {
-        if (DoorObject.isTriggered() || hp <= 0) {
-            System.out.println("Level complete, transitioning to the next level");
-            System.out.println("Current hp" + hp);
+        if (DoorObject.isTriggered()) {
             transitionScreen();
+        } else if (HUD.getHp() <= 0) {
+            game.setScreen(new GameOverScreen(game, false));
+            dispose();
         }
     }
 
     private void transitionScreen() {
         if (currentGame.equals("map_level1.tmx")) {
-            System.out.println("Level complete level 2 incoming");
             game.setScreen(new GameScreen(game, "map_level_2.tmx"));
         } else {
-            System.out.println("Game Over incoming");
-            game.setScreen(new GameOverScreen(game));
+            game.setScreen(new GameOverScreen(game, true));
         }
         DoorObject.resetTrigger();
         dispose();
