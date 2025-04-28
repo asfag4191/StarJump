@@ -10,8 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
 import inf112.skeleton.app.StarJump;
+import inf112.skeleton.model.items.powerup.DiamondPowerUp;
+import inf112.skeleton.view.HUD;
 
 public class GameOverScreen implements Screen {
 
@@ -33,26 +34,21 @@ public class GameOverScreen implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
 
-        Label gameOverLabel = new Label("Game Over", skin, "title");
-        gameOverLabel.setFontScale(2f);
+        Label gameOverLabel = new Label(text(), skin, "title");
+        Label scoreLabel = new Label("Score: " + DiamondPowerUp.getScore(), skin, "title");
 
-        TextButton retryButton = new TextButton("Retry", skin);
+        gameOverLabel.setFontScale(2f);
+        scoreLabel.setFontScale(0.7f);
+
         TextButton menuButton = new TextButton("Main Menu", skin);
         TextButton quitButton = new TextButton("Quit", skin);
-
-        retryButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-                game.setScreen(new GameScreen(game, "map_level_1.tmx"));
-                dispose();
-            }
-        });
 
 
         menuButton.addListener(new ClickListener() {
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
                 game.setScreen(new MainMenuScreen(game));
+                DiamondPowerUp.disposeScore();
                 dispose();
             }
         });
@@ -65,10 +61,18 @@ public class GameOverScreen implements Screen {
         });
 
         table.add(gameOverLabel).padBottom(40).row();
-        table.add(retryButton).width(200).pad(10).row();
+        table.add(scoreLabel).padBottom(35).row();
         table.add(menuButton).width(200).pad(10).row();
         table.add(quitButton).width(200).pad(10);
     }
+
+    private String text(){
+        int hp = HUD.getHp();
+        if (hp >= 0){
+            return "You won!";
+        } else return "You lost :(";
+    }
+
 
     @Override
     public void show() {

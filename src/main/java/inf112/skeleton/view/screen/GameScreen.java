@@ -50,7 +50,6 @@ public class GameScreen implements Screen {
     private HUD hud;
     private EnemyManager enemyManager;
     private String currentGame;
-    private static Integer hp;
 
     public GameScreen(StarJump game, String map) {
         this.game = game;
@@ -105,7 +104,6 @@ public class GameScreen implements Screen {
         // Initialize HUD with the game's SpriteBatch
         hud = new HUD(game.batch, player.character);
         this.currentGame = map;
-        hp = HUD.getHp();
     }
 
     public GameScreen(StarJump game) {
@@ -170,7 +168,6 @@ public class GameScreen implements Screen {
         powerUpManager.update(dt);
         enemyManager.update(dt);
         powerUpManager.update(dt);
-        //doorManager.update(dt);
         enemyManager.update(dt);
         hud.update(dt); //
 
@@ -197,6 +194,7 @@ public class GameScreen implements Screen {
         }
         DoorObject.resetTrigger();
         dispose();
+
     }
 
     /**
