@@ -50,7 +50,5 @@ public abstract class PowerUpFactory {
      * @param position  The position in the game world to spawn the power-up.
      * @return A concrete implementation of {@link iPowerUp}.
      */
-    public abstract iPowerUp create(Character character, Vector2 position);
-
-    
+    public abstract iPowerUp create(Character character, Vector2 position);  
 }

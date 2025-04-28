@@ -30,9 +30,8 @@ public final class PowerUpFactoryProvider {
         }
     }
     
-    // Keep default constructor calling the real one
     public PowerUpFactoryProvider() {
-        this(true); // enable default registrations
+        this(true); 
     }
 
     /**

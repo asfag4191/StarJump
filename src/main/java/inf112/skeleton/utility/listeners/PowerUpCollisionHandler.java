@@ -2,9 +2,16 @@ package inf112.skeleton.utility.listeners;
 
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
+
 import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.items.powerup.PowerUpObject;
 
+/**
+ * Handles collisions between the player character and power-up objects.
+ * 
+ * When a player collides with a power-up, the power-up effect is activated.
+ * 
+ */
 public class PowerUpCollisionHandler implements CollisionHandler {
 
     @Override

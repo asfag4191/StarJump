@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
+
 import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.items.InteractiveTileObject;
@@ -35,10 +36,7 @@ public class PowerUpObject extends InteractiveTileObject {
         setCollisionFilter();
     }
 
-    /**
-     * Sets the collision filter for the power-up.
-     * Only allows collision with the player.
-     */
+
     private void setCollisionFilter() {
         var filter = fixture.getFilterData();
         filter.categoryBits = StarJump.POWERUP;
@@ -47,9 +45,7 @@ public class PowerUpObject extends InteractiveTileObject {
         getBody().setUserData(this);
     }
 
-    /**
-     * Handles collision with the player, applying the power-up effect and marking it for removal.
-     */
+
     @Override
     public void onPlayerCollide() {
         if (!isCollected) {
