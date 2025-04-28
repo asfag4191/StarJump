@@ -26,20 +26,24 @@ public class EnemyCollisionHandler implements CollisionHandler {
 
         // Checking left sensor
         if (fixA.getUserData() != null && fixA.getUserData().equals("leftSensor") &&
-            fixB.getFilterData().categoryBits == StarJump.GROUND_BIT) {
+            (fixB.getFilterData().categoryBits == StarJump.GROUND_BIT ||
+             fixB.getBody().getUserData() instanceof Character)) {
             sensorFix = fixA;
         } else if (fixB.getUserData() != null && fixB.getUserData().equals("leftSensor") &&
-                fixA.getFilterData().categoryBits == StarJump.GROUND_BIT) {
+                    (fixA.getFilterData().categoryBits == StarJump.GROUND_BIT ||
+                     fixA.getBody().getUserData() instanceof Character)) {
             sensorFix = fixB;
         }
 
         // Checking right sensor (only if left sensor hasn't been detected)
         if (sensorFix == null) {
             if (fixA.getUserData() != null && fixA.getUserData().equals("rightSensor") &&
-                fixB.getFilterData().categoryBits == StarJump.GROUND_BIT) {
+                (fixB.getFilterData().categoryBits == StarJump.GROUND_BIT ||
+                 fixB.getBody().getUserData() instanceof Character)) {
                 sensorFix = fixA;
             } else if (fixB.getUserData() != null && fixB.getUserData().equals("rightSensor") &&
-                    fixA.getFilterData().categoryBits == StarJump.GROUND_BIT) {
+                        (fixA.getFilterData().categoryBits == StarJump.GROUND_BIT ||
+                         fixA.getBody().getUserData() instanceof Character)) {
                 sensorFix = fixB;
             }
     }
