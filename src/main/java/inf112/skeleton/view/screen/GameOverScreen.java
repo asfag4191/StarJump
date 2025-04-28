@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+
 import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.items.powerup.DiamondPowerUp;
 import inf112.skeleton.view.HUD;
