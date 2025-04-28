@@ -37,7 +37,7 @@ public class HelpScreen implements Screen {
 
         this.diamondTexture = new Texture(Gdx.files.internal("src/main/assets/map/tilemaps/tilesets/Diamond.png"));
         this.rainbowTexture = new Texture(Gdx.files.internal("src/main/assets/map/tilemaps/tilesets/rainbow16.png"));
-        this.playerTexture = new Texture(Gdx.files.internal("src/main/assets/sprites/star.png")); 
+        this.playerTexture = new Texture(Gdx.files.internal("src/main/assets/sprites/CoolStar.png")); 
         Table mainTable = new Table();
         mainTable.setFillParent(true);
         mainTable.center();

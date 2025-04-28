@@ -12,7 +12,7 @@ public class Main {
 			Configuration.GLFW_LIBRARY_NAME.set("glfw_async");
 		}
 		Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();
-		cfg.setTitle("hello-world");
+		cfg.setTitle("StarJump");
 		cfg.setWindowedMode(1280, 720); // Standard resolution
 
 		new Lwjgl3Application(new StarJump(), cfg);

@@ -37,7 +37,7 @@ public class WorldModel implements Renderable {
 
     public Player createPlayer() {
         CharacterAttributes attributes = new CharacterAttributes(
-                100,
+                5,
                 14,
                 2,
                 3.5f,
@@ -47,7 +47,7 @@ public class WorldModel implements Renderable {
         charac.setPosition(new Vector2(10, 3));
         Player plr = new Player(charac);
 
-        Texture texture1 = new Texture(Gdx.files.internal("sprites/star.png"));
+        Texture texture1 = new Texture(Gdx.files.internal("sprites/CoolStar.png"));
         charac.getAnimator().addAnimation("idle", texture1, 1, 1, 0);
         charac.getAnimator().play("idle");
         ViewableObjects.add(charac);

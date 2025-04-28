@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
 
@@ -37,7 +36,7 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
         super(character, worldModel.world);
         this.player = player;
         setupAnimation();
-        this.bulletTex = new Texture(Gdx.files.internal("sprites/star.png"));
+        this.bulletTex = new Texture(Gdx.files.internal("sprites/simple_blackhole.png"));
         this.worldModel = worldModel;
         this.cannonStandTex = new Texture(Gdx.files.internal("sprites/cannon/cannon_stand.png"));
         this.bulletAnim = new Animator();
