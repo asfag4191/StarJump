@@ -13,22 +13,24 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.EllipseMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
 import inf112.skeleton.model.WorldModel;
 import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.view.screen.GameScreen;
-import inf112.skeleton.model.character.enemy.EnemyManager;
 
 import static org.mockito.Mockito.*;
 
 public class EnemyManagerTest {
     private GameScreen screen;
     private World world;
-    private Character character;
     private WorldModel worldModel;
-    private Player player;
     private EnemyManager enemyManager;
 
     @BeforeAll
@@ -68,7 +70,7 @@ public class EnemyManagerTest {
         worldModel = new WorldModel(world);
         when(screen.getWorldModel()).thenReturn(worldModel);
 
-        player = worldModel.createPlayer();
+        worldModel.createPlayer();
 
         enemyManager = new EnemyManager(screen);
     }
@@ -94,6 +96,51 @@ public class EnemyManagerTest {
 
         assertFalse(enemyManager.getEnemies().isEmpty());
         assertEquals(enemyManager.getEnemies().size(), 1);
+    }
+
+    @Test
+    void testAddUnknownEnemy() {
+        enemyManager.addEnemy("unknown", new Vector2(0, 0));
+
+        assertTrue(enemyManager.getEnemies().isEmpty());
+    }
+
+    @Test
+    void testLoadEnemiesFromMap() {
+        TiledMap map = setUpEnemyMap();
+        MapLayer enemyLayer = map.getLayers().get("Enemy");
+        for (MapObject obj : enemyLayer.getObjects()) {
+            System.out.println(obj.getProperties().get("x") + " " + obj.getProperties().get("y"));
+        }
+        enemyManager.loadEnemiesFromMap(map);
+
+        assertFalse(enemyManager.getEnemies().isEmpty());
+        assertEquals(enemyManager.getEnemies().size(), 3);
+    }
+
+    private TiledMap setUpEnemyMap() {
+        TiledMap map = new TiledMap();
+        TiledMapTileLayer layer = new TiledMapTileLayer(10, 10, 16, 16);
+        layer.setName("Enemy");
+
+        // Add a black hole enemy to the map
+        EllipseMapObject enemy1 = new EllipseMapObject(1, 1, 1, 1);
+        enemy1.getProperties().put("x", 1f);
+        enemy1.getProperties().put("y", 1f);
+        EllipseMapObject enemy2 = new EllipseMapObject(2, 2, 1, 1);
+        enemy2.getProperties().put("x", 2f);
+        enemy2.getProperties().put("y", 2f);
+        EllipseMapObject enemy3 = new EllipseMapObject(3, 3, 1, 1);
+        enemy3.getProperties().put("x", 3f);
+        enemy3.getProperties().put("y", 3f);
+
+        layer.getObjects().add(enemy1);
+        layer.getObjects().add(enemy2);
+        layer.getObjects().add(enemy3);
+
+        map.getLayers().add(layer);
+
+        return map;
     }
 
 }

@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Test;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -43,7 +41,6 @@ public class parserTest {
         }
         for (MapObject object : mapObjects) {
             RectangleMapObject rectangleObject = (RectangleMapObject) object;
-            // System.out.println("Object is in pos: " + rectangleObject.getRectangle());
         }
         return mapObjects;
     }
