@@ -105,7 +105,7 @@ public class GameScreen implements Screen {
     }
 
     public GameScreen(StarJump game) {
-        this(game, "map_level1.tmx");
+        this(game, "map_level_1.tmx");
     }
 
     @Override
@@ -227,17 +227,15 @@ public class GameScreen implements Screen {
         renderer.setView(gamecam);
         renderer.render();
 
-        game.batch.setProjectionMatrix(gamecam.combined); // setting up the camera for batch.
-        game.batch.begin(); // START the SpriteBatch.
-        powerUpManager.render(game.batch); // draw power-ups
+        game.batch.setProjectionMatrix(gamecam.combined); 
+        game.batch.begin(); 
+        powerUpManager.render(game.batch);
         worldModel.render(game.batch, dt);
         enemyManager.render(game.batch, dt);
 
-        game.batch.end(); // END the SpriteBatch
+        game.batch.end(); 
 
-        // Draw HUD last
         hud.hudStage.draw();
-
     }
 
     public TiledMap getMap() {
@@ -291,10 +289,20 @@ public class GameScreen implements Screen {
         gamecam.update();
     }
 
+    /**
+     * Returns the player instance controlled in the game.
+     *
+     * @return the {@link Player} object currently used in the game
+     */
     public Player getPlayer() {
         return player;
     }
 
+     /**
+     * Returns the world model containing the game world state.
+     *
+     * @return the {@link WorldModel} representing the current game world
+     */
     public WorldModel getWorldModel() {
         return worldModel;
     }

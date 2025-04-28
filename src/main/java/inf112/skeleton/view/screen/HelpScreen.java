@@ -6,9 +6,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+
 import inf112.skeleton.app.StarJump;
 
 /**
@@ -25,6 +30,7 @@ public class HelpScreen implements Screen {
     private final Texture diamondTexture;
     private final Texture rainbowTexture;
     private final Texture playerTexture;
+    private final Texture enemyTexture;
 
     public HelpScreen(StarJump game) {
         this.game = game;
@@ -38,6 +44,7 @@ public class HelpScreen implements Screen {
         this.diamondTexture = new Texture(Gdx.files.internal("src/main/assets/map/tilemaps/tilesets/Diamond.png"));
         this.rainbowTexture = new Texture(Gdx.files.internal("src/main/assets/map/tilemaps/tilesets/rainbow16.png"));
         this.playerTexture = new Texture(Gdx.files.internal("src/main/assets/sprites/CoolStar.png")); 
+        this.enemyTexture = new Texture(Gdx.files.internal("src/main/assets/sprites/simple_blackhole.png"));
         Table mainTable = new Table();
         mainTable.setFillParent(true);
         mainTable.center();
@@ -84,9 +91,15 @@ public class HelpScreen implements Screen {
         powerupRow.add(powerupLabel);
         box.add(powerupRow).row();
 
-        Label avoid = new Label("Avoid arrows and enemies!", skin);
-        avoid.setFontScale(1.2f);
-        box.add(avoid).center().padTop(10).row();
+        Image enemyImage = new Image(enemyTexture); 
+        Label avoidLabel = new Label("Avoid floating enemies and walking ones!", skin);
+        avoidLabel.setFontScale(1.2f);
+        
+        Table avoidRow = new Table();
+        avoidRow.add(enemyImage).size(32).padRight(10); 
+        avoidRow.add(avoidLabel);
+        
+        box.add(avoidRow).center().padTop(10).row();
 
         TextButton backButton = new TextButton("Back to Menu", skin);
         backButton.addListener(new ClickListener() {

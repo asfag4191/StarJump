@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+
 import inf112.skeleton.app.StarJump;
 
 public class GameOverScreen implements Screen {
@@ -42,7 +43,7 @@ public class GameOverScreen implements Screen {
         retryButton.addListener(new ClickListener() {
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-                game.setScreen(new GameScreen(game, "map_level1.tmx"));
+                game.setScreen(new GameScreen(game, "map_level_1.tmx"));
                 dispose();
             }
         });

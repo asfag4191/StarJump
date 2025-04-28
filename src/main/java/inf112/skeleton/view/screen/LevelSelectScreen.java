@@ -1,5 +1,8 @@
 package inf112.skeleton.view.screen;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
@@ -11,11 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
 import inf112.skeleton.app.StarJump;
 import inf112.skeleton.utility.FolderParser;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class LevelSelectScreen implements Screen {
     final StarJump game;
@@ -156,5 +157,4 @@ public class LevelSelectScreen implements Screen {
                 viewport.getWorldHeight() - (viewport.getWorldHeight() / 3.3f));
         stage.addActor(titleLabel);
     }
-
 }

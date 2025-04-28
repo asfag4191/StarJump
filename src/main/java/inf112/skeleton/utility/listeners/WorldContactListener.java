@@ -43,12 +43,12 @@ public class WorldContactListener implements ContactListener {
 
     /**
      * Handles the contact events based on the contact type.
-     * <p>
+     * 
      * If the contact has just begun, it calls {@link CollisionHandler#onContactBegin(Contact, Fixture, Fixture)}
      * on all the handlers.
      * If the contact has ended, it calls {@link CollisionHandler#onContactEnded(Contact, Fixture, Fixture)}
      * on all the handlers.
-     * </p>
+     * 
      *
      * @param contact The contact information for the collision.
      * @param hasBegun {@code true} if the contact has begun, {@code false} if the contact has ended.
@@ -57,9 +57,6 @@ public class WorldContactListener implements ContactListener {
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
 
-        // Safety check: No need to check if the fixture has a body,
-        // as Box2D ensures fixtures can't trigger contact without an associated body.
-        // We only need to ensure the body's user data is not null.
         if (fixA.getBody().getUserData() == null || fixB.getBody().getUserData() == null) return;
 
         for (CollisionHandler handler : collisionHandlers) {
