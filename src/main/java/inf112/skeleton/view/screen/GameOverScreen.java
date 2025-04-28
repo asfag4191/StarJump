@@ -20,9 +20,11 @@ public class GameOverScreen implements Screen {
     private final Stage stage;
     private final Skin skin;
     private final Texture background;
+    private final boolean win;
 
-    public GameOverScreen(StarJump game) {
+    public GameOverScreen(StarJump game, Boolean win) {
         this.game = game;
+        this.win = win;
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
@@ -66,11 +68,12 @@ public class GameOverScreen implements Screen {
         table.add(quitButton).width(200).pad(10);
     }
 
-    private String text(){
-        int hp = HUD.getHp();
-        if (hp >= 0){
+    private String text() {
+        if (win) {
             return "You won!";
-        } else return "You lost :(";
+        } else {
+            return "You lost :(";
+        }
     }
 
 
