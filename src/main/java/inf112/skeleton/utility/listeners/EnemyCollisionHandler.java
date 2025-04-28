@@ -25,20 +25,24 @@ public class EnemyCollisionHandler implements CollisionHandler {
         Fixture sensorFix = null;
 
         // Checking left sensor
-        if (fixA.getUserData() != null && fixA.getUserData().equals("leftSensor")) {
+        if (fixA.getUserData() != null && fixA.getUserData().equals("leftSensor") &&
+            fixB.getFilterData().categoryBits == StarJump.GROUND_BIT) {
             sensorFix = fixA;
-        } else if (fixB.getUserData() != null && fixB.getUserData().equals("leftSensor")){
+        } else if (fixB.getUserData() != null && fixB.getUserData().equals("leftSensor") &&
+                fixA.getFilterData().categoryBits == StarJump.GROUND_BIT) {
             sensorFix = fixB;
         }
 
         // Checking right sensor (only if left sensor hasn't been detected)
         if (sensorFix == null) {
-            if (fixA.getUserData() != null && fixA.getUserData().equals("rightSensor")){
+            if (fixA.getUserData() != null && fixA.getUserData().equals("rightSensor") &&
+                fixB.getFilterData().categoryBits == StarJump.GROUND_BIT) {
                 sensorFix = fixA;
-            } else if (fixB.getUserData() != null && fixB.getUserData().equals("rightSensor")){
+            } else if (fixB.getUserData() != null && fixB.getUserData().equals("rightSensor") &&
+                    fixA.getFilterData().categoryBits == StarJump.GROUND_BIT) {
                 sensorFix = fixB;
             }
-        }
+    }
 
         // change direction if collision happened
         if (sensorFix != null) {
