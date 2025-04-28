@@ -91,6 +91,7 @@ public class GameScreen implements Screen {
         doorManager = new DoorManager(this);
 
         enemyManager = new EnemyManager(this);
+        enemyManager.loadEnemiesFromMap(getMap());
 
         // Instantiate collision handlers
         CollisionHandler[] handlers = { new PowerUpCollisionHandler(), new CharacterContactHandler(),

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
@@ -19,21 +18,42 @@ import inf112.skeleton.view.screen.GameScreen;
 public class EnemyManager implements iUpdateable {
     List<SimpleEnemy> enemies = new ArrayList<>();
     private GameScreen screen;
-    ShapeRenderer shapeRenderer = new ShapeRenderer();
     private EnemyFactory enemyFactory;
 
     public EnemyManager(GameScreen screen) {
         this.screen = screen;
         this.enemyFactory = new EnemyFactory(screen);
-        loadEnemiesFromMap();
     }
 
     private void addEnemy(SimpleEnemy enemy) {
         enemies.add(enemy);
     }
 
-    public void loadEnemiesFromMap() {
-        TiledMap map = screen.getMap();
+    /**
+     * Generate enemy of type <code>enemyType</code> at <code>position</code>
+     *
+     * @param enemyType type of enemy to generate
+     *                  possible types: "black hole", "sentry"
+     * @param position  position of enemy
+     */
+    public void addEnemy(String enemyType, Vector2 position) {
+        SimpleEnemy enemy = null;
+
+        switch (enemyType) {
+            case "black hole":
+                enemy = enemyFactory.getNextBlackHole(position);
+                break;
+            case "sentry":
+                enemy = enemyFactory.getNextSentryEnemy(position);
+                break;
+            default:
+                System.err.println("Unknown enemy type: " + enemyType);
+                return;
+        }
+        addEnemy(enemy);
+    }
+
+    public void loadEnemiesFromMap(TiledMap map) {
 
         var enemyLayer = map.getLayers().get("Enemy");
         if (enemyLayer == null) {
@@ -90,40 +110,14 @@ public class EnemyManager implements iUpdateable {
     public void render(SpriteBatch batch, float dt) {
         for (SimpleEnemy enemy : enemies) {
             enemy.render(batch, dt);
-            if (GameScreen.DEBUG_MODE) {
-                debug(batch, enemy);
-            }
-
         }
     }
 
-    /*
-     * DEBUG FOR ENEMIES
+    /**
+     * @return the list of enemies
      */
-    private void debug(SpriteBatch batch, SimpleEnemy enemy) {
-        if (enemy instanceof SentryEnemy) {
-            SentryEnemy sentry = (SentryEnemy) enemy;
-        }
-    }
-
-    private void renderAim(SpriteBatch batch, SentryEnemy sentry) {
-
-        // Render the player direction
-        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(1, 0, 0, 1); // Red color
-
-        // Create a line showing enemy target direction
-        if (sentry.rStart != null && sentry.rEnd != null) {
-            shapeRenderer.line(sentry.rStart, sentry.rEnd);
-        }
-        // Draw a circle at the hit point
-        if (sentry.hitPoint != null) {
-            shapeRenderer.setColor(0, 1, 0, 1); // Green color
-            shapeRenderer.circle(sentry.hitPoint.x, sentry.hitPoint.y, 0.2f);
-        }
-
-        shapeRenderer.end();
+    public List<SimpleEnemy> getEnemies() {
+        return enemies;
     }
 
 }

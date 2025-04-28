@@ -6,7 +6,7 @@ import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.CharacterAttributes;
 import inf112.skeleton.view.screen.GameScreen;
 
-public class EnemyFactory {
+class EnemyFactory {
 
     private GameScreen screen;
 
