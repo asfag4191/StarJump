@@ -188,7 +188,7 @@ public class GameScreen implements Screen {
     }
 
     private void transitionScreen() {
-        if (currentGame.equals("map_level1.tmx")) {
+        if (currentGame.equals("map_level_1.tmx")) {
             game.setScreen(new GameScreen(game, "map_level_2.tmx"));
         } else {
             game.setScreen(new GameOverScreen(game, true));
