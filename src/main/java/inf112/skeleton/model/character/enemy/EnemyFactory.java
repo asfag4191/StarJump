@@ -37,7 +37,7 @@ class EnemyFactory {
         Character character = new Character("black hole", attributes, new Vector2(1, 1), screen.getWorld());
         character.setPosition(position);
 
-        return new BlackHole(character, screen.getWorld());
+        return new BlackHole(character);
     }
 
     private SimpleEnemy createSentryEnemy(Vector2 position) {

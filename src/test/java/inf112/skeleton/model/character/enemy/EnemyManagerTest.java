@@ -159,7 +159,7 @@ public class EnemyManagerTest {
         if (enemy2 instanceof SentryEnemy) {
         }
 
-        Vector2 blackHolePosBefore = enemy1.enemyCharacter.getPosition().cpy();
+        Vector2 blackHolePosBefore = enemy1.getCharacter().getPosition().cpy();
         float sentryShootingStateBefore = ((SentryEnemy) enemy2).getShootingState();
 
         // Update the enemy manager
@@ -167,7 +167,7 @@ public class EnemyManagerTest {
         worldModel.onStep(0.1f);
 
         // Check if black hole has moved
-        Vector2 blackHolePosAfter = enemy1.enemyCharacter.getPosition().cpy();
+        Vector2 blackHolePosAfter = enemy1.getCharacter().getPosition().cpy();
         float sentryShootingStateAfter = ((SentryEnemy) enemy2).getShootingState();
 
         assertNotEquals(blackHolePosBefore, blackHolePosAfter);

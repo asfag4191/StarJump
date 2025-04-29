@@ -28,7 +28,7 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
     private Texture cannonStandTex;
 
     public SentryEnemy(Character character, Player player, WorldModel worldModel) {
-        super(character, worldModel.world);
+        super(character);
         this.player = player;
         setupAnimation();
         this.bulletTex = new Texture(Gdx.files.internal("sprites/simple_blackhole.png"));
@@ -43,7 +43,7 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
         this.shootingState = -1f;
         this.shootingDelay = 1f;
 
-        Projectile proj = new Projectile(worldModel, enemyCharacter.getPosition(),
+        Projectile proj = new Projectile(worldModel, getCharacter().getPosition(),
                 new ProjectileAttributes(target.nor().scl(bulletSpeed), 1f, 1f, false),
                 new Vector2(0.5f, 0.5f), bulletAnim);
 
@@ -55,7 +55,7 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
 
     @Override
     public boolean seesTarget(Vector2 playerPos) {
-        Vector2 thisPos = enemyCharacter.getPosition();
+        Vector2 thisPos = getCharacter().getPosition();
         Vector2 rayStart = thisPos.cpy(); // start of the ray
         Vector2 rayEnd = playerPos.cpy(); // end of the ray
 
@@ -74,7 +74,7 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
                 return 1;
             };
         };
-        world.rayCast(callback, rayStart, rayEnd);
+        worldModel.world.rayCast(callback, rayStart, rayEnd);
 
         return seesPlayer[0];
     }
@@ -85,7 +85,7 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
         // No need to do the calculations if player is not in range
         if (getDistanceToPlayer() < RANGE) {
             Vector2 playerDirection = getPlayerDirection();
-            this.enemyCharacter.setTransform(this.enemyCharacter.getPosition(),
+            this.getCharacter().setTransform(this.getCharacter().getPosition(),
                     playerDirection.angleRad() - 3.14f / 2f);
         }
 
@@ -113,7 +113,7 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
     // Will be private when rest is implemented
     public Vector2 getPlayerDirection() {
         Vector2 playerPosition = this.player.character.getPosition();
-        Vector2 enemyPosition = this.enemyCharacter.getPosition();
+        Vector2 enemyPosition = this.getCharacter().getPosition();
 
         return playerPosition.sub(enemyPosition).nor();
     }
@@ -123,21 +123,21 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
      */
     public float getDistanceToPlayer() {
         Vector2 playerPosition = this.player.character.getPosition();
-        Vector2 enemyPosition = enemyCharacter.getPosition();
+        Vector2 enemyPosition = getCharacter().getPosition();
 
         return playerPosition.dst(enemyPosition);
     }
 
     @Override
     protected void setupAnimation() {
-        enemyCharacter.animator.clearAnimations();
+        getCharacter().animator.clearAnimations();
         Texture tex = new Texture(Gdx.files.internal("sprites/cannon/cannon_barrel.png"));
-        enemyCharacter.animator.addAnimation("idle", tex, 1, 1, 0);
-        enemyCharacter.animator.play("idle");
+        getCharacter().animator.addAnimation("idle", tex, 1, 1, 0);
+        getCharacter().animator.play("idle");
     }
 
     private void renderCannonStand(Batch batch) {
-        batch.draw(cannonStandTex, enemyCharacter.getPosition().x - 0.5f, enemyCharacter.getPosition().y - 0.5f,
+        batch.draw(cannonStandTex, getCharacter().getPosition().x - 0.5f, getCharacter().getPosition().y - 0.5f,
                 1.5f, 1.5f);
     }
 
