@@ -33,7 +33,7 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
     private Texture cannonStandTex;
 
     public SentryEnemy(Character character, Player player, WorldModel worldModel) {
-        super(character, worldModel.world);
+        super(character);
         this.player = player;
         setupAnimation();
         this.bulletTex = new Texture(Gdx.files.internal("sprites/simple_blackhole.png"));
@@ -79,7 +79,7 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
                 return 1;
             };
         };
-        world.rayCast(callback, rayStart, rayEnd);
+        worldModel.world.rayCast(callback, rayStart, rayEnd);
 
         this.rStart = rayStart;
         this.rEnd = rayEnd;

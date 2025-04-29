@@ -19,7 +19,7 @@ public class BlackHole extends SimpleEnemy implements iMovingEnemy {
 
 
     public BlackHole(Character blackHole, World world) {
-        super(blackHole, world);
+        super(blackHole);
         this.direction = 1;
         enemyCharacter.getBody().setUserData(this); // sets userData to BlackHole instance
         createTopSensor();
