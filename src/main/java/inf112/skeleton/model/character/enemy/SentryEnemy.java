@@ -19,10 +19,6 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
     private float RANGE = 10f;
     final boolean hitPlayer = false;
     // FOR DEBUGGING
-    public Vector2 rStart;
-    public Vector2 rEnd;
-    public Vector2 hitPoint;
-    public Vector2 target;
     private static final float SHOOTING_DELAY = 5;
     private static final float BULLET_SPEED = 2f;
     private float shootingState = 0;
@@ -81,10 +77,6 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
         };
         worldModel.world.rayCast(callback, rayStart, rayEnd);
 
-        this.rStart = rayStart;
-        this.rEnd = rayEnd;
-        this.hitPoint = hitPoint[0];
-        // System.out.println("Sees player: " + seesPlayer[0]);
         return seesPlayer[0];
     }
 
@@ -154,10 +146,16 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
     public void render(Batch batch, float dt) {
         super.render(batch, dt);
         renderCannonStand(batch);
-        // System.out.println("SentryEnemy render");
-        if (rStart == null || rEnd == null) {
-            return;
-        }
+    }
+
+    /**
+     * Returns the shooting state of SentryEnemy.
+     * -1 -> shooting
+     * 0 -> can't see enemy
+     * < 0 -> aiming
+     */
+    public float getShootingState() {
+        return shootingState;
     }
 
 }
