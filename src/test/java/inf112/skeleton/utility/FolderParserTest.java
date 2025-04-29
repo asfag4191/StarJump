@@ -1,4 +1,4 @@
-package inf112.skeleton.model.utility;
+package inf112.skeleton.utility;
 
 import org.junit.jupiter.api.*;
 

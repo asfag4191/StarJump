@@ -1,4 +1,4 @@
-package inf112.skeleton.model.utility.listeners;
+package inf112.skeleton.utility.listeners;
 
 import static org.mockito.Mockito.*;
 

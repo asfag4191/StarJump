@@ -1,4 +1,4 @@
-package inf112.skeleton.model.utility;
+package inf112.skeleton.utility;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;

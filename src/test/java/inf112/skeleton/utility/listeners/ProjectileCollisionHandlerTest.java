@@ -1,4 +1,4 @@
-package inf112.skeleton.model.utility.listeners;
+package inf112.skeleton.utility.listeners;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;

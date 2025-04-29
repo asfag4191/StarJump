@@ -1,4 +1,4 @@
-package inf112.skeleton.model.utility.listeners;
+package inf112.skeleton.utility.listeners;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
