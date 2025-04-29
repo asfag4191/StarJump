@@ -76,10 +76,10 @@ public class BlackHole extends SimpleEnemy implements iMovingEnemy {
 
     @Override
     protected void setupAnimation() {
-        getCharacter().animator.clearAnimations();
+        getCharacter().getAnimator().clearAnimations();
         Texture tex = new Texture(Gdx.files.internal("sprites/blackhole.png"));
-        getCharacter().animator.addAnimation("idle", tex, 1, 7, 8);
-        getCharacter().animator.play("idle");
+        getCharacter().getAnimator().addAnimation("idle", tex, 1, 7, 8);
+        getCharacter().getAnimator().play("idle");
     }
 
     /**

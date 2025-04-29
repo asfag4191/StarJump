@@ -15,9 +15,9 @@ import inf112.skeleton.view.Renderable;
 public class Character extends HumanoidBody implements Renderable {
     private final String name;
     private CharacterState state;
-    public final CharacterAttributes attributes;
-    public final Animator animator;
-    public final Vector2 size;
+    private final CharacterAttributes attributes;
+    private final Animator animator;
+    private final Vector2 size;
     private boolean isPlayer = false;
 
     public Character(String name, CharacterAttributes attributes, Vector2 size, World world) {
@@ -100,7 +100,7 @@ public class Character extends HumanoidBody implements Renderable {
      * @param damageTaken the amount to reduce the character's hp by
      */
     public void takeDamage(float damageTaken) {
-        if (this.attributes.addHp(-damageTaken)) {
+        if (this.getAttributes().addHp(-damageTaken)) {
             setState(CharacterState.DEAD);
         }
     }
@@ -120,7 +120,7 @@ public class Character extends HumanoidBody implements Renderable {
      */
     public void setGrounded(boolean isGrounded) {
         if (isGrounded) {
-            this.attributes.setJumpsLeft(attributes.getMaxJumps());
+            this.getAttributes().setJumpsLeft(getAttributes().getMaxJumps());
             setState(CharacterState.IDLE);
         } else {
             setState(CharacterState.FREEFALL);
@@ -131,14 +131,14 @@ public class Character extends HumanoidBody implements Renderable {
     public void render(Batch batch, float dt) {
         Vector2 bodyPos = this.getTransform().getPosition();
         float bodyRad = this.getTransform().getRotation();
-        TextureRegion nextFrame = animator.update(dt);
+        TextureRegion nextFrame = getAnimator().update(dt);
 
         if (nextFrame != null) {
             batch.draw(nextFrame,
-                    bodyPos.x - size.x / 2,
-                    bodyPos.y - size.y / 2,
-                    size.x / 2, size.y / 2, // Origin
-                    size.x, size.y, // Width and height
+                    bodyPos.x - getSize().x / 2,
+                    bodyPos.y - getSize().y / 2,
+                    getSize().x / 2, getSize().y / 2, // Origin
+                    getSize().x, getSize().y, // Width and height
                     1f, 1f, // Scale (no scaling)
                     (float) Math.toDegrees(bodyRad));
         }
@@ -177,10 +177,18 @@ public class Character extends HumanoidBody implements Renderable {
         return this.getTransform().getPosition();
     }
 
+    /**
+     * Marks this character as a player
+     * @param isPlayer if the character should be a player or not
+     */
     public void setPlayer(boolean isPlayer) {
         this.isPlayer = isPlayer;
     }
 
+    /**
+     * Wether this character is a player or not
+     * @return {@code true} if the character is a player, else {@code false}
+     */
     public boolean isPlayer() {
         return isPlayer;
     }

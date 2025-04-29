@@ -130,10 +130,10 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
 
     @Override
     protected void setupAnimation() {
-        getCharacter().animator.clearAnimations();
+        getCharacter().getAnimator().clearAnimations();
         Texture tex = new Texture(Gdx.files.internal("sprites/cannon/cannon_barrel.png"));
-        getCharacter().animator.addAnimation("idle", tex, 1, 1, 0);
-        getCharacter().animator.play("idle");
+        getCharacter().getAnimator().addAnimation("idle", tex, 1, 1, 0);
+        getCharacter().getAnimator().play("idle");
     }
 
     private void renderCannonStand(Batch batch) {

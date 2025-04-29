@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.CharacterAttributes;
+import inf112.skeleton.model.character.CharacterState;
 import inf112.skeleton.model.character.controllable_characters.Player;
 
 /**
@@ -37,6 +38,7 @@ public final class PlayerController {
         float yVelocity = character.getVelocity().y;
 
         character.setVelocity(new Vector2(xVelocity, yVelocity));
+        character.setState(CharacterState.MOVING);
     }
 
     private static void jump(Character character) {
