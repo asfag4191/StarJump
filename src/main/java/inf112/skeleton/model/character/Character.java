@@ -177,10 +177,18 @@ public class Character extends HumanoidBody implements Renderable {
         return this.getTransform().getPosition();
     }
 
+    /**
+     * Marks this character as a player
+     * @param isPlayer if the character should be a player or not
+     */
     public void setPlayer(boolean isPlayer) {
         this.isPlayer = isPlayer;
     }
 
+    /**
+     * Wether this character is a player or not
+     * @return {@code true} if the character is a player, else {@code false}
+     */
     public boolean isPlayer() {
         return isPlayer;
     }

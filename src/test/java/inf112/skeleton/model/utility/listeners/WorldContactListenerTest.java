@@ -2,20 +2,13 @@ package inf112.skeleton.model.utility.listeners;
 
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.backends.headless.HeadlessApplication;
-import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -35,17 +28,10 @@ class WorldContactListenerTest {
     private Fixture fixtureA;
     private Fixture fixtureB;
 
-    @BeforeAll
-    static void initLibGdx() {
-        new HeadlessApplication(new ApplicationAdapter() {}, new HeadlessApplicationConfiguration());
-    }
-
     @BeforeEach
     void setUp() {
         collisionHandler = mock(CollisionHandler.class);
         listener = new WorldContactListener(collisionHandler);
-
-        Gdx.gl = Gdx.gl20 = Mockito.mock(GL20.class);
 
         contact = mock(Contact.class);
         bodyA = mock(Body.class);
