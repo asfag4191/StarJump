@@ -18,7 +18,7 @@ public class BlackHole extends SimpleEnemy implements iMovingEnemy {
     private boolean markedForRemoval = false;
 
 
-    public BlackHole(Character blackHole, World world) {
+    public BlackHole(Character blackHole) {
         super(blackHole);
         this.direction = 1;
         enemyCharacter.getBody().setUserData(this); // sets userData to BlackHole instance
@@ -28,7 +28,7 @@ public class BlackHole extends SimpleEnemy implements iMovingEnemy {
     }
 
     public BlackHole(String name, CharacterAttributes attributes, Vector2 size, World world, Character target) {
-        this(new Character(name, attributes, size, world), world);
+        this(new Character(name, attributes, size, world));
     }
 
     @Override
