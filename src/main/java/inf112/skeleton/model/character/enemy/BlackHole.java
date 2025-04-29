@@ -14,14 +14,12 @@ import inf112.skeleton.model.character.CharacterAttributes;
 
 public class BlackHole extends SimpleEnemy implements iMovingEnemy {
 
-    private boolean isMoving;
     private int direction;
     private boolean markedForRemoval = false;
 
 
     public BlackHole(Character blackHole, World world) {
         super(blackHole, world);
-        this.isMoving = true;
         this.direction = 1;
         enemyCharacter.getBody().setUserData(this); // sets userData to BlackHole instance
         createTopSensor();
@@ -40,16 +38,6 @@ public class BlackHole extends SimpleEnemy implements iMovingEnemy {
 
     public Character getEnemyCharacter() {
         return this.enemyCharacter;
-    }
-
-    @Override
-    public void setMoving(boolean moving) {
-        this.isMoving = moving;
-    }
-
-    @Override
-    public boolean isMoving() {
-        return isMoving;
     }
 
     @Override

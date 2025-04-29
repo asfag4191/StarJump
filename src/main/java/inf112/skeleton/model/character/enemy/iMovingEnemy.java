@@ -10,20 +10,6 @@ interface iMovingEnemy {
     public void attack(Character target);
 
     /**
-     * Sets the moving state of the enemy.
-     *
-     * @param roaming A boolean indicating whether the enemy should move or not.
-     */
-    void setMoving(boolean moving);
-
-    /**
-     * Checks if the enemy is currently moving.
-     *
-     * @return A boolean indicating whether the enemy is moving.
-     */
-    boolean isMoving();
-
-    /**
      * Moves the enemy in <code>this<\code> enemy's direction, if possible.
      */
     public void move();
