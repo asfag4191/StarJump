@@ -8,11 +8,15 @@ import inf112.skeleton.model.character.CharacterAttributes;
 import inf112.skeleton.model.character.controllable_characters.Player;
 
 /**
- * this class will move the player with keystrokes
+ * Utility class that sets up keyboard controls for a {@link Player}.
+ * <p>
+ * Binds movement (left/right) and jumping actions to specific keys using the
+ * player's {@link InputBinder}.
+ * Supports both WASD and arrow key layouts.
+ * </p>
  */
 public final class PlayerController {
 
-    //// NOTE: this is a simple temp solution, can be implemented much better. ////
     public static void setupWASD(Player player) {
         InputBinder controller = player.controller;
         Character character = player.character;
@@ -38,7 +42,8 @@ public final class PlayerController {
     private static void jump(Character character) {
         CharacterAttributes attributes = character.getAttributes();
 
-        if (attributes.getJumpsLeft() == 0) return;
+        if (attributes.getJumpsLeft() == 0)
+            return;
 
         float xVelocity = character.getVelocity().x;
         float yVelocity = attributes.getJumpPower();
