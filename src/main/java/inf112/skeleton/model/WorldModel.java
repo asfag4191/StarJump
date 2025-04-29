@@ -11,7 +11,6 @@ import inf112.skeleton.controller.PlayerController;
 import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.CharacterAttributes;
 import inf112.skeleton.model.character.controllable_characters.Player;
-import inf112.skeleton.model.colliders.BoxCollider;
 import inf112.skeleton.view.Renderable;
 
 import java.util.ArrayList;
@@ -54,22 +53,6 @@ public class WorldModel implements Renderable {
 
         PlayerController.setupWASD(plr);
         return plr;
-    }
-
-
-    public BoxCollider createTile(Vector2 position, Vector2 size, Texture texture) {
-        BodyDef def = new BodyDef();
-        def.type = BodyDef.BodyType.StaticBody;
-        def.position.set(position);
-        def.fixedRotation = true;
-        BoxCollider box = new BoxCollider(world, def, texture, size);
-
-        ViewableObjects.add(box);
-        return box;
-    }
-
-    public BoxCollider createTile(Vector2 size, Texture texture) {
-        return createTile(new Vector2(0, 0), size, texture);
     }
 
     public void addViewableObject(Renderable obj) {
