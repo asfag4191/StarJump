@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -26,6 +27,8 @@ import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.view.screen.GameScreen;
 
 import static org.mockito.Mockito.*;
+
+import java.util.List;
 
 public class EnemyManagerTest {
     private GameScreen screen;
@@ -64,13 +67,14 @@ public class EnemyManagerTest {
     void setUp() {
         screen = mock(GameScreen.class);
 
-        world = new World(new Vector2(0, -9.81f), true);
+        world = new World(new Vector2(0, -9.81f), false);
         when(screen.getWorld()).thenReturn(world);
 
         worldModel = new WorldModel(world);
         when(screen.getWorldModel()).thenReturn(worldModel);
 
-        worldModel.createPlayer();
+        Player player = worldModel.createPlayer();
+        when(screen.getPlayer()).thenReturn(player);
 
         enemyManager = new EnemyManager(screen);
     }
@@ -143,4 +147,33 @@ public class EnemyManagerTest {
         return map;
     }
 
+    @Test
+    void testUpdate() {
+        enemyManager.addEnemy("black hole", new Vector2(0, 0));
+        enemyManager.addEnemy("sentry", new Vector2(5, 3));
+
+        List<SimpleEnemy> enemies = enemyManager.getEnemies();
+        // Get positions of the enemies before update
+        SimpleEnemy enemy1 = enemies.get(0);
+        SimpleEnemy enemy2 = enemies.get(1);
+
+        if (enemy1 instanceof BlackHole) {
+        }
+        if (enemy2 instanceof SentryEnemy) {
+        }
+
+        Vector2 blackHolePosBefore = enemy1.enemyCharacter.getPosition().cpy();
+        float sentryShootingStateBefore = ((SentryEnemy) enemy2).getShootingState();
+
+        // Update the enemy manager
+        enemyManager.update(0.1f);
+        worldModel.onStep(0.1f);
+
+        // Check if black hole has moved
+        Vector2 blackHolePosAfter = enemy1.enemyCharacter.getPosition().cpy();
+        float sentryShootingStateAfter = ((SentryEnemy) enemy2).getShootingState();
+
+        assertNotEquals(blackHolePosBefore, blackHolePosAfter);
+        assertNotEquals(sentryShootingStateBefore, sentryShootingStateAfter);
+    }
 }

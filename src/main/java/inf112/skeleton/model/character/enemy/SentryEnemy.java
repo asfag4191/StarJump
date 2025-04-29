@@ -148,4 +148,14 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
         renderCannonStand(batch);
     }
 
+    /**
+     * Returns the shooting state of SentryEnemy.
+     * -1 -> shooting
+     * 0 -> can't see enemy
+     * < 0 -> aiming
+     */
+    public float getShootingState() {
+        return shootingState;
+    }
+
 }
