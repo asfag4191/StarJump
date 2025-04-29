@@ -8,12 +8,6 @@ import inf112.skeleton.model.character.Character;
 
 public class CharacterContactHandler implements CollisionHandler {
 
-
-    //did Character charac = (Character) fixA.getBody().getUserData();
-    // but not every body has a character as user data
-    // tried to cas blackhole to character, but that is not possible
-    // NEED THESE CHANGES SO THE ENEMY WORKS
-
     @Override
     public void onContactBegin(Contact contact, Fixture fixA, Fixture fixB) {
         groundCollision(fixA, fixB, true);
@@ -46,7 +40,6 @@ public class CharacterContactHandler implements CollisionHandler {
         }
     }
 
-    //make sure the correct character is extracted from the user data
     private Character extractCharacter(Object userData) {
         if (userData instanceof Character character) {
             return character;
