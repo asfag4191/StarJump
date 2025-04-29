@@ -54,27 +54,36 @@ public class BlackHole extends SimpleEnemy implements iMovingEnemy {
         move();
     }
 
+    /**
+     * Changes the BlackHole's direction 
+     * from left to right or vice versa.
+     */
     public void changeDirection() {
         direction *= -1;
     }
 
+    /**
+     * Marks the BlackHole for removal.
+     * Use this to remove the BlackHole from the game.
+     */
     public void markForRemoval() {
         this.markedForRemoval = true;
     }
 
+    /**
+     * 
+     * @return boolean indicating whether this BlackHole needs to be removed.
+     */
     public boolean shouldBeRemoved() {
         return markedForRemoval;
     }
 
-    // This is what draw the enemies taken out of the factory so 
-    // the pictures dont got mixed. (can be some debug here still)
     @Override
     protected void setupAnimation() {
         enemyCharacter.animator.clearAnimations();
         Texture tex = new Texture(Gdx.files.internal("sprites/blackhole.png"));
         enemyCharacter.animator.addAnimation("idle", tex, 1, 7, 8);
         enemyCharacter.animator.play("idle");
-        
     }
 
     /**

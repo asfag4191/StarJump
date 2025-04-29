@@ -17,23 +17,52 @@ public abstract class SimpleEnemy {
         setupAnimation();
     }
 
+    /**
+     * Get the SimpleEnemy's target
+     * 
+     * @return Vector2 representing the target's position
+     */
     public Vector2 getTarget() {
         return target;
     }
 
+    /**
+     * Sets the SimpleEnemy's target.
+     * 
+     * @param point Vector2 representing the target's position
+     */
     public void setTarget(Vector2 point) {
         target = point;
     }
 
+    /**
+     * Update the SimpleEnemy's behaviour 
+     * after time <code>dt</code> has passed.
+     * 
+     * E.g. if the SimpleEnemy should be moving, the 
+     * SimpleEnemy's <code>move()</code> method should be called here.
+     * 
+     * @param dt delta time 
+     */
     public void update(float dt) {
     }
 
+    /**
+     * Render the SimpleEnemy.
+     *  
+     * @param batch The game's Batch
+     * @param dt delta time
+     */
     public void render(Batch batch, float dt) {
         enemyCharacter.render(batch, dt);
     }
 
-    // This forces subclasses to define animation setup
-    // every enemy need this as a override method
+    /**
+     * Sets up the SimpleEnemy's <code>Character.animator</code>,
+     * for animations to play when the game is running.
+     * 
+     * Needs to be implemented by every sub class of SimpleEnemy.
+     */
     protected abstract void setupAnimation();
 
 }
