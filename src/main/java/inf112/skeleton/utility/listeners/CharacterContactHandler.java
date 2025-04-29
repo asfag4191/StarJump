@@ -52,7 +52,7 @@ public class CharacterContactHandler implements CollisionHandler {
             return character;
         }
         if (userData instanceof inf112.skeleton.model.character.enemy.BlackHole bh) {
-            return bh.getEnemyCharacter(); 
+            return bh.getCharacter(); 
         }
         return null;
     }

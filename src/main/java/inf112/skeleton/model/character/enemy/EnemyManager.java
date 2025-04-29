@@ -100,7 +100,7 @@ public class EnemyManager implements iUpdateable {
 
             // removed the enemy if jumped on
             if (enemy instanceof BlackHole blackHole && blackHole.shouldBeRemoved()) {
-                blackHole.getEnemyCharacter().getBody().getWorld().destroyBody(blackHole.getEnemyCharacter().getBody());
+                blackHole.getCharacter().getBody().getWorld().destroyBody(blackHole.getCharacter().getBody());
                 enemies.remove(i);
                 i--;
             }

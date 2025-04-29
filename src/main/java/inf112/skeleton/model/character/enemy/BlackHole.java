@@ -21,7 +21,7 @@ public class BlackHole extends SimpleEnemy implements iMovingEnemy {
     public BlackHole(Character blackHole) {
         super(blackHole);
         this.direction = 1;
-        enemyCharacter.getBody().setUserData(this); // sets userData to BlackHole instance
+        getCharacter().getBody().setUserData(this); // sets userData to BlackHole instance
         createTopSensor();
         createLeftAndRightSensors();
         setupAnimation();
@@ -33,20 +33,16 @@ public class BlackHole extends SimpleEnemy implements iMovingEnemy {
 
     @Override
     public void attack(Character target) {
-        target.takeDamage(enemyCharacter.getAttributes().getStrength());
-    }
-
-    public Character getEnemyCharacter() {
-        return this.enemyCharacter;
+        target.takeDamage(getCharacter().getAttributes().getStrength());
     }
 
     @Override
     public void move() {
-        CharacterAttributes attributes = enemyCharacter.getAttributes();
+        CharacterAttributes attributes = getCharacter().getAttributes();
         float xVelocity = attributes.getSpeed() * direction;
-        float yVelocity = enemyCharacter.getVelocity().y;
+        float yVelocity = getCharacter().getVelocity().y;
 
-        enemyCharacter.setVelocity(new Vector2(xVelocity, yVelocity));
+        getCharacter().setVelocity(new Vector2(xVelocity, yVelocity));
     }
 
     @Override
@@ -80,10 +76,10 @@ public class BlackHole extends SimpleEnemy implements iMovingEnemy {
 
     @Override
     protected void setupAnimation() {
-        enemyCharacter.animator.clearAnimations();
+        getCharacter().animator.clearAnimations();
         Texture tex = new Texture(Gdx.files.internal("sprites/blackhole.png"));
-        enemyCharacter.animator.addAnimation("idle", tex, 1, 7, 8);
-        enemyCharacter.animator.play("idle");
+        getCharacter().animator.addAnimation("idle", tex, 1, 7, 8);
+        getCharacter().animator.play("idle");
     }
 
     /**
@@ -91,7 +87,7 @@ public class BlackHole extends SimpleEnemy implements iMovingEnemy {
      * so that collisions with platform walls can be detected.
      */
     private void createLeftAndRightSensors() {
-        Body body = enemyCharacter.getBody();
+        Body body = getCharacter().getBody();
 
         // left sensor
         PolygonShape leftShape = new PolygonShape();
@@ -125,7 +121,7 @@ public class BlackHole extends SimpleEnemy implements iMovingEnemy {
      * so that the Player can jump on the BlackHole to kill it
      */
     private void createTopSensor() {
-        Body body = enemyCharacter.getBody();
+        Body body = getCharacter().getBody();
 
         PolygonShape sensorShape = new PolygonShape();
         sensorShape.setAsBox(0.4f, 0.1f, new Vector2(0, 0.55f), 0); // Slightly above the center

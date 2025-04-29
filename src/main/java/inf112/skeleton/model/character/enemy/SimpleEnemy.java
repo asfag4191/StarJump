@@ -6,12 +6,20 @@ import com.badlogic.gdx.math.Vector2;
 import inf112.skeleton.model.character.Character;
 
 public abstract class SimpleEnemy {
-    public final Character enemyCharacter;
+    private final Character enemyCharacter;
     private Vector2 target;
 
     public SimpleEnemy(Character enemy) {
         this.enemyCharacter = enemy;
         setupAnimation();
+    }
+
+    /**
+     * Get the SimpleEnemy's Character
+     * @return a Character
+     */
+    public Character getCharacter() {
+        return this.enemyCharacter;
     }
 
     /**
