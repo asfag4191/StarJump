@@ -82,10 +82,10 @@ public class BlackHole extends SimpleEnemy implements iMovingEnemy {
     // the pictures dont got mixed. (can be some debug here still)
     @Override
     protected void setupAnimation() {
-        enemyCharacter.animator.clearAnimations();
+        enemyCharacter.getAnimator().clearAnimations();
         Texture tex = new Texture(Gdx.files.internal("sprites/blackhole.png"));
-        enemyCharacter.animator.addAnimation("idle", tex, 1, 7, 8);
-        enemyCharacter.animator.play("idle");
+        enemyCharacter.getAnimator().addAnimation("idle", tex, 1, 7, 8);
+        enemyCharacter.getAnimator().play("idle");
         
     }
 

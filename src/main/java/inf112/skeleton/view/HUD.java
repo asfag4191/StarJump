@@ -11,8 +11,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import inf112.skeleton.model.character.Character;
-import inf112.skeleton.model.character.CharacterAttributes;
-import inf112.skeleton.model.character.controllable_characters.Player;
 import inf112.skeleton.model.items.powerup.DiamondPowerUp;
 
 /**
@@ -39,7 +37,7 @@ public class HUD {
      */
     public HUD(SpriteBatch batch, Character character) {
         this.character = character;
-        hp = ((int) character.attributes.getHp());
+        hp = ((int) character.getAttributes().getHp());
         score = DiamondPowerUp.getScore(); // Get initial score
 
         hudCamera = new OrthographicCamera();
@@ -69,7 +67,7 @@ public class HUD {
      * @param score The player's current score.
      */
     public void update(float dt) {
-        this.hp = ((int) character.attributes.getHp());
+        this.hp = ((int) character.getAttributes().getHp());
         this.score = DiamondPowerUp.getScore(); // Update score from DiamondPowerUp
         hpLabel.setText(String.format("LIFE: %d", hp));
         scoreLabel.setText(String.format("SCORE: %d", score));
