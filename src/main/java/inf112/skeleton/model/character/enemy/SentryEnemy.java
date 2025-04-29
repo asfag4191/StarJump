@@ -18,7 +18,6 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
     private Player player;
     private float RANGE = 10f;
     final boolean hitPlayer = false;
-    // FOR DEBUGGING
     private static final float SHOOTING_DELAY = 5;
     private static final float BULLET_SPEED = 2f;
     private float shootingState = 0;

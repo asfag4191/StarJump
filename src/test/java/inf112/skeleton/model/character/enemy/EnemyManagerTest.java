@@ -113,9 +113,6 @@ public class EnemyManagerTest {
     void testLoadEnemiesFromMap() {
         TiledMap map = setUpEnemyMap();
         MapLayer enemyLayer = map.getLayers().get("Enemy");
-        for (MapObject obj : enemyLayer.getObjects()) {
-            System.out.println(obj.getProperties().get("x") + " " + obj.getProperties().get("y"));
-        }
         enemyManager.loadEnemiesFromMap(map);
 
         assertFalse(enemyManager.getEnemies().isEmpty());
@@ -175,5 +172,14 @@ public class EnemyManagerTest {
 
         assertNotEquals(blackHolePosBefore, blackHolePosAfter);
         assertNotEquals(sentryShootingStateBefore, sentryShootingStateAfter);
+
+        assertNotEquals(sentryShootingStateAfter, 0);
+        for (int i = 0; i < 5; i++) {
+            enemyManager.update(1f);
+        }
+        enemyManager.update(0.01f);
+        float sentryShootingState = ((SentryEnemy) enemy2).getShootingState();
+        System.out.println(sentryShootingState);
+        assertEquals(sentryShootingState, -1);
     }
 }
