@@ -1,4 +1,3 @@
-
 package inf112.skeleton.utility.listeners;
 
 import com.badlogic.gdx.physics.box2d.Contact;
