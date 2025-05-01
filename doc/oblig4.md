@@ -265,11 +265,11 @@ Arbeidsoppgaver:
 
 ## Våre justeringer på kravene som er med i MVP.
 
-- Vi har gjort enkelte justeringer i prioriteringen av kravene for MVP.
+Vi har gjort enkelte justeringer i prioriteringen av kravene for MVP.
 
-  - Vi valgte å fokusere tidlig på å etablere en tydelig og fungerende MVC-arkitektur (Model-View-Controller). Dette var et bevisst valg for å sikre god struktur og skille mellom logikk, visning og kontrollflyt i koden. Dette gjør det enklere å utvide og vedlikeholde prosjektet etter hvert som kompleksiteten øker.
+- Vi valgte å fokusere tidlig på å etablere en tydelig og fungerende MVC-arkitektur (Model-View-Controller). Dette var et bevisst valg for å sikre god struktur og skille mellom logikk, visning og kontrollflyt i koden. Dette gjør det enklere å utvide og vedlikeholde prosjektet etter hvert som kompleksiteten øker.
 
-  - I tillegg har vi utvidet og tilpasset kartet slik at det støtter både vertikal (oppover) og horisontal bevegelse, uten at hele kartet vises samtidig. Dette gir en mer dynamisk og utfordrende spillopplevelse. Endringene ble gjort for å legge til rette for økt kompleksitet i nivådesign og funksjonalitet, og for å gjøre det enklere å implementere mer logikk.
+- I tillegg har vi utvidet og tilpasset kartet slik at det støtter både vertikal (oppover) og horisontal bevegelse, uten at hele kartet vises samtidig. Dette gir en mer dynamisk og utfordrende spillopplevelse. Endringene ble gjort for å legge til rette for økt kompleksitet i nivådesign og funksjonalitet, og for å gjøre det enklere å implementere mer logikk.
 
 ## Oppdater hvilke krav dere har prioritert, hvor langt dere har kommet og hva dere har gjort siden forrige gang.
 
