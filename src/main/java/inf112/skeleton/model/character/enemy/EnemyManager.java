@@ -22,6 +22,11 @@ public class EnemyManager implements iUpdateable, Renderable {
     private GameScreen screen;
     private EnemyFactory enemyFactory;
 
+    /**
+     * Constructor for EnemyManager, creates its own EnemyFactory
+     *
+     * @param screen the GameScreen to use
+     */
     public EnemyManager(GameScreen screen) {
         this.screen = screen;
         this.enemyFactory = new EnemyFactory(screen);

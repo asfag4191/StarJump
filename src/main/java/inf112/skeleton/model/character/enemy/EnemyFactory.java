@@ -10,7 +10,7 @@ class EnemyFactory {
 
     private GameScreen screen;
 
-    public EnemyFactory(GameScreen screen) {
+    protected EnemyFactory(GameScreen screen) {
         this.screen = screen;
     }
 

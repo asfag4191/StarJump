@@ -9,13 +9,14 @@ public abstract class SimpleEnemy {
     private final Character enemyCharacter;
     private Vector2 target;
 
-    public SimpleEnemy(Character enemy) {
+    protected SimpleEnemy(Character enemy) {
         this.enemyCharacter = enemy;
         setupAnimation();
     }
 
     /**
      * Get the SimpleEnemy's Character
+     * 
      * @return a Character
      */
     public Character getCharacter() {
@@ -41,22 +42,22 @@ public abstract class SimpleEnemy {
     }
 
     /**
-     * Update the SimpleEnemy's behaviour 
+     * Update the SimpleEnemy's behaviour
      * after time <code>dt</code> has passed.
      * 
-     * E.g. if the SimpleEnemy should be moving, the 
+     * E.g. if the SimpleEnemy should be moving, the
      * SimpleEnemy's <code>move()</code> method should be called here.
      * 
-     * @param dt delta time 
+     * @param dt delta time
      */
     public void update(float dt) {
     }
 
     /**
      * Render the SimpleEnemy.
-     *  
+     * 
      * @param batch The game's Batch
-     * @param dt delta time
+     * @param dt    delta time
      */
     public void render(Batch batch, float dt) {
         enemyCharacter.render(batch, dt);

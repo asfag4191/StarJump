@@ -25,7 +25,9 @@ public final class ColliderToBox2D {
 
     /**
      * Iterates over mapObjects and creates corresponding objects in world using
-     * box2D shapes
+     * box2D shapes.
+     *
+     * Only works with RectangleMapObjects.
      *
      * @param world      world where objects interact
      * @param mapObjects collision objects from TiledMap

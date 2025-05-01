@@ -27,6 +27,13 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
     private Animator bulletAnim;
     private Texture cannonStandTex;
 
+    /**
+     * Constructor for SentryEnemy.
+     *
+     * @param character  the character to be used for the enemy
+     * @param player     the player to be targeted
+     * @param worldModel the world model enemy exists in
+     */
     public SentryEnemy(Character character, Player player, WorldModel worldModel) {
         super(character);
         this.player = player;
@@ -79,6 +86,7 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
         return seesPlayer[0];
     }
 
+    @Override
     public void update(float dt) {
         super.update(dt);
 
@@ -110,8 +118,7 @@ public class SentryEnemy extends SimpleEnemy implements iStationaryEnemy {
         }
     }
 
-    // Will be private when rest is implemented
-    public Vector2 getPlayerDirection() {
+    private Vector2 getPlayerDirection() {
         Vector2 playerPosition = this.player.character.getPosition();
         Vector2 enemyPosition = this.getCharacter().getPosition();
 
