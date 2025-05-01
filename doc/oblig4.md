@@ -76,7 +76,10 @@
 
 ### Anna
 
--
+- Laget GameOverScreen, to ulike skjermer kan komme opp: Win-screen og Lose-Screen
+- Implementert at level 2 kommer rett etter level 1, gitt at spiller ikke er død.
+- Oppdatert javadocs, slettet ubrukt/kommentert ut kode
+- Skrevet tester for CharacterCollisionHandler
 
 ### Maren
 
@@ -245,13 +248,14 @@ Akseptansekriterier:
 
 - Døren skal være plassert i kartet og lest inn.
 - Når spilleren berører døren (f.eks. står foran eller på), skal nivået avsluttes.
-- Spilleren skal bli sendt videre til neste nivå hvis spilleren er på level 1.
+- Spilleren skal bli sendt videre til neste nivå hvis spilleren er på level 1, ellers få opp Win Screen.
 
 Arbeidsoppgaver:
 
 - Legg til dør.
 - Implementer kollisjonssjekk eller posisjonssjekk for når spiller kommet til døren.
-- Når døren aktiveres, last inn neste nivå.
+- Når døren aktiveres og man er på level 1, last inn neste level.
+- Når døren aktiveres og man er på level 2, last inn win-screen.
 
 ## Prioriteringene våre fremover:
 
