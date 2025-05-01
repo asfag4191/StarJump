@@ -3,8 +3,6 @@ package inf112.skeleton.utility;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
-import inf112.skeleton.utility.Constants;
-import inf112.skeleton.utility.UnitConverter;
 
 
 public class UnitConverterTest {

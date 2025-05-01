@@ -2,7 +2,6 @@ package inf112.skeleton.utility;
 
 import org.junit.jupiter.api.*;
 
-import inf112.skeleton.utility.FolderParser;
 
 import static org.junit.jupiter.api.Assertions.*;
 
