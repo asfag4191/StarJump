@@ -103,6 +103,8 @@ Et siste forbedringspunkt er at vi også burde vært flinkere på å fokusere p�
 
 ## Brukerhistorier, akseptansekrav og arbeidsoppgaver til kravene vi har jobbet med
 
+### Skille bakgrunn fra plattformer
+
 Brukerhistorie:
 
 - Som spiller trenger jeg å skille bakgrunn fra plattformer/gjenstander slik jeg kan avgjøre om spillfiguren kan bevege seg, og hoppe til nye plattformer.
@@ -119,6 +121,8 @@ Arbeidsoppgave:
 - Designe map.
 - Implementere kollisjonssystem for plattformer og vegger.
 - Implementere bevegelseslogikk.
+
+### Regnbue-powerup
 
 Brukerhistorie:
 
@@ -138,6 +142,8 @@ Arbeidsoppgave:
 - Når powerup er hentet, gi spilleren oppoverkraft og visuell feedback.
 - Sørg for at powerup fjernes eller deaktiveres etter bruk.
 
+### Samle diamanter/mynter
+
 Brukerhistorie:
 
 - Som spiller må jeg klare å hente diamaneter, slik jeg kan få en høyere score.
@@ -152,6 +158,8 @@ Arbeidsoppgaver:
 
 - Lage grafikk for mynter.
 - Implementere poengsystem.
+
+### Kamera følger spilleren
 
 Brukerhistorie:
 
@@ -169,6 +177,8 @@ Arbeidsoppgaver:
 - Implementere dødsmekanikk hvis spilleren faller utenfor skjermen.
 - Finjustere kameraets hastighet slik at bevegelsen føles naturlig.
 
+### BlackHole som fiende
+
 Brukerhistorie:
 
 - Som spiller vil jeg at fienden BlackHole skal bevege seg automatisk og ta liv ved kontakt, slik at spillet blir mer utfordrende.
@@ -185,6 +195,8 @@ Arbeidsoppgave:
 - Lag kollisjonssjekk som fjerner liv fra spiller ved kontakt med BlackHole.
 - Implementer kollisjon med tiles, slik fienden får denne frem-og-tilbake bevegelsen.
 
+### Ødelegge BlackHole ved hopp
+
 Brukerhistorie:
 
 - Som spiller skal jeg kunne ødelegge fienden Blachole ved å hoppe på den, slik at jeg kan forsvare meg.
@@ -199,6 +211,8 @@ Arbeidsoppgave:
 - Implementer sensor på Blackhole
 - Spilleren skal ikke ta skade når den hopper oppå fienden.
 - Sørg for at eksisterende logikk for skade fra siden av fienden fortsatt fungerer.
+
+### Unngå prosjektiler fra kanon
 
 Brukerhistorie:
 
@@ -216,6 +230,8 @@ Arbeidsoppgave:
 - Implementer skytemekanismen som skyter prosjektiler med jevne mellomrom.
 - Lag kollisjonssjekk mellom prosjektilene og spilleren.
 - Når kollisjonen skjer, reduser spillerens liv.
+
+### Fullføre nivå
 
 Brukerhistorie:
 
