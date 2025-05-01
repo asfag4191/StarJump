@@ -68,7 +68,7 @@ public class Projectile extends RigidBody implements Disposable, iUpdateable, Re
             // this.body.getWorld().destroyBody(this.body);
             this.worldModel.setBodyForRemove(this.body);
         }
-        this.animator.clearAnimations();
+        this.animator.dispose();
         this.bulletTex.dispose();
 
         System.out.println("Projectile disposed");
