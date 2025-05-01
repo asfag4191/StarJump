@@ -159,12 +159,29 @@ public class Animator implements Disposable {
     }
 
     /**
-     * Clears all stored animations and resets the current animation.
+     * Disposes this animator without disposing its underlying textures.
+     *
+     * <p>
+     * This is equivalent to calling {@link #dispose(boolean)}
+     * with {@code disposeTexture} set to {@code false}.
+     * </p>
      */
     @Override
     public void dispose() {
-        for (Animation<TextureRegion> animation : animations.values()) {
-            disposeTexture(animation);
+       this.dispose(false);
+    }
+
+    /**
+     * Clears all stored animations and resets the current animation.
+     * optionally disposes all textures utilized by this animator.
+     *
+     * @param disposeTexture Wether to dispose all the textures used in this animator.
+     */
+    public void dispose(boolean disposeTexture) {
+        if (disposeTexture) {
+            for (Animation<TextureRegion> animation : animations.values()) {
+                disposeTexture(animation);
+            }
         }
         animations.clear();
         currentAnimation = null;
