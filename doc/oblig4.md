@@ -37,7 +37,10 @@
 
 ## Hvordan kommunikasjonen fungerer:
 
-Vi er veldig flinke på å oppdatere hverandre mellom møter. Når vi møtes får vi en bedre oversikt og får delegert oppgaver. Vi sender ofte bugs vi møter for å få hjelp på dem slik at vi ikke blir stående fast på problemer lenge. Vi sender også oppdatering av hvordan vi ligger an i de ulike oppgavene. Dette gjør det lettere å komme med innspill eller hjelpe til med andre oppgaver som er tatt av medlemmer i gruppa når noen har mye og andre har lite å gjøre. Vi oppdaterer trello fortsatt og trives med oppsettet vårt der.
+- Vi er veldig flinke på å oppdatere hverandre mellom møter. Når vi møtes får vi en bedre oversikt og får delegert oppgaver.
+- Vi sender ofte bugs vi møter for å få hjelp på dem slik at vi ikke blir stående fast på problemer lenge.
+- Vi sender også oppdatering av hvordan vi ligger an i de ulike oppgavene. Dette gjør det lettere å komme med innspill eller hjelpe til med andre oppgaver som er tatt av medlemmer i gruppa når noen har mye og andre har lite å gjøre.
+- Vi oppdaterer trello fortsatt og trives med oppsettet vårt der.
 
 ## Kort retrospektiv hvor vi har vurdert hva vi har klart til nå, og hva som kan forbedres.
 
@@ -84,10 +87,11 @@ Vi er veldig flinke på å oppdatere hverandre mellom møter. Når vi møtes få
 
 ## Et kort retrospektiv på hvordan vi vurderer hvordan prosjektet har gått.
 
-Vi er i alt ganske fornøyd med helheten i prosjektet. Vi har vært flinke til å samarbeide som en hel gruppe. Noe av det vi er mest fornøyd med er hvor effektive vi var til å komme i gang. Vi ble fort enige om hvilket type spill vi ville lage og alle kom med innspill på hvordan det skulle se ut og hvordan man skulle spille det. Gjennom hele prosjektet har vi pushet oss fremover og kommet oss fort videre i utviklingen. Det har vært mye forbedringer og stor fremgang fra uke til uke.
-Dersom vi skulle gjort prosjektet på nytt, er det noen ting vi hadde endret på. For det første ville vi fokusert på å ha en mer inkluderende startfase kodemessig. Vi var flinke til å bli enige om hvordan spillet skulle være som ferdig produkt, men siden vi har ulik måte å jobbe på, ble det vanskelig å samarbeide med oppsettet og kodestrukturen. Det burde vært en enighet fra starten, og vi burde blitt bedre kjent med hverandre, for å være klar over hvordan enkelte arbeider.
-For det andre burde vi laget strengere/retningsklare regler for hvordan man tok oppgaver og når disse skulle være ferdige, samt vært flinkere på å forklare hva oppgavene betydde for oss på arbeidsgruppa. Dette ble bedre etter vi ble mer kjent, men har påvirket hele strukturen på prosjektet hele veien.
-Et siste forbedringspunkt er at vi også burde vært flinkere på å fokusere på mindre oppgaver i stedet for å se på helheten fra start. En viktig ting vi brukte unødvendig mye tid på var å få satt opp et mer ryddig ‘skall’ å bygge koden ut fra i starten. Vi ble mer opptatt av å lage fungerende kode, så strukturen på det vi hadde først, var ikke strukturert ut fra kompetansekrav eller for at alle skulle skjønne hva som var hva.
+- Vi er i alt ganske fornøyd med helheten i prosjektet. Vi har vært flinke til å samarbeide som en hel gruppe. Noe av det vi er mest fornøyd med er hvor effektive vi var til å komme i gang. Vi ble fort enige om hvilket type spill vi ville lage og alle kom med innspill på hvordan det skulle se ut og hvordan man skulle spille det. Gjennom hele prosjektet har vi pushet oss fremover og kommet oss fort videre i utviklingen. Det har vært mye forbedringer og stor fremgang fra uke til uke.
+- Dersom vi skulle gjort prosjektet på nytt, er det noen ting vi hadde endret på.
+  - For det første ville vi fokusert på å ha en mer inkluderende startfase kodemessig. Vi var flinke til å bli enige om hvordan spillet skulle være som ferdig produkt, men siden vi har ulik måte å jobbe på, ble det vanskelig å samarbeide med oppsettet og kodestrukturen. Det burde vært en enighet fra starten, og vi burde blitt bedre kjent med hverandre, for å være klar over hvordan enkelte arbeider.
+  - For det andre burde vi laget strengere/retningsklare regler for hvordan man tok oppgaver og når disse skulle være ferdige, samt vært flinkere på å forklare hva oppgavene betydde for oss på arbeidsgruppa. Dette ble bedre etter vi ble mer kjent, men har påvirket hele strukturen på prosjektet hele veien.
+  - Et siste forbedringspunkt er at vi også burde vært flinkere på å fokusere på mindre oppgaver i stedet for å se på helheten fra start. En viktig ting vi brukte unødvendig mye tid på var å få satt opp et mer ryddig ‘skall’ å bygge koden ut fra i starten. Vi ble mer opptatt av å lage fungerende kode, så strukturen på det vi hadde først, var ikke strukturert ut fra kompetansekrav eller for at alle skulle skjønne hva som var hva.
 
 # Krav og spesifikasjon
 
@@ -261,14 +265,17 @@ Arbeidsoppgaver:
 
 ## Våre justeringer på kravene som er med i MVP.
 
-Vi har gjort enkelte justeringer i prioriteringen av kravene for MVP. Vi valgte å fokusere tidlig på å etablere en tydelig og fungerende MVC-arkitektur (Model-View-Controller). Dette var et bevisst valg for å sikre god struktur og skille mellom logikk, visning og kontrollflyt i koden. Dette gjør det enklere å utvide og vedlikeholde prosjektet etter hvert som kompleksiteten øker.
+- Vi har gjort enkelte justeringer i prioriteringen av kravene for MVP.
 
-I tillegg har vi utvidet og tilpasset kartet slik at det støtter både vertikal (oppover) og horisontal bevegelse, uten at hele kartet vises samtidig. Dette gir en mer dynamisk og utfordrende spillopplevelse. Endringene ble gjort for å legge til rette for økt kompleksitet i nivådesign og funksjonalitet, og for å gjøre det enklere å implementere mer logikk.
+  - Vi valgte å fokusere tidlig på å etablere en tydelig og fungerende MVC-arkitektur (Model-View-Controller). Dette var et bevisst valg for å sikre god struktur og skille mellom logikk, visning og kontrollflyt i koden. Dette gjør det enklere å utvide og vedlikeholde prosjektet etter hvert som kompleksiteten øker.
+
+  - I tillegg har vi utvidet og tilpasset kartet slik at det støtter både vertikal (oppover) og horisontal bevegelse, uten at hele kartet vises samtidig. Dette gir en mer dynamisk og utfordrende spillopplevelse. Endringene ble gjort for å legge til rette for økt kompleksitet i nivådesign og funksjonalitet, og for å gjøre det enklere å implementere mer logikk.
 
 ## Oppdater hvilke krav dere har prioritert, hvor langt dere har kommet og hva dere har gjort siden forrige gang.
 
-Vi har fokusert på å nå kravene til de forskjellige prinsippene som er blitt vektlagt, vi har blant annet fokusert på blant annet SOLID, som man kan blant annet se i items. Vi har spesielt lagt vekt på Dependency Inversion Principle og Single Responsibility Principle (SRP). Vi har sørget for at hver klasse har ett klart ansvarsområde: én klasse håndterer selve flying-effekten, mens en annen er ansvarlig for poengøkning.
-Vi har også benyttet oss av Creational Design Patterns, med særlig fokus på Factory Method og Abstract Factory. Klassen PowerUpFactory fungerer som en abstrakt fabrikk, og PowerUpFactoryProvider gjør det mulig å registrere ulike typer power-ups dynamisk gjennom PowerUpCreator. Dette gir et fleksibelt system der man enkelt kan legge til nye IPowerUp-objekter.
+- Vi har fokusert på å nå kravene til de forskjellige prinsippene som er blitt vektlagt, vi har blant annet fokusert på blant annet SOLID, som man kan blant annet se i items.
+- Vi har spesielt lagt vekt på Dependency Inversion Principle og Single Responsibility Principle (SRP). Vi har sørget for at hver klasse har ett klart ansvarsområde: én klasse håndterer selve flying-effekten, mens en annen er ansvarlig for poengøkning.
+- Vi har også benyttet oss av Creational Design Patterns, med særlig fokus på Factory Method og Abstract Factory. Klassen PowerUpFactory fungerer som en abstrakt fabrikk, og PowerUpFactoryProvider gjør det mulig å registrere ulike typer power-ups dynamisk gjennom PowerUpCreator. Dette gir et fleksibelt system der man enkelt kan legge til nye IPowerUp-objekter.
 
 ## Design
 
