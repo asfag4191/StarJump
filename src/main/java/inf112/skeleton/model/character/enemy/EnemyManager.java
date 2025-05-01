@@ -3,19 +3,21 @@ package inf112.skeleton.model.character.enemy;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 
 import inf112.skeleton.model.iUpdateable;
+import inf112.skeleton.view.Renderable;
 import inf112.skeleton.view.screen.GameScreen;
 
 /**
  * This class creates <code>SimpleEnemies</code> and manages
  * updating and rendering of them
  */
-public class EnemyManager implements iUpdateable {
+public class EnemyManager implements iUpdateable, Renderable {
     List<SimpleEnemy> enemies = new ArrayList<>();
     private GameScreen screen;
     private EnemyFactory enemyFactory;
@@ -53,6 +55,11 @@ public class EnemyManager implements iUpdateable {
         addEnemy(enemy);
     }
 
+    /**
+     * Load enemies from the Tiled map
+     *
+     * @param map the TiledMap to load enemies from
+     */
     public void loadEnemiesFromMap(TiledMap map) {
 
         var enemyLayer = map.getLayers().get("Enemy");
@@ -107,7 +114,8 @@ public class EnemyManager implements iUpdateable {
         }
     }
 
-    public void render(SpriteBatch batch, float dt) {
+    @Override
+    public void render(Batch batch, float dt) {
         for (SimpleEnemy enemy : enemies) {
             enemy.render(batch, dt);
         }
