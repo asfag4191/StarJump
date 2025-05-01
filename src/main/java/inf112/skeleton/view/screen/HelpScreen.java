@@ -43,7 +43,7 @@ public class HelpScreen implements Screen {
 
         this.diamondTexture = new Texture(Gdx.files.internal("src/main/assets/map/tilemaps/tilesets/Diamond.png"));
         this.rainbowTexture = new Texture(Gdx.files.internal("src/main/assets/map/tilemaps/tilesets/rainbow16.png"));
-        this.playerTexture = new Texture(Gdx.files.internal("src/main/assets/sprites/CoolStar.png")); 
+        this.playerTexture = new Texture(Gdx.files.internal("src/main/assets/sprites/CoolStar.png"));
         this.enemyTexture = new Texture(Gdx.files.internal("src/main/assets/sprites/simple_blackhole.png"));
         Table mainTable = new Table();
         mainTable.setFillParent(true);
@@ -51,7 +51,7 @@ public class HelpScreen implements Screen {
         stage.addActor(mainTable);
 
         Table box = new Table();
-        box.setBackground(skin.newDrawable("white", 0f, 0f, 0f, 0.7f)); 
+        box.setBackground(skin.newDrawable("white", 0f, 0f, 0f, 0.7f));
         box.pad(30);
         box.defaults().space(12);
 
@@ -59,8 +59,8 @@ public class HelpScreen implements Screen {
         title.setFontScale(2f);
         box.add(title).center().row();
 
-        Label movement = new Label("Press arrow keys to move left/right", skin);
-        Label jump = new Label("Use arrow up to jump (you can double jump!)", skin);
+        Label movement = new Label("Press arrow keys og A&D to move left/right", skin);
+        Label jump = new Label("Use the space bar to jump (you can double jump!)", skin);
 
         movement.setFontScale(1.2f);
         jump.setFontScale(1.2f);
@@ -91,14 +91,14 @@ public class HelpScreen implements Screen {
         powerupRow.add(powerupLabel);
         box.add(powerupRow).row();
 
-        Image enemyImage = new Image(enemyTexture); 
-        Label avoidLabel = new Label("Avoid floating enemies and walking ones!", skin);
+        Image enemyImage = new Image(enemyTexture);
+        Label avoidLabel = new Label("Avoid the black holes!", skin);
         avoidLabel.setFontScale(1.2f);
-        
+
         Table avoidRow = new Table();
-        avoidRow.add(enemyImage).size(32).padRight(10); 
+        avoidRow.add(enemyImage).size(32).padRight(10);
         avoidRow.add(avoidLabel);
-        
+
         box.add(avoidRow).center().padTop(10).row();
 
         TextButton backButton = new TextButton("Back to Menu", skin);
@@ -134,9 +134,17 @@ public class HelpScreen implements Screen {
         stage.getViewport().update(width, height, true);
     }
 
-    @Override public void pause() {}
-    @Override public void resume() {}
-    @Override public void hide() {}
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+    }
+
+    @Override
+    public void hide() {
+    }
 
     @Override
     public void dispose() {
