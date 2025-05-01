@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Disposable;
 
 /**
  * A class for managing 2D animations using {@link Animation}.
@@ -23,7 +24,7 @@ import com.badlogic.gdx.utils.Array;
  *     animator.update(deltaTime) // returns the next frame to be rendered
  * </pre>
  */
-public class Animator {
+public class Animator implements Disposable {
     private final HashMap<String, Animation<TextureRegion>> animations;
     private Animation<TextureRegion> currentAnimation;
     private String currentKey;
@@ -34,11 +35,12 @@ public class Animator {
      * Constructs an {@code Animator} with an empty animation collection.
      */
     public Animator() {
-     this.animations = new HashMap<>();
+        this.animations = new HashMap<>();
     }
 
     /**
      * Adds an animation with the specified key.
+     *
      * @param key  The identifier for the animation.
      * @param anim The {@link Animation} to add.
      */
@@ -46,8 +48,9 @@ public class Animator {
         animations.put(key, anim);
     }
 
-     /**
+    /**
      * Creates and adds an animation from a texture sheet.
+     *
      * @param key            The identifier for the animation.
      * @param animationSheet The texture sheet containing animation frames.
      * @param rows           The number of rows in the sheet.
@@ -56,22 +59,23 @@ public class Animator {
      */
     public void addAnimation(String key, Texture animationSheet, int rows, int cols, float fps) {
         TextureRegion[][] temp = TextureRegion.split(animationSheet,
-                animationSheet.getWidth()/cols,
-                animationSheet.getHeight()/rows);
+                animationSheet.getWidth() / cols,
+                animationSheet.getHeight() / rows);
 
         TextureRegion[] animFrames = new TextureRegion[rows * cols];
         for (int i = 0, index = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++, index++) {
-                animFrames[index] =  temp[i][j];
+                animFrames[index] = temp[i][j];
             }
         }
 
-        Animation<TextureRegion> anim = new Animation<>(1/fps, animFrames);
+        Animation<TextureRegion> anim = new Animation<>(1 / fps, animFrames);
         addAnimation(key, anim);
     }
 
     /**
      * Creates and adds an animation from a texture atlas.
+     *
      * @param key        The identifier for the animation.
      * @param atlas      The {@link TextureAtlas} containing the animation regions.
      * @param regionName The name of the region in the atlas.
@@ -79,13 +83,14 @@ public class Animator {
      */
     public void addAnimation(String key, TextureAtlas atlas, String regionName, float fps) {
         Array<TextureAtlas.AtlasRegion> frames = atlas.findRegions(regionName);
-        Animation<TextureRegion> anim = new Animation<>(1/fps, frames);
+        Animation<TextureRegion> anim = new Animation<>(1 / fps, frames);
         addAnimation(key, anim);
     }
 
     /**
      * Plays the animation associated with the given key.
      * If the animation is already playing, it does nothing.
+     *
      * @param key The key of the animation to play.
      * @throws IllegalArgumentException if the key is {@code null}.
      */
@@ -109,6 +114,7 @@ public class Animator {
 
     /**
      * Pauses or resumes the currently playing animation.
+     *
      * @param on {@code true} to pause, {@code false} to resume.
      */
     public void pause(boolean on) {
@@ -117,6 +123,7 @@ public class Animator {
 
     /**
      * Updates the animation frame based on the elapsed time.
+     *
      * @param dt The delta time between frames.
      * @return a {@link TextureRegion} representing the current frame of the animation.
      * if no animation is playing {@code null} is returned.
@@ -135,6 +142,7 @@ public class Animator {
      * Checks if an animation is currently playing.
      * An animation is considered playing even if it is paused.
      * Use {@link #isPaused()} to check whether the animation is paused.
+     *
      * @return {@code true} if an animation is playing, {@code false} otherwise.
      */
     public boolean isPlaying() {
@@ -143,21 +151,35 @@ public class Animator {
 
     /**
      * Checks if the animation is paused.
+     *
      * @return {@code true} if the animation is paused, {@code false} otherwise.
      */
     public boolean isPaused() {
         return isPaused;
     }
 
-
-     /**
+    /**
      * Clears all stored animations and resets the current animation.
      */
-    public void clearAnimations() {
+    @Override
+    public void dispose() {
+        for (Animation<TextureRegion> animation : animations.values()) {
+            disposeTexture(animation);
+        }
         animations.clear();
         currentAnimation = null;
         currentKey = null;
         currentTime = 0f;
         isPaused = false;
     }
+
+    private static void disposeTexture(Animation<TextureRegion> animation) {
+        TextureRegion region = animation.getKeyFrames()[0];
+        Texture texture = region.getTexture();
+
+        if (texture != null) {
+            texture.dispose(); // Be cautious: don’t dispose same texture multiple times
+        }
+    }
+
 }
