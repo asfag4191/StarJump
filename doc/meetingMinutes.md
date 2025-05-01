@@ -1,18 +1,53 @@
-## Møtereferater
+# Møtereferater
 
 Lag korte referat fra team-møtene (ha med dato, hvem som var tilstede, hva dere diskuterte, hvilke avgjørelser dere tok, og hva dere ble enige om å gjøre til neste gang)
+
+## 29. april
+
+Til stede: Mohamad, Åse, Thora
+
+- Hva ble diskutert:
+  - Vi fordelte klasser som må testes mellom oss for å sikre at test-coverage er over 75%
+  - Gikk over prosjektrapporten sammen
+  - Spilte spillet sammen<3
+  - Ryddet i død kode
+  - Ryddet kommentarer i koden vi har brukt underveis
+- Til neste gang:
+  - Få testcoverage over 75%
+  - Ferdigstille prosjektrapport
+  - Oppdatere javadocks
+  - Slette ubrukt kode
+
+## 25. april
+
+Til stede: Jonas, Mohamad, Anna, Thora, Maren og Åse
+
+- Hva ble diskutert:
+  - Hva vi mangler i prosjektet
+  - Hvem som skal ta seg av hva
+    - Åse: brukerhistorier og tester
+    - Maren: Ferdigstille fienden
+    - Thora: lager tester, se på brukerhistorier, begynne på prosjektrapport
+    - Anna: fikse levelbytte ved døren og game over/you loose screen
+    - Jonas: skytterne i spillet
+    - Mohamad: lager tester
+- Til neste gang:
+  - Skive brukerhistorier
+  - Lage tester
+  - Oppdatere de siste elementene til spillet før ferdigstilt prosjekt
+  - Rydde og slette ubrukt kode
 
 ## 11. April
 
 Til stede: Åse, Jonas og Thora
 
 - Hva ble diskutert:
-  - gikk gjennom innleveringen og så på hvordan vi skal jobbe frem mot 2. mai.
+  - Gikk gjennom innleveringen og så på hvordan vi skal jobbe frem mot 2. mai.
   - Ferdigstilte innleveringen.
 - Til neste gang:
-  - lage oversikt over hva som skal gjøres fremover
-  - lage en oversikt på hva vi mangler tester på
-  - gå gjennom hvilke krav vi må oppfylle for at oppgaven skal være ferdig.
+  - Lage oversikt over hva som skal gjøres fremover
+  - Lage en oversikt på hva vi mangler tester på
+  - Gå gjennom hvilke krav vi må oppfylle for at oppgaven skal være ferdig.
 
 ## 8.April
 
@@ -142,10 +177,10 @@ Tilstede: Jonas, Anna, Thora, Maren, Mohamad og Åse
   - Gå over koden sammen og se hva vi har gjort som enkeltindivider
   - Gå gjennom hva som må forbedres for at alle filene skal jobbe sammen
 - Hva ble diskutert:
-  - hvordan ny mappestruktur skal se ut
-  - hvordan vi skal jobbe fremover
-  - lage brukerhistorier på forhånd som vi følger i oppgaveoppsett
-  - lage tester kontinuerlig
+  - Hvordan ny mappestruktur skal se ut
+  - Hvordan vi skal jobbe fremover
+  - Lage brukerhistorier på forhånd som vi følger i oppgaveoppsett
+  - Lage tester kontinuerlig
 - Hva ble gjort:
   - Gikk gjennom updates på spillet
   - Lagt en ish plan fremover
@@ -153,8 +188,8 @@ Tilstede: Jonas, Anna, Thora, Maren, Mohamad og Åse
   - Slette ubrukte mapper
   - Refaktorisert koden sammen for å få bedre mappestruktur
 - Til neste gang:
-  - ferdigstille planen
-  - lag mapper og klasser til fremtidige oppgaver
+  - Ferdigstille planen
+  - Lag mapper og klasser til fremtidige oppgaver
 
 ## 7. mars
 
@@ -177,20 +212,20 @@ Tilstede: Åse, Anna, Mohamad, Jonas og Thora
 Tilstede: Åse, Maren, Thora, Jonas, Mohamad
 
 - Hva ble diskutert:
-  - gikk over hvilke oppgaver som blir gjort av hvem.
-  - jobber mot å få fiende og player på skjermen (Anna og Mohamad)
-  - oppdatere playercontroller til libGDX (Thora)
+  - Gikk over hvilke oppgaver som blir gjort av hvem.
+  - Jobber mot å få fiende og player på skjermen (Anna og Mohamad)
+  - Oppdatere playercontroller til libGDX (Thora)
   - Lage en pipeline for å få Colliders fra TiledMap inn i box2D world (Jonas)
   - Gå over test coverage til innleveringen (Maren, Åse, (Thora))
   - Skrive prosjektrapport (Thora, Maren)
   - Rydde i dokumenter og trello (Maren)
 - Hva ble gjort:
-  - kodet sammen og diskuterte fremgangsmåter
-  - plalagt at vi skal gå over oppsett og fremgangsmåte neste tirsdag
+  - Kodet sammen og diskuterte fremgangsmåter
+  - Plalagt at vi skal gå over oppsett og fremgangsmåte neste tirsdag
 - Til neste gang:
-  - komme i mål med oppgavene
-  - skal gå gjennom innleveringen på fredag
-  - tenke gjennom hvilke deler av oppgaven som skal leveres i del 3 (skal lage ordentlig oppsett neste uke)
+  - Komme i mål med oppgavene
+  - Skal gå gjennom innleveringen på fredag
+  - Tenke gjennom hvilke deler av oppgaven som skal leveres i del 3 (skal lage ordentlig oppsett neste uke)
 
 ## 28. februar
 
@@ -236,11 +271,11 @@ Tilstede: Mohamad, Maren, Thora, Åse, Anna (Jonas syk)
   - Gjort/til neste gang:
   - Merget brancher
   - Gått over hvordan koden samhandler
-    - gått gjennom merger og hvorfor de ikke funker
+    - Gått gjennom merger og hvorfor de ikke funker
       pulle main
-    - pipeline har ikke keyboard
-    - lagre endringer for å commite riktig versjon av filene
-    - hvordan branches endrer seg med endringer
+    - Pipeline har ikke keyboard
+    - Lagre endringer for å commite riktig versjon av filene
+    - Hvordan branches endrer seg med endringer
   - Åse: sett på hvordan man lager interaktive objekter i spillet
   - Mohamad: merget branchen sin
   - Thora: merget branchen sin, møtereferat
