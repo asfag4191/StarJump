@@ -167,14 +167,9 @@ public class GameScreen implements Screen {
 
         powerUpManager.update(dt);
         enemyManager.update(dt);
-        powerUpManager.update(dt);
-        //doorManager.update(dt);
-        enemyManager.update(dt);
-        hud.update(dt); //
-
-        adjustCamera(this.player, 3f);
         doorManager.update(dt);
-
+        hud.update(dt); //
+        adjustCamera(this.player, 3f);
         checkLevelCompletion();
     }
 
