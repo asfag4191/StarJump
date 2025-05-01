@@ -63,9 +63,6 @@ public class WorldModel implements Renderable {
     }
 
     private void removeBodies() {
-        if (bodiesToRemove.isEmpty()) {
-            return;
-        }
         for (Body body : bodiesToRemove) {
             world.destroyBody(body);
         }
