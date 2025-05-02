@@ -1,6 +1,6 @@
 # Møtereferater
 
-Lag korte referat fra team-møtene (ha med dato, hvem som var tilstede, hva dere diskuterte, hvilke avgjørelser dere tok, og hva dere ble enige om å gjøre til neste gang)
+Under er korte møtereferater fra team-møtene. De er merket med dato, der nyligste møte holdt er øverst. Referatene inneholder hvem som var tilstede, hva vi diskuterte, hvilke avgjørelser vi tok, og hva vi ble enige om å gjøre til neste gang
 
 ## 2. mai
 
