@@ -13,9 +13,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 
-import inf112.skeleton.utility.listeners.CollisionHandler;
-import inf112.skeleton.utility.listeners.WorldContactListener;
-
 
 class WorldContactListenerTest {
 

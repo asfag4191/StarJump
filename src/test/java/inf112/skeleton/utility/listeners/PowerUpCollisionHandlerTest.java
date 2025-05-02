@@ -13,7 +13,6 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 
 import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.items.powerup.PowerUpObject;
-import inf112.skeleton.utility.listeners.PowerUpCollisionHandler;
 
 class PowerUpCollisionHandlerTest {
 

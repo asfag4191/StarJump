@@ -5,7 +5,6 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 
 import inf112.skeleton.model.character.Character;
-import inf112.skeleton.utility.listeners.ProjectileCollisionHandler;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

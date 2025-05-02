@@ -40,11 +40,10 @@ public class CharacterAttributes {
      */
     public CharacterAttributes(CharacterAttributes attributes) {
         this(attributes.getMaxHp(),
-             attributes.getJumpPower(),
-             attributes.getMaxJumps(),
-             attributes.getSpeed(),
-             attributes.getStrength()
-        );
+                attributes.getJumpPower(),
+                attributes.getMaxJumps(),
+                attributes.getSpeed(),
+                attributes.getStrength());
     }
 
     /**
@@ -166,7 +165,7 @@ public class CharacterAttributes {
      * @param hp The new hp.
      */
     public void setHp(float hp) {
-        if (this.hp < 0 || this.hp > maxHp)
+        if (hp < 0 || hp > maxHp)
             throw new IllegalArgumentException("currentHp must be between 0 and the maximum hp");
         this.hp = hp;
     }
