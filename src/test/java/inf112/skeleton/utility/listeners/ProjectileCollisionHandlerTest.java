@@ -5,6 +5,9 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 
 import inf112.skeleton.model.character.Character;
+import inf112.skeleton.model.character.CharacterAttributes;
+import inf112.skeleton.model.character.enemy.projectile.Projectile;
+import inf112.skeleton.model.character.enemy.projectile.ProjectileAttributes;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,15 +42,20 @@ public class ProjectileCollisionHandlerTest {
         Character player = mock(Character.class);
         when(player.isPlayer()).thenReturn(true);
 
-        Object fakeProjectile = new Object() {
-        };
+        Projectile fakeProjectile = mock(Projectile.class);
+        ProjectileAttributes attributes = mock(ProjectileAttributes.class);
+        when(fakeProjectile.getAttributes()).thenReturn(attributes);
+        when(attributes.damage()).thenReturn(1f);
 
         when(bodyA.getUserData()).thenReturn(player);
         when(bodyB.getUserData()).thenReturn(fakeProjectile);
 
         handler.onContactBegin(contact, fixA, fixB);
 
-        verify(player, never()).takeDamage(anyFloat());
+        verify(player, atLeast(1)).takeDamage(anyFloat());
+
+        handler.onContactBegin(contact, fixB, fixA);
+        verify(player, atLeast(1)).takeDamage(anyFloat());
     }
 
     @Test
@@ -67,11 +75,16 @@ public class ProjectileCollisionHandlerTest {
 
     @Test
     void testCollisionWithGroundDoesNotCrash() {
-        Object fakeProjectile = new Object();
+        Projectile fakeProjectile = mock(Projectile.class);
+        Character player = mock(Character.class);
+        when(player.isPlayer()).thenReturn(true);
 
         when(bodyA.getUserData()).thenReturn("ground");
         when(bodyB.getUserData()).thenReturn(fakeProjectile);
 
         handler.onContactBegin(contact, fixA, fixB);
+        handler.onContactBegin(contact, fixB, fixA);
+
     }
+
 }
