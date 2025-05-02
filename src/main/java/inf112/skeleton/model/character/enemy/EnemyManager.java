@@ -19,8 +19,8 @@ import inf112.skeleton.view.screen.GameScreen;
  */
 public class EnemyManager implements iUpdateable, Renderable {
     List<SimpleEnemy> enemies = new ArrayList<>();
-    private GameScreen screen;
-    private EnemyFactory enemyFactory;
+    private final GameScreen screen;
+    private final EnemyFactory enemyFactory;
 
     /**
      * Constructor for EnemyManager, creates its own EnemyFactory
