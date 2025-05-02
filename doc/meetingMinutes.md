@@ -2,9 +2,19 @@
 
 Lag korte referat fra team-møtene (ha med dato, hvem som var tilstede, hva dere diskuterte, hvilke avgjørelser dere tok, og hva dere ble enige om å gjøre til neste gang)
 
+## 2. mai
+
+Til stede: Åse, Mohamad, Jonas, Anna og Thora
+
+- Hva ble diskutert:
+  - Gikk over prosjektet for å se på om kravene var dekt til innlevering.
+  - Finpusset prosjektrapporten
+  - Laget klassediagram
+  - Lagt inn javadocs der det mangler
+
 ## 29. april
 
-Til stede: Mohamad, Åse, Thora
+Til stede: Mohamad, Åse, Thora, Anna, Maren og Jonas
 
 - Hva ble diskutert:
   - Vi fordelte klasser som må testes mellom oss for å sikre at test-coverage er over 75%
