@@ -10,7 +10,6 @@ import com.badlogic.gdx.physics.box2d.Filter;
 import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.enemy.BlackHole;
-import inf112.skeleton.utility.listeners.EnemyCollisionHandler;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

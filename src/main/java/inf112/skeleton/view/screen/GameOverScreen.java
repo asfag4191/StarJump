@@ -13,7 +13,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.items.powerup.DiamondPowerUp;
-import inf112.skeleton.view.HUD;
 
 /**
  * Creates two different end screens, one for winning and one for losing.
