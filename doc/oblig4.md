@@ -281,6 +281,12 @@ Vi har gjort enkelte justeringer i prioriteringen av kravene for MVP.
 - Vi har spesielt lagt vekt på Dependency Inversion Principle og Single Responsibility Principle (SRP). Vi har sørget for at hver klasse har ett klart ansvarsområde: én klasse håndterer selve flying-effekten, mens en annen er ansvarlig for poengøkning.
 - Vi har også benyttet oss av Creational Design Patterns, med særlig fokus på Factory Method og Abstract Factory. Klassen PowerUpFactory fungerer som en abstrakt fabrikk, og PowerUpFactoryProvider gjør det mulig å registrere ulike typer power-ups dynamisk gjennom PowerUpCreator. Dette gir et fleksibelt system der man enkelt kan legge til nye IPowerUp-objekter.
 
+## Våre bugs
+
+- Det er en bug hvor spilleren setter seg fast i vegger ved å bevege seg inn i dem. Dette skyldes fysikkrelaterte årsaker, som friksjon og hastighet. En mulig løsning er å legge til sensorer på venstre og høyre side av spilleren som setter friksjonen til null dersom spilleren forsøker å feste seg til vegger. En annen tilnærming kan være å endre formen på spillerens fixture slik at sidene får andre egenskaper enn resten av figuren.
+- Hvis Player hopper gjennom BlackHole mister den 2 livDette skjer kun når Player flyr vha. regnbue-powerupen, ellers er det ikke mulig for Player å treffe BlackHole fra bunnen. Er nok fordi BlackHole angriper Player dersom de treffer hverandre, dette skjer i EnemyCollisionHandler.java. siden de treffes på bunnen og på toppen kan dette være årsaken til at man mikster to liv i stedet for ett
+- Noen BlackHoles står i ro (mulig de setter seg fast) på plattformen. Når Player kolliderer med det svarte hullet som står i ro begynner det å bevege seg igjen
+
 ## Design
 
 Alle eksterne ressurser benyttet i prosjektet er hentet fra frie, rettighetsklarerte kilder, eller er laget av gruppen selv. Dette følger prinsipper for åpen kildekode og respekt for opphavsrett.
