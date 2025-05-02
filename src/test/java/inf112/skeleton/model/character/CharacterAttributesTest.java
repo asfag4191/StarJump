@@ -16,7 +16,7 @@ public class CharacterAttributesTest {
 
     @BeforeEach
     void setUpBeforeEach() {
-        
+
         attributes = new CharacterAttributes(maxHp, jumpPower, maxJumps, speed, strength);
     }
 
@@ -41,7 +41,64 @@ public class CharacterAttributesTest {
     @Test
     void setMaxHpTest() {
         assertThrows(IllegalArgumentException.class, () -> attributes.setMaxHp(-5));
+        assertDoesNotThrow(() -> attributes.setMaxHp(10));
+        assertEquals(10, attributes.getMaxHp());
     }
 
-    // TODO: not finished here ...
+    @Test
+    void setJumpsLeftTest() {
+        assertThrows(IllegalArgumentException.class, () -> attributes.setJumpsLeft(-1));
+        assertDoesNotThrow(() -> attributes.setJumpsLeft(1));
+        assertEquals(1, attributes.getJumpsLeft());
+        assertThrows(IllegalArgumentException.class, () -> attributes.setJumpsLeft(maxJumps + 1));
+    }
+
+    @Test
+    void setHpTest() {
+        assertThrows(IllegalArgumentException.class, () -> attributes.setHp(-1));
+        assertThrows(IllegalArgumentException.class, () -> attributes.setHp(maxHp + 1));
+        assertDoesNotThrow(() -> attributes.setHp(1));
+        assertEquals(1, attributes.getHp());
+    }
+
+    @Test
+    void setJumpPowerTest() {
+        assertThrows(IllegalArgumentException.class, () -> attributes.setJumpPower(-1));
+        assertDoesNotThrow(() -> attributes.setJumpPower(1));
+        assertEquals(1, attributes.getJumpPower());
+    }
+
+    @Test
+    void setMaxJumpsTest() {
+        assertThrows(IllegalArgumentException.class, () -> attributes.setMaxJumps(-1));
+        assertDoesNotThrow(() -> attributes.setMaxJumps(1));
+        assertEquals(1, attributes.getMaxJumps());
+    }
+
+    @Test
+    void setSpeedTest() {
+        assertThrows(IllegalArgumentException.class, () -> attributes.setSpeed(-1));
+        assertDoesNotThrow(() -> attributes.setSpeed(1));
+        assertEquals(1, attributes.getSpeed());
+    }
+
+    @Test
+    void addJumpsTest() {
+        attributes.setJumpsLeft(0);
+        attributes.addJumps(-1);
+        assertEquals(0, attributes.getJumpsLeft());
+        attributes.addJumps(1);
+        assertEquals(1, attributes.getJumpsLeft());
+    }
+
+    @Test
+    void copyingAttributes() {
+        CharacterAttributes copiedAttributes = new CharacterAttributes(attributes);
+        assertFalse(copiedAttributes == attributes);
+        assertEquals(attributes.getMaxHp(), copiedAttributes.getMaxHp());
+        assertEquals(attributes.getJumpPower(), copiedAttributes.getJumpPower());
+        assertEquals(attributes.getMaxJumps(), copiedAttributes.getMaxJumps());
+        assertEquals(attributes.getSpeed(), copiedAttributes.getSpeed());
+        assertEquals(attributes.getStrength(), copiedAttributes.getStrength());
+    }
 }
