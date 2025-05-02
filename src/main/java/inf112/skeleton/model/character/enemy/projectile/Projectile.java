@@ -16,6 +16,10 @@ import inf112.skeleton.model.colliders.RigidBody;
 import inf112.skeleton.view.Animator;
 import inf112.skeleton.view.Renderable;
 
+/**
+ * A projectile fired by an enemy.
+ * Moves in a given direction, can damage the player, and is animated.
+ */
 public class Projectile extends RigidBody implements Disposable, iUpdateable, Renderable {
     private static final PolygonShape SHAPE = new PolygonShape();
 
@@ -27,6 +31,15 @@ public class Projectile extends RigidBody implements Disposable, iUpdateable, Re
 
     private WorldModel worldModel;
 
+    /**
+     * Creates a new projectile instance with the specified properties.
+     *
+     * @param worldModel The game world the projectile exists in
+     * @param startPos   The initial position of the projectile
+     * @param attributes The physical and gameplay-related attributes
+     * @param size       The size (width/height) of the projectile
+     * @param animator   The animator used to render the projectile
+     */
     public Projectile(WorldModel worldModel, Vector2 startPos, ProjectileAttributes attributes, Vector2 size,
             Animator animator) {
         super(worldModel.world, getBodyDef(attributes.gravity()), getFixtureDef(size), false);

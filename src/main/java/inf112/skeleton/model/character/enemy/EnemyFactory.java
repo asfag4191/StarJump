@@ -6,6 +6,14 @@ import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.CharacterAttributes;
 import inf112.skeleton.view.screen.GameScreen;
 
+/**
+ * Factory class for creating enemy characters in the game.
+ * <p>
+ * This class provides methods to create different types of enemies, such as
+ * BlackHole and SentryEnemy. It encapsulates the logic for creating enemies,
+ * allowing for easy instantiation and configuration.
+ * </p>
+ */
 class EnemyFactory {
 
     private GameScreen screen;
