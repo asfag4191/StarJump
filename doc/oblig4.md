@@ -7,7 +7,7 @@
 - Rollene i teamet fungerer bra. Vi har ikke gitt noen hovedansvaret for å delegere oppgaver som vi hadde diskutert. Dette har vært litt problematisk før, men har blitt bra nå.
 - Alle er flinke til å ta ansvar og hjelpe hverandre underveis, uansett ansvarsområde, og de med hovedansvar sjekker at alt er bra til innlevering.
 
-## Trenger dere andre roller? Skriv ned noen linjer om hva de ulike rollene faktisk innebærer for dere.
+## Våre roller i gruppen:
 
 - Åse er fortsatt team-lead og hun tar dette ansvaret seriøst. Vi har alltid et booket grupperom til timene og hun følger opp at oppgaver er i mål ut fra de målsettingene vi har satt til ulike datoer.
 - Thora er fortsatt sekretær. Hun går over møtereferater og skriver rapporter, samt rydder i dokumentene og Trello. Hun får også hjelp med organiseringen av Trello, men går over de ulike listene og kortene for å se om det er forståelig for alle.
@@ -42,7 +42,7 @@
 - Vi sender også oppdatering av hvordan vi ligger an i de ulike oppgavene. Dette gjør det lettere å komme med innspill eller hjelpe til med andre oppgaver som er tatt av medlemmer i gruppa når noen har mye og andre har lite å gjøre.
 - Vi oppdaterer trello fortsatt og trives med oppsettet vårt der.
 
-## Kort retrospektiv hvor vi har vurdert hva vi har klart til nå, og hva som kan forbedres.
+## Kort retrospektiv hvor vi har vurdert hva vi har klart til nå, og hva som kan forbedres:
 
 - Vi har fått så god oversikt over hverandres arbeid som kan forventes med en gruppe på seks.
 - Vi har fått balansert at vi tar plassen vi skal ha i gruppa, uten å ta for mye plass så andre ikke slipper til.
@@ -88,7 +88,7 @@
 - Tester for BlackHole.
 - Byttet bildene som brukes for å tegne spillfiguren og prosjektiler i spillet.
 
-## Et kort retrospektiv på hvordan vi vurderer hvordan prosjektet har gått.
+## Et kort retrospektiv på hvordan vi vurderer hvordan prosjektet har gått:
 
 - Vi er i alt ganske fornøyd med helheten i prosjektet. Vi har vært flinke til å samarbeide som en hel gruppe. Noe av det vi er mest fornøyd med er hvor effektive vi var til å komme i gang. Vi ble fort enige om hvilket type spill vi ville lage og alle kom med innspill på hvordan det skulle se ut og hvordan man skulle spille det. Gjennom hele prosjektet har vi pushet oss fremover og kommet oss fort videre i utviklingen. Det har vært mye forbedringer og stor fremgang fra uke til uke.
 - Dersom vi skulle gjort prosjektet på nytt, er det noen ting vi hadde endret på.
@@ -98,7 +98,7 @@
 
 # Krav og spesifikasjon
 
-## Våre krav vi har prioritert, hva vi har oppnådd siden sist.
+## Våre krav vi har prioritert, hva vi har oppnådd siden sist:
 
 - Oppdatert brukerhistorier
 - Få opp test-coverage
@@ -108,7 +108,7 @@
 - Lage flere screens til å vinne bane og tape bane.
 - Gått gjennom oppgavekravene for å se om det er noe vi har oversett
 
-## Brukerhistorier, akseptansekrav og arbeidsoppgaver til kravene vi har jobbet med
+## Brukerhistorier, akseptansekrav og arbeidsoppgaver til kravene vi har jobbet med:
 
 ### Skille bakgrunn fra plattformer
 
@@ -267,7 +267,7 @@ Arbeidsoppgaver:
 - Legge inn kommentarer og javadocs for å gjøre koden mer lesbar for alle.
 - Fjerne død/råtnende kode
 
-## Våre justeringer på kravene som er med i MVP.
+## Våre justeringer på kravene som er med i MVP:
 
 Vi har gjort enkelte justeringer i prioriteringen av kravene for MVP.
 
@@ -275,18 +275,18 @@ Vi har gjort enkelte justeringer i prioriteringen av kravene for MVP.
 
 - I tillegg har vi utvidet og tilpasset kartet slik at det støtter både vertikal (oppover) og horisontal bevegelse, uten at hele kartet vises samtidig. Dette gir en mer dynamisk og utfordrende spillopplevelse. Endringene ble gjort for å legge til rette for økt kompleksitet i nivådesign og funksjonalitet, og for å gjøre det enklere å implementere mer logikk.
 
-## Oppdater hvilke krav dere har prioritert, hvor langt dere har kommet og hva dere har gjort siden forrige gang.
+## Kravene vi har prioritert, hva vi har oppnådd og ordet siden sist innlevering:
 
 - Vi har fokusert på å nå kravene til de forskjellige prinsippene som er blitt vektlagt, vi har blant annet fokusert på blant annet SOLID, som man kan blant annet se i items.
 - Vi har spesielt lagt vekt på Dependency Inversion Principle og Single Responsibility Principle (SRP). Vi har sørget for at hver klasse har ett klart ansvarsområde: én klasse håndterer selve flying-effekten, mens en annen er ansvarlig for poengøkning.
 - Vi har også benyttet oss av Creational Design Patterns, med særlig fokus på Factory Method og Abstract Factory. Klassen PowerUpFactory fungerer som en abstrakt fabrikk, og PowerUpFactoryProvider gjør det mulig å registrere ulike typer power-ups dynamisk gjennom PowerUpCreator. Dette gir et fleksibelt system der man enkelt kan legge til nye IPowerUp-objekter.
 
-## Våre bugs
+## Våre bugs:
 
 - Det er en bug hvor spilleren setter seg fast i vegger ved å bevege seg inn i dem. Dette skyldes fysikkrelaterte årsaker, som friksjon og hastighet. En mulig løsning er å legge til sensorer på venstre og høyre side av spilleren som setter friksjonen til null dersom spilleren forsøker å feste seg til vegger. En annen tilnærming kan være å endre formen på spillerens fixture slik at sidene får andre egenskaper enn resten av figuren.
 - Hvis Player hopper gjennom BlackHole mister den 2 livDette skjer kun når Player flyr vha. regnbue-powerupen, ellers er det ikke mulig for Player å treffe BlackHole fra bunnen. Er nok fordi BlackHole angriper Player dersom de treffer hverandre, dette skjer i EnemyCollisionHandler.java. siden de treffes på bunnen og på toppen kan dette være årsaken til at man mikster to liv i stedet for ett
 - Noen BlackHoles står i ro (mulig de setter seg fast) på plattformen. Når Player kolliderer med det svarte hullet som står i ro begynner det å bevege seg igjen
 
-## Design
+## Design:
 
 Alle eksterne ressurser benyttet i prosjektet er hentet fra frie, rettighetsklarerte kilder, eller er laget av gruppen selv. Dette følger prinsipper for åpen kildekode og respekt for opphavsrett.
