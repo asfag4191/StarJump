@@ -50,10 +50,6 @@ public final class ColliderToBox2D {
                 continue;
             }
 
-            /*
-             * Adds body with shape and position to world as static object
-             * Then disposes the
-             */
             // Create the body
             Body body = world.createBody(def);
 

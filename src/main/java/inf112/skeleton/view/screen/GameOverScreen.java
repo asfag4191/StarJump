@@ -14,9 +14,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import inf112.skeleton.app.StarJump;
 import inf112.skeleton.model.items.powerup.DiamondPowerUp;
 
-/**
- * Creates two different end screens, one for winning and one for losing.
- */
 public class GameOverScreen implements Screen {
 
     final StarJump game;
@@ -25,6 +22,12 @@ public class GameOverScreen implements Screen {
     private final Texture background;
     private final boolean win;
 
+    /**
+     * Constructs a new GameOverScreen.
+     *
+     * @param game the main game instance used for screen switching
+     * @param win  true if the player won, false if the player lost
+     */
     public GameOverScreen(StarJump game, Boolean win) {
         this.game = game;
         this.win = win;
@@ -78,7 +81,6 @@ public class GameOverScreen implements Screen {
             return "You lost :(";
         }
     }
-
 
     @Override
     public void show() {

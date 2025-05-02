@@ -34,12 +34,16 @@ public class WorldContactListener implements ContactListener {
         onContact(contact, true);
     }
 
-    @Override public void endContact(Contact contact) {
+    @Override
+    public void endContact(Contact contact) {
         onContact(contact, false);
     }
 
-    @Override public void preSolve(Contact contact, Manifold oldManifold) {}
-    @Override public void postSolve(Contact contact, ContactImpulse impulse) {}
+    @Override
+    public void preSolve(Contact contact, Manifold oldManifold) {}
+
+    @Override
+    public void postSolve(Contact contact, ContactImpulse impulse) {}
 
     /**
      * Handles the contact events based on the contact type.

@@ -29,7 +29,10 @@ public final class PowerUpFactoryProvider {
                 (character, position, sprite) -> new DiamondPowerUp(character, position, sprite));
         }
     }
-    
+
+    /**
+     * Creates a provider with default power-ups registered.
+     */
     public PowerUpFactoryProvider() {
         this(true); 
     }

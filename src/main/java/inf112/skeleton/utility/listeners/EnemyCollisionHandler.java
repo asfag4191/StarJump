@@ -64,9 +64,6 @@ public class EnemyCollisionHandler implements CollisionHandler {
         Object fixUserDataA = fixA.getUserData();
         Object fixUserDataB = fixB.getUserData();
 
-        // Use the fixture’s userData to detect it’s a sensor.
-
-        // Use the body’s userData to identify which BlackHole owns that sensor.
 
         // Check if the sensor fixture was hit
         if ("blackhole_sensor".equals(fixUserDataB)) {
@@ -78,7 +75,6 @@ public class EnemyCollisionHandler implements CollisionHandler {
             }
         }
 
-        // Check if the sensor fixture was hit
         if ("blackhole_sensor".equals(fixUserDataA)) {
             Object other = fixB.getBody().getUserData();
             BlackHole blackHole = (BlackHole) fixA.getBody().getUserData(); // black hole is body of sensor

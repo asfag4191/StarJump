@@ -51,30 +51,30 @@ public class GameScreen implements Screen {
     private EnemyManager enemyManager;
     private String currentGame;
 
+    /**
+     * Constructs a GameScreen with a specified TMX map file.
+     *
+     * @param game the game application reference
+     * @param map  the TMX map filename to load
+     */
     protected GameScreen(StarJump game, String map) {
         this.game = game;
 
-        // SINGLE SHARED WORLD instance
         this.world = new World(new Vector2(0, -9.81f * 2), true);
 
-        // Pass the SAME WORLD to WorldModel
         this.worldModel = new WorldModel(world);
         this.player = worldModel.createPlayer();
         this.debugger = new Box2DDebugRenderer(true, true, true, true, true, true);
 
-        // Use gameViewport (tile-based)
         this.gamecam = (OrthographicCamera) game.gameViewport.getCamera();
         this.stage = new Stage(this.game.gameViewport);
         Gdx.input.setInputProcessor(this.stage);
         this.shapeRenderer = new ShapeRenderer();
 
-        // Load TMX map
         tmxmap = new TmxMapLoader().load("src/main/assets/map/tilemaps/" + map);
 
-        // Set up renderer (assuming tiles are 16x16 pixels)
         renderer = new OrthogonalTiledMapRenderer(tmxmap, 1f / 16f);
 
-        // Center the camera
         float w = game.gameViewport.getWorldWidth();
         float h = game.gameViewport.getWorldHeight();
         gamecam.position.set(w / 2f, h / 2f, 0f);
@@ -101,12 +101,15 @@ public class GameScreen implements Screen {
         WorldContactListener contactListener = new WorldContactListener(List.of(handlers));
 
         world.setContactListener(contactListener);
-
-        // Initialize HUD with the game's SpriteBatch
         hud = new HUD(game.batch, player.character);
         this.currentGame = map;
     }
 
+    /**
+     * Constructs the default GameScreen using the first level map.
+     *
+     * @param game the game application reference
+     */
     public GameScreen(StarJump game) {
         this(game, "map_level_1.tmx");
     }

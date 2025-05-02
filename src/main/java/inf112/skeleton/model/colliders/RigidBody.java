@@ -196,7 +196,9 @@ public class RigidBody {
         if (doDispose) fixtureDef.shape.dispose();
     }
 
-    //CAn remove it later but add it for now 
+    /**
+     * Returns the underlying Box2D body.
+     */
     public Body getBody() {
         return this.body;
     }

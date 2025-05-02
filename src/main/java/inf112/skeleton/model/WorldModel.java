@@ -20,19 +20,41 @@ public class WorldModel implements Renderable {
     private final ArrayList<Renderable> ViewableObjects = new ArrayList<>();
     private List<Body> bodiesToRemove = new ArrayList<>();
 
+
+    /**
+     * Creates a new game world with custom gravity.
+     *
+     * @param gravity the gravity to apply
+     * @param doSleep whether objects can sleep
+     */
     public WorldModel(Vector2 gravity, boolean doSleep) {
         this.world = new World(gravity, doSleep);
     }
 
+    /**
+     * Creates a world model using an existing Box2D world.
+     *
+     * @param world the Box2D world
+     */
     public WorldModel(World world) {
         this.world = world;
     }
 
+    /**
+     * Steps the physics world and removes any bodies marked for deletion.
+     *
+     * @param dt time step (delta time)
+     */
     public void onStep(float dt) {
         world.step(dt, 3, 3);
         removeBodies();
     }
 
+    /**
+     * Creates a player with default attributes and adds it to the world.
+     *
+     * @return the created Player
+     */
     public Player createPlayer() {
         CharacterAttributes attributes = new CharacterAttributes(
                 5,
@@ -54,10 +76,20 @@ public class WorldModel implements Renderable {
         return plr;
     }
 
+    /**
+     * Adds an object to be rendered.
+     *
+     * @param obj the object to add
+     */
     public void addViewableObject(Renderable obj) {
         ViewableObjects.add(obj);
     }
 
+    /**
+     * Marks a body to be removed from the physics world.
+     *
+     * @param body the body to remove
+     */
     public void setBodyForRemove(Body body) {
         this.bodiesToRemove.add(body);
     }
