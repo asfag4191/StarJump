@@ -51,7 +51,7 @@ public class GameScreen implements Screen {
     private EnemyManager enemyManager;
     private String currentGame;
 
-    public GameScreen(StarJump game, String map) {
+    protected GameScreen(StarJump game, String map) {
         this.game = game;
 
         // SINGLE SHARED WORLD instance
@@ -85,18 +85,19 @@ public class GameScreen implements Screen {
                 tmxmap.getProperties().get("tilewidth", Integer.class));
         this.debugger = new Box2DDebugRenderer();
 
-        // Set up power-up
+        // Initialize managers
         powerUpManager = new PowerUpManager(this, player.character);
-
-        // Set up door
         doorManager = new DoorManager(this);
-
         enemyManager = new EnemyManager(this);
         enemyManager.loadEnemiesFromMap(getMap());
 
         // Instantiate collision handlers
-        CollisionHandler[] handlers = { new PowerUpCollisionHandler(), new CharacterContactHandler(),
-                new EnemyCollisionHandler(), new ProjectileCollisionHandler() };
+        CollisionHandler[] handlers = {
+                new PowerUpCollisionHandler(),
+                new CharacterContactHandler(),
+                new EnemyCollisionHandler(),
+                new ProjectileCollisionHandler()
+        };
         WorldContactListener contactListener = new WorldContactListener(List.of(handlers));
 
         world.setContactListener(contactListener);
@@ -167,9 +168,13 @@ public class GameScreen implements Screen {
 
         powerUpManager.update(dt);
         enemyManager.update(dt);
-        doorManager.update(dt);
+        powerUpManager.update(dt);
+        enemyManager.update(dt);
         hud.update(dt); //
+        doorManager.update(dt);
+
         adjustCamera(this.player, 3f);
+
         checkLevelCompletion();
     }
 
@@ -229,25 +234,34 @@ public class GameScreen implements Screen {
         renderer.setView(gamecam);
         renderer.render();
 
-        game.batch.setProjectionMatrix(gamecam.combined); 
-        game.batch.begin(); 
+        game.batch.setProjectionMatrix(gamecam.combined);
+        game.batch.begin();
         powerUpManager.render(game.batch);
         worldModel.render(game.batch, dt);
         enemyManager.render(game.batch, dt);
 
-        game.batch.end(); 
+        game.batch.end();
 
         hud.hudStage.draw();
     }
 
+    /**
+     * Returns the current game TMX map.
+     */
     public TiledMap getMap() {
         return tmxmap;
     }
 
+    /**
+     * Returns the current Box2D World
+     */
     public World getWorld() {
         return world;
     }
 
+    /**
+     * Returns the PowerUpManager
+     */
     public PowerUpManager getPowerUpManager() {
         return powerUpManager;
     }
@@ -300,7 +314,7 @@ public class GameScreen implements Screen {
         return player;
     }
 
-     /**
+    /**
      * Returns the world model containing the game world state.
      *
      * @return the {@link WorldModel} representing the current game world
