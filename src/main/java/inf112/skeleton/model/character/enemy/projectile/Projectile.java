@@ -61,6 +61,13 @@ public class Projectile extends RigidBody implements Disposable, iUpdateable, Re
         return fixDef;
     }
 
+    /**
+     * Returns projectile attributes
+     */
+    public ProjectileAttributes getAttributes() {
+        return this.attributes;
+    }
+
     @Override
     public void dispose() {
         if (this.body != null) {
