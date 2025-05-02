@@ -32,6 +32,11 @@ public class HelpScreen implements Screen {
     private final Texture playerTexture;
     private final Texture enemyTexture;
 
+    /**
+     * Constructs a new HelpScreen with instructional content and visuals.
+     *
+     * @param game the main game instance for switching screens
+     */
     public HelpScreen(StarJump game) {
         this.game = game;
         this.stage = new Stage(new ScreenViewport());

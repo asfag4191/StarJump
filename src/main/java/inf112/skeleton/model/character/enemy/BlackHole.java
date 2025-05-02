@@ -12,12 +12,21 @@ import com.badlogic.gdx.physics.box2d.World;
 import inf112.skeleton.model.character.Character;
 import inf112.skeleton.model.character.CharacterAttributes;
 
+/**
+ * The BlackHole class represents a moving enemy in the game.
+ * It extends the SimpleEnemy class and implements the iMovingEnemy interface.
+ * The BlackHole moves in a specified direction and can attack the player.
+ */
 public class BlackHole extends SimpleEnemy implements iMovingEnemy {
 
     private int direction;
     private boolean markedForRemoval = false;
 
-
+    /**
+     * Constructor for BlackHole.
+     *
+     * @param blackHole the character to be used for the BlackHole
+     */
     public BlackHole(Character blackHole) {
         super(blackHole);
         this.direction = 1;
@@ -27,6 +36,15 @@ public class BlackHole extends SimpleEnemy implements iMovingEnemy {
         setupAnimation();
     }
 
+    /**
+     * Constructor for BlackHole.
+     *
+     * @param name       the name of the BlackHole
+     * @param attributes the attributes of the BlackHole
+     * @param size       the size of the BlackHole
+     * @param world      the world in which the BlackHole exists
+     * @param target     the target character (not used in this implementation)
+     */
     public BlackHole(String name, CharacterAttributes attributes, Vector2 size, World world, Character target) {
         this(new Character(name, attributes, size, world));
     }
@@ -51,7 +69,7 @@ public class BlackHole extends SimpleEnemy implements iMovingEnemy {
     }
 
     /**
-     * Changes the BlackHole's direction 
+     * Changes the BlackHole's direction
      * from left to right or vice versa.
      */
     public void changeDirection() {
@@ -105,7 +123,7 @@ public class BlackHole extends SimpleEnemy implements iMovingEnemy {
         // right sensor
         PolygonShape rightShape = new PolygonShape();
         rightShape.setAsBox(0.05f, 0.3f, new Vector2(0.6f, 0), 0);
-     
+
         FixtureDef rightSensorDef = new FixtureDef();
         rightSensorDef.isSensor = true;
         rightSensorDef.shape = leftShape;
@@ -117,7 +135,7 @@ public class BlackHole extends SimpleEnemy implements iMovingEnemy {
     }
 
     /**
-     * A sensor on top of the BlackHole, 
+     * A sensor on top of the BlackHole,
      * so that the Player can jump on the BlackHole to kill it
      */
     private void createTopSensor() {

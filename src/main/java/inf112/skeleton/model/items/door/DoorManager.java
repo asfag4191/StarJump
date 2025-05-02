@@ -65,5 +65,4 @@ public class DoorManager {
     public DoorObject getDoor() {
         return doors.isEmpty() ? null : doors.get(0);
     }
-
 }

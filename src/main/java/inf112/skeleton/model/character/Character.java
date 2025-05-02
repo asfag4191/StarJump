@@ -179,6 +179,7 @@ public class Character extends HumanoidBody implements Renderable {
 
     /**
      * Marks this character as a player
+     * 
      * @param isPlayer if the character should be a player or not
      */
     public void setPlayer(boolean isPlayer) {
@@ -187,6 +188,7 @@ public class Character extends HumanoidBody implements Renderable {
 
     /**
      * Wether this character is a player or not
+     * 
      * @return {@code true} if the character is a player, else {@code false}
      */
     public boolean isPlayer() {

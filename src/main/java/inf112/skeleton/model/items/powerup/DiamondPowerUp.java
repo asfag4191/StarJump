@@ -7,7 +7,6 @@ import inf112.skeleton.model.character.Character;
 
 /**
  * A power-up representing a collectible diamond that increases the player's score.
- * 
  * When collected, this power-up adds a fixed score value to the global score.
  * This class implements {@link iPowerUp} for unified interaction with the power-up system.
  */
@@ -63,5 +62,8 @@ public class DiamondPowerUp implements iPowerUp {
         return sprite;
     }
 
+    /**
+     * Reset score to 0
+     */
     public static void disposeScore() { score = 0; }
 }
