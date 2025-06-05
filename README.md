@@ -1,5 +1,5 @@
 # INF112 Project - _Star Jump_
-
+Given premission to upload.
 ## Team: **DreamTeam** (Gruppe 7):
 
 - Maren A. I. Gundhus, developer + test consultant
@@ -14,10 +14,10 @@
 
 ## About the game
 
-* A star has fallen from the sky! Help it jump back home — but beware of black holes and cannons, they're fatal! Use the arrow 
-* keys to move side to side, and press the spacebar to jump. Along the way, you can collect power-ups (rainbows) to gain a
-* short burst of flight. You can also grab diamonds to increase your score. Stay alert, even with the power-up effect, black
-* holes are still dangerous!
+ A star has fallen from the sky! Help it jump back home — but beware of black holes and cannons, they're fatal! Use the arrow 
+ keys to move side to side, and press the spacebar to jump. Along the way, you can collect power-ups (rainbows) to gain a 
+ short burst of flight. You can also grab diamonds to increase your score. Stay alert, even with the power-up effect, black
+ holes are still dangerous!
 
 ## How to play
 
